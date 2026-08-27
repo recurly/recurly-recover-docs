@@ -16,7 +16,7 @@ metadata:
     <a class="rp-toc-pill" href="#key-benefits"><span class="rp-toc-num">2</span>Key benefits</a>
     <a class="rp-toc-pill" href="#key-details"><span class="rp-toc-num">3</span>Key details</a>
     <a class="rp-toc-pill" href="#setup"><span class="rp-toc-num">4</span>Setup</a>
-    <a class="rp-toc-pill" href="#roles-permissions"><span class="rp-toc-num">5</span>Roles & permissions</a>
+    <a class="rp-toc-pill" href="#roles--permissions"><span class="rp-toc-num">5</span>Roles & permissions</a>
     <a class="rp-toc-pill" href="#faqs"><span class="rp-toc-num">6</span>FAQs</a>
   </div>
 </div>
