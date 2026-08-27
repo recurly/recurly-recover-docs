@@ -4,6 +4,8 @@ hidden: false
 metadata:
   title: Recurly Recover Changelog
   description: Follow our latest changes to Recurly Recover!
+  image: >-
+    https://files.readme.io/e21afedd655838a4eaa52ecad75d92cd5a4b3dda0caca0c11e26152fd74beded-logo_recurly-recover-docs_yellow.svg
 ---
 <HTMLBlock>{`
 <style>
