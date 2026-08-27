@@ -232,7 +232,7 @@ metadata:
   <h1>Recurly Recover Changelog</h1>
   <p>
 
-    Discover what's new in Recurly Recover. Browse posts by year to see recent launches,
+    Discover what's new in Recurly Recover. Browse posts by release to see recent launches,
     enhancements, and behind-the-scenes improvements that keep your platform sharp.
   </p>
   <p class="rss-line">
