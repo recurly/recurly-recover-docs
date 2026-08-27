@@ -1,6 +1,9 @@
 ---
 title: Recurly Recover Changelog
 hidden: false
+metadata:
+  title: Recurly Recover Changelog
+  description: Follow our latest changes to Recurly Recover!
 ---
 <HTMLBlock>{`
 <style>
