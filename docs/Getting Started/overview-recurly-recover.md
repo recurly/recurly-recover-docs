@@ -124,7 +124,7 @@ A retry window defines how many days Recurly will attempt to collect on a past-d
 <div class="rp-steps">
   <div class="rp-step">
     <div class="rp-step-num">1</div>
-    <div><h4>Copy your private API key</h4><p>In the Recurly Admin UI, go to <strong>Integrations → API Credentials</strong> and copy your private API key. Use this to authenticate all Recovery API requests.</p></div>
+    <div><h4>Copy your private API key</h4><p>In the Recover UI, go to <strong>Developer → API Credentials</strong> and copy your private API key. Use this to authenticate all Recovery API requests.</p></div>
   </div>
 </div>
 
@@ -137,16 +137,11 @@ Recurly fires webhook events at key points in the retry lifecycle. Configure at 
 <div class="rp-steps">
   <div class="rp-step">
     <div class="rp-step-num">1</div>
-    <div><h4>Add a webhook endpoint</h4><p>In the Recurly Admin UI, go to <strong>Integrations → Webhooks</strong> and add your endpoint URL.</p></div>
-  </div>
-  <div class="rp-step">
-    <div class="rp-step-num">2</div>
-    <div><h4>Subscribe to retry lifecycle events</h4><p>At minimum, subscribe to the following events:</p></div>
+    <div><h4>Add a webhook endpoint</h4><p>In the Recover UI, go to <strong>Developer → Webhooks</strong> and add your endpoint URL.</p></div>
   </div>
 </div>
 
 ![Webhooks screenshot](https://files.readme.io/a3ee40d624f08dff2a96f102cadf0f3438dd5c1772fa4b3476eeeeb56124b906-image.png)
-
 
 <div class="rp-callout rp-callout-warning">
   <div><strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Warning</strong> The <code>uuid</code> field in payment webhook events is a <strong>transaction ID</strong>, not an invoice ID. Use <code>GET /transactions/uuid-{uuid}</code> to retrieve the transaction, then follow the invoice relationship if you need invoice details. Do not query <code>/invoices/{uuid}</code> with a transaction ID.</div>
