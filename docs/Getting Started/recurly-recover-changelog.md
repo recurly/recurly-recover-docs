@@ -280,6 +280,10 @@ metadata:
     max-width: 100%;
     width: 100%;
 }
+
+:where(.ThemeContext_spacing_condensed,.ThemeContext_spacing_comfortable) .rm-Guides .rm-Article {
+    max-width: 100%;
+}
 </style> 
 `}</HTMLBlock>
 
