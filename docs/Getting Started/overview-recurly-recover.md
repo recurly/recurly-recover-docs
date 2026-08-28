@@ -143,13 +143,6 @@ Recurly fires webhook events at key points in the retry lifecycle. Configure at 
   </div>
 </div>
 
-| Event                | Fires when                                              |
-| -------------------- | ------------------------------------------------------- |
-| `successful_payment` | A retry attempt successfully collects payment           |
-| `failed_payment`     | A retry attempt fails                                   |
-| `new_dunning_event`  | A dunning step fires per the retry window configuration |
-| `closed_invoice`     | An invoice is marked as paid or failed                  |
-
 <div class="rp-callout rp-callout-warning">
   <div><strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Warning</strong> The <code>uuid</code> field in payment webhook events is a <strong>transaction ID</strong>, not an invoice ID. Use <code>GET /transactions/uuid-{uuid}</code> to retrieve the transaction, then follow the invoice relationship if you need invoice details. Do not query <code>/invoices/{uuid}</code> with a transaction ID.</div>
 </div>
