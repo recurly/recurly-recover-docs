@@ -81,9 +81,9 @@ metadata:
   <div><strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Warning</strong> Pause your internal retry logic before submitting an invoice to Recurly Recover. Running parallel retries on the same payment method risks double-charging your customer.</div>
 </div>
 
-# Setup
+# Configuration
 
-## Step 1: Connect your payment gateway
+## Connect your payment gateway
 
 <div class="rp-steps">
   <div class="rp-step">
@@ -96,7 +96,7 @@ metadata:
   </div>
 </div>
 
-## Step 2: Configure a retry window
+## Configure a retry window
 
 A retry window defines how many days Recurly will attempt to collect on a past-due invoice. Retry windows are configured using Recurly's dunning campaign feature.
 
@@ -119,7 +119,7 @@ A retry window defines how many days Recurly will attempt to collect on a past-d
   <div><strong><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Tip</strong> Create a distinct retry window for each strategy you want to test. Since each API request specifies its own <code>dunning_campaign_id</code>, you can easily run A/B tests by assigning different campaign codes at submission time.</div>
 </div>
 
-## Step 3: Generate your API key
+## Generate your API key
 
 <div class="rp-steps">
   <div class="rp-step">
@@ -128,7 +128,9 @@ A retry window defines how many days Recurly will attempt to collect on a past-d
   </div>
 </div>
 
-## Step 4: Configure webhooks
+![API Credentials screenshot](https://files.readme.io/0ab00c59aa153a439939c976d240b120eacd84a31c61c177fcaa86130c45f7da-image.png)
+
+## Configure webhooks
 
 Recurly fires webhook events at key points in the retry lifecycle. Configure at least one webhook endpoint so your system can respond when a payment is recovered or a retry window closes.
 
@@ -143,13 +145,16 @@ Recurly fires webhook events at key points in the retry lifecycle. Configure at 
   </div>
 </div>
 
+![Webhooks screenshot](https://files.readme.io/a3ee40d624f08dff2a96f102cadf0f3438dd5c1772fa4b3476eeeeb56124b906-image.png)
+
+
 <div class="rp-callout rp-callout-warning">
   <div><strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Warning</strong> The <code>uuid</code> field in payment webhook events is a <strong>transaction ID</strong>, not an invoice ID. Use <code>GET /transactions/uuid-{uuid}</code> to retrieve the transaction, then follow the invoice relationship if you need invoice details. Do not query <code>/invoices/{uuid}</code> with a transaction ID.</div>
 </div>
 
 For full webhook event details, see the [Webhooks documentation](/docs/overview-webhooks).
 
-## Step 5: Submit a failed invoice
+## Submit a failed invoice
 
 Call `POST /invoices/recovery` to submit a failed invoice for collection. A successful request creates a Recurly account, a past-due invoice, and an initial failed transaction — and immediately begins the retry schedule.
 
@@ -240,7 +245,7 @@ POST https://v3.recurly.com/invoices/recovery
 }
 ```
 
-## Step 6: Handle the response
+## Handle the response
 
 A successful `201` response confirms that Recurly has created the account and started the retry process. Save the `invoice_id` from the response — you'll need it to stop retries later.
 
@@ -316,7 +321,7 @@ PUT https://v3.recurly.com/invoices/{invoice_id}/mark_failed
 
 Use the `invoice_id` returned in the original API response. Once marked, Recurly won't make any further retry attempts on that invoice.
 
-## Payment method wallet
+# Payment method wallet
 
 When the Wallet feature is enabled, you can designate payment methods as primary or backup in your API request. You can submit multiple payment methods, but only one can be marked as primary.
 
