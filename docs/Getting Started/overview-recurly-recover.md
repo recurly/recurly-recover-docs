@@ -90,11 +90,19 @@ metadata:
   <div class="rp-step">
     <div class="rp-step-num">1</div>
     <div><h4>Connect your payment gateway</h4><p>In initial onboarding flow, click <strong>Add Gateway</strong> and follow the prompts to connect your gateway. You may continue to add gateways or click Continue to finish configuration.</p> 
-
+</div>
+  </div>
+ <div class="rp-step">
+    <div class="rp-step-num">2</div>
+    <div><h4>Setup webhooks</h4><p>In initial onboarding flow, enter your <strong>Endpoint URL</strong> and select the events you wish to send webhooks.</p> 
+</div>
+  </div>
+    <div class="rp-step-num">3</div>
+    <div><h4>Your API Key</h4><p>In initial onboarding flow, copy <strong>Your API key</strong>.</p> 
 </div>
   </div>
   <div class="rp-step">
-    <div class="rp-step-num">2</div>
+    <div class="rp-step-num">!</div>
     <div><h4>Note the gateway code</h4><p>Each gateway connection is assigned a unique <strong>gateway code</strong>. You'll pass this value in API requests to route transactions to the correct gateway. If you need to route different card types or merchant category codes through separate accounts, you can add multiple connections for the same provider — each gets its own gateway code.</p></div>
   </div>
 </div>
