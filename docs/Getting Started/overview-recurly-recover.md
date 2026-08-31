@@ -5,7 +5,7 @@ excerpt: >-
   from your existing billing platform — without adopting Recurly for
   subscription management.
 deprecated: false
-hidden: false
+hidden: true
 metadata:
   robots: index
 ---
@@ -21,21 +21,22 @@ metadata:
   </div>
 </div>
 
-### Prerequisites
+### Onboarding includes
 
 <ul class="rp-list">
-  <li>An active Recurly account with an API key generated.</li>
-  <li>One or more payment gateways configured in Recurly.</li>
-  <li>At least one retry window (dunning campaign) configured in the Recurly Admin UI.</li>
+  <li>An active  account with an API key generated.</li>
+  <li>At least one retry window (dunning campaign) </li>
 </ul>
 
 ### Limitations
 
 <ul class="rp-list">
-  <li>Recurly Recover is designed for merchants who don't use Recurly for subscription management — it's not intended to work alongside Recurly Subscriptions.</li>
-  <li>Accounts can only be created via the API, not through the Admin UI.</li>
+  <li>Recurly Recover is designed for merchants who don't use Recurly for subscription management.</li>
   <li>Each successful API call creates one account with one invoice. Calling the API again with the same account code returns an error.</li>
+ <li>Accounts can only be created via the API, not through the Admin UI.</li>
 </ul>
+
+<li>Existing Recurly Subscriptions can utilize the Retries in RSM.</li>
 
 # Definition
 
@@ -81,14 +82,31 @@ metadata:
   <div><strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Warning</strong> Pause your internal retry logic before submitting an invoice to Recurly Recover. Running parallel retries on the same payment method risks double-charging your customer.</div>
 </div>
 
-# Configuration
+# Configuration via onboarding flow
 
 ## Connect your payment gateway
 
 <div class="rp-steps">
   <div class="rp-step">
     <div class="rp-step-num">1</div>
-    <div><h4>Open Payment Gateways</h4><p>In the Recurly Admin UI, go to <strong>Configuration → Payment Gateways</strong> and connect your gateway.</p></div>
+    <div><h4>Connect your payment gateway</h4><p>In initial onboarding flow, click <strong>Add Gateway</strong> and follow the prompts to connect your gateway. You may continue to add gateways or click Continue to finish configuration.</p> 
+
+</div>
+  </div>
+  <div class="rp-step">
+    <div class="rp-step-num">2</div>
+    <div><h4>Note the gateway code</h4><p>Each gateway connection is assigned a unique <strong>gateway code</strong>. You'll pass this value in API requests to route transactions to the correct gateway. If you need to route different card types or merchant category codes through separate accounts, you can add multiple connections for the same provider — each gets its own gateway code.</p></div>
+  </div>
+</div>
+
+## Connect your payment gateway
+
+<div class="rp-steps">
+  <div class="rp-step">
+    <div class="rp-step-num">1</div>
+    <div><h4>Connect your payment gateway</h4><p>In initial onboarding flow, click <strong>Add Gateway</strong> and follow the prompts to connect your gateway. You may continue to add gateways or click Continue to finish configuration.</p> 
+<p>In the Recover UI, go to <strong>Configuration → Payment Gateways</strong> and connect your gateway.</p>
+</div>
   </div>
   <div class="rp-step">
     <div class="rp-step-num">2</div>
