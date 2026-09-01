@@ -286,32 +286,9 @@ When the Wallet feature is enabled, you can designate payment methods as primary
 
 # Payment gateways
 
-Currently supported gateways are Stripe and Braintree. &#x20;
+Currently supported gateways are Stripe and Braintree with resuable gateway tokens. &#x20;
 
-Stripe:
-
-```json
-"payment_gateway_references": [
-                   {
-                       "token": "cus_TapC8aysC8GRkU",
-                       "reference_type": "stripe_customer"
-                   },
-                   {
-                       "token": "pm_1SddYODhxUCUQqaNKCscliir",
-                       "reference_type": "stripe_payment_method"
-                   }
-               ]
-```
-
-Braintree:
-
-```json
-"payment_gateway_references": [
-    {
-        "token": "BT-0427-79"
-    }
-]
-```
+[Learn more]() about gateways and token supported.
 
 # Roles & permissions
 
@@ -352,12 +329,12 @@ Braintree:
     <td>Analytics & Insights</td>
     <td>
       <ul class="rp-list">
-        <li><a href="https://prototypes.recurly.net/analytics/recovered-revenue/" target="_blank">Recovered revenue</a></li>
-        <li><a href="https://prototypes.recurly.net/analytics/payment-processing/" target="_blank">Payment processing</a></li>
-        <li><a href="https://prototypes.recurly.net/analytics/retry-recovery/" target="_blank">Retry & recovery</a></li>
-        <li> <a href ="https://prototypes.recurly.net/analytics/campaign-performance/" target="_blank">Campaign Performance</a></li>
-        <li><a href="https://prototypes.recurly.net/payments/invoices/" target="_blank">Invoices</a></li>
-        <li><a href="https://prototypes.recurly.net/payments/transactions/" target="_blank">Transactions</a></li>
+        <li>Recovered revenue</li>
+        <li>Payment processing</li>
+        <li>Retry & recovery<</li>
+        <li>Campaign Performance</li>
+        <li>Invoices</li>
+        <li>Transactions</li>
       </ul>
     </td>
   </tr>
@@ -365,8 +342,8 @@ Braintree:
     <td>Configuration</td>
     <td>
       <ul class="rp-list">
-        <li><a href="https://prototypes.recurly.net/payments/gateways/" target="_blank">Payment gateway settings</a> — view and edit</li>
-        <li><a href="https://prototypes.recurly.net/retention/retry-windows/" target="_blank">Retention (retry window) settings</a> — view and edit</li>
+        <li>Payment gateway settings — view and edit</li>
+        <li>Retention (retry window) settings — view and edit</li>
       </ul>
     </td>
   </tr>
@@ -374,8 +351,8 @@ Braintree:
     <td>Integrations</td>
     <td>
       <ul class="rp-list">
-        <li><a href="https://prototypes.recurly.net/developer/api-credentials/" target="_blank">API credentials</a> — view and edit</li>
-        <li><a href="https://prototypes.recurly.net/developer/webhooks/" target="_blank">Webhooks</a> — view and edit</li>
+        <li>API credentials — view and edit</li>
+        <li>Webhooks — view and edit</li>
       </ul>
     </td>
   </tr>
