@@ -290,19 +290,15 @@ Currently supported gateways are Stripe and Braintree. &#x20;
 
 Stripe:
 
-\`\`\`json
-
-"payment_gateway_references": \[<br />{
+\`\`\`json<br />"payment_gateway_references": \[<br />{
     "token": "cus_TapC8aysC8GRkU",
     "reference_type": "stripe_customer"
-}, {
+},<br />{
     "token": "pm_1SddYODhxUCUQqaNKCscliir",
     "reference_type": "stripe_payment_method"
 }<br />]\`\`\`
 
-Braintree:<br />\`\`\`json
-
-"payment_gateway_references": \[<br />{
+Braintree:<br />\`\`\`json<br />"payment_gateway_references": \[<br />{
     "token": "BT-0427-79"
 }<br />]\`\`\`
 
