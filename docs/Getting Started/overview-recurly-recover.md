@@ -288,7 +288,7 @@ When the Wallet feature is enabled, you can designate payment methods as primary
 
 Currently supported gateways are Stripe and Braintree with resuable gateway tokens. &#x20;
 
-[Learn more]() about gateways and token supported.
+[Learn more]() about gateways and token support.
 
 # Roles & permissions
 
