@@ -369,75 +369,7 @@ When the Wallet feature is enabled, you can designate payment methods as primary
   <div><strong><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Tip</strong> A role can combine any number of these categories. For example, a role for a finance teammate might combine Analytics & Insights with Configuration, while a role for a developer might combine Integrations with Analytics & Insights.</div>
 </div>
 
-# Recover Dashboard
-
-## Connect your payment gateway
-
-<div class="rp-steps">
-  <div class="rp-step">
-    <div class="rp-step-num">1</div>
-    <div><h4>Connect your payment gateway</h4><p>In initial onboarding flow, click <strong>Add Gateway</strong> and follow the prompts to connect your gateway. You may continue to add gateways or click Continue to finish configuration.</p> 
-<p>In the Recover UI, go to <strong>Configuration → Payment Gateways</strong> and connect your gateway.</p>
-</div>
-  </div>
-  <div class="rp-step">
-    <div class="rp-step-num">2</div>
-    <div><h4>Note the gateway code</h4><p>Each gateway connection is assigned a unique <strong>gateway code</strong>. You'll pass this value in API requests to route transactions to the correct gateway. If you need to route different card types or merchant category codes through separate accounts, you can add multiple connections for the same provider — each gets its own gateway code.</p></div>
-  </div>
-</div>
-
-## Configure a retry window
-
-A retry window defines how many days Recurly will attempt to collect on a past-due invoice. Retry windows are configured using Recurly's dunning campaign feature.
-
-<div class="rp-steps">
-  <div class="rp-step">
-    <div class="rp-step-num">1</div>
-    <div><h4>Open Dunning Management</h4><p>In the Recurly Admin UI, go to <strong>Configuration → Dunning Management</strong> and select <strong>Create campaign</strong> (or edit an existing one).</p></div>
-  </div>
-  <div class="rp-step">
-    <div class="rp-step-num">2</div>
-    <div><h4>Configure the campaign</h4><p>Set the campaign name and the total retry window length in days. Set email notifications to <strong>disabled</strong> — Recurly Recover doesn't send dunning emails. Use your own system for customer communication.</p></div>
-  </div>
-  <div class="rp-step">
-    <div class="rp-step-num">3</div>
-    <div><h4>Save and note the campaign ID</h4><p>Save the campaign and copy the campaign ID — this is the value you'll pass as <code>dunning_campaign_id</code> in API requests.</p></div>
-  </div>
-</div>
-
-<div class="rp-callout rp-callout-tip">
-  <div><strong><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Tip</strong> Create a distinct retry window for each strategy you want to test. Since each API request specifies its own <code>dunning_campaign_id</code>, you can easily run A/B tests by assigning different campaign codes at submission time.</div>
-</div>
-
-## Generate your API key
-
-<div class="rp-steps">
-  <div class="rp-step">
-    <div class="rp-step-num">1</div>
-    <div><h4>Copy your private API key</h4><p>In the Recover UI, go to <strong>Developer → API Credentials</strong> and copy your private API key. Use this to authenticate all Recovery API requests.</p></div>
-  </div>
-</div>
-
-![API Credentials screenshot](https://files.readme.io/0ab00c59aa153a439939c976d240b120eacd84a31c61c177fcaa86130c45f7da-image.png)
-
-## Configure webhooks
-
-Recurly fires webhook events at key points in the retry lifecycle. Configure at least one webhook endpoint so your system can respond when a payment is recovered or a retry window closes.
-
-<div class="rp-steps">
-  <div class="rp-step">
-    <div class="rp-step-num">1</div>
-    <div><h4>Add a webhook endpoint</h4><p>In the Recover UI, go to <strong>Developer → Webhooks</strong> and add your endpoint URL.</p></div>
-  </div>
-</div>
-
-![Webhooks screenshot](https://files.readme.io/a3ee40d624f08dff2a96f102cadf0f3438dd5c1772fa4b3476eeeeb56124b906-image.png)
-
-<div class="rp-callout rp-callout-warning">
-  <div><strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Warning</strong> The <code>uuid</code> field in payment webhook events is a <strong>transaction ID</strong>, not an invoice ID. Use <code>GET /transactions/uuid-{uuid}</code> to retrieve the transaction, then follow the invoice relationship if you need invoice details. Do not query <code>/invoices/{uuid}</code> with a transaction ID.</div>
-</div>
-
-For full webhook event details, see the [Webhooks documentation](/docs/overview-webhooks).
+#
 
 # FAQs
 
