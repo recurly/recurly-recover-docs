@@ -331,7 +331,7 @@ Currently supported gateways are Stripe and Braintree with resuable gateway toke
       <ul class="rp-list">
         <li>Recovered revenue</li>
         <li>Payment processing</li>
-        <li>Retry & recovery<</li>
+        <li>Retry & recovery</li>
         <li>Campaign Performance</li>
         <li>Invoices</li>
         <li>Transactions</li>
