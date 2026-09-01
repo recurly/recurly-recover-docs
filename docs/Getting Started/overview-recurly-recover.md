@@ -34,9 +34,8 @@ metadata:
   <li>Recurly Recover is designed for merchants who don't use Recurly for subscription management.</li>
   <li>Each successful API call creates one account with one invoice. Calling the API again with the same account code returns an error.</li>
  <li>Accounts can only be created via the API, not through the Admin UI.</li>
-</ul>
-
 <li>Existing Recurly Subscriptions can utilize the Retries in RSM.</li>
+</ul>
 
 # Key benefits
 
