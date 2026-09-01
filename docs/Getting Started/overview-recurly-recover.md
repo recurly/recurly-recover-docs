@@ -12,7 +12,7 @@ metadata:
 <div class="rp-page">
   <div class="rp-overview">Recurly Recover is a standalone retry engine for collecting on past-due invoices without requiring Recurly as your primary billing platform. Submit a failed invoice via the Recovery API, and Recurly automatically creates the account objects, calculates an optimized retry schedule, and manages the entire collection lifecycle until the invoice is paid or the retry window closes.</div>
   <div class="rp-toc">
-    <a class="rp-toc-pill" href="#definition"><span class="rp-toc-num">1</span>Definition</a>
+   
     <a class="rp-toc-pill" href="#key-benefits"><span class="rp-toc-num">2</span>Key benefits</a>
     <a class="rp-toc-pill" href="#key-details"><span class="rp-toc-num">3</span>Key details</a>
     <a class="rp-toc-pill" href="#setup"><span class="rp-toc-num">4</span>Setup</a>
@@ -37,10 +37,6 @@ metadata:
 </ul>
 
 <li>Existing Recurly Subscriptions can utilize the Retries in RSM.</li>
-
-# Definition
-
-<div class="rp-definition">Recurly Recover is a standalone retry engine that collects on past-due invoices without requiring Recurly as your primary billing platform. Submit a failed invoice via the Recovery API and Recurly automatically creates the necessary account objects, calculates an optimized retry schedule, and manages the entire collection lifecycle until the invoice is paid or the retry window closes.</div>
 
 # Key benefits
 
@@ -287,6 +283,26 @@ Use the `invoice_id` returned in the original API response. Once marked, Recurly
 # Payment method wallet
 
 When the Wallet feature is enabled, you can designate payment methods as primary or backup in your API request. You can submit multiple payment methods, but only one can be marked as primary.
+
+# Payment Gateways
+
+Currently supported gateways are Stripe and Braintree. &#x20;
+
+Stripe:
+"payment_gateway_references": \[ {
+    "token": "cus_TapC8aysC8GRkU",
+    "reference_type": "stripe_customer"
+}, {
+    "token": "pm_1SddYODhxUCUQqaNKCscliir",
+    "reference_type": "stripe_payment_method"
+}
+]
+
+Braintree:
+"payment_gateway_references": \[ {
+    "token": "BT-0427-79"
+}
+]
 
 # Roles & permissions
 
