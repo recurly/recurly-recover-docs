@@ -5,7 +5,7 @@ excerpt: >-
   from your existing billing platform — without adopting Recurly for
   subscription management.
 deprecated: false
-hidden: true
+hidden: false
 metadata:
   robots: index
 ---
