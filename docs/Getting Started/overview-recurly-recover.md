@@ -13,9 +13,10 @@ metadata:
   <div class="rp-overview">Recurly Recover is a standalone retry engine for collecting on past-due invoices without requiring Recurly as your primary billing platform. Submit a failed invoice via the Recovery API, and Recurly automatically creates the account objects, calculates an optimized retry schedule, and manages the entire collection lifecycle until the invoice is paid or the retry window closes.</div>
   <div class="rp-toc">
    
-    <a class="rp-toc-pill" href="#key-benefits"><span class="rp-toc-num">2</span>Key benefits</a>
-    <a class="rp-toc-pill" href="#key-details"><span class="rp-toc-num">3</span>Key details</a>
-    <a class="rp-toc-pill" href="#setup"><span class="rp-toc-num">4</span>Setup</a>
+    <a class="rp-toc-pill" href="#key-benefits"><span class="rp-toc-num">1</span>Key benefits</a>
+    <a class="rp-toc-pill" href="#key-details"><span class="rp-toc-num">2</span>Key details</a>
+    <a class="rp-toc-pill" href="#setup"><span class="rp-toc-num">3</span>Configuration</a>
+    <a class="rp-toc-pill" href="#setup"><span class="rp-toc-num">4</span>Payment Information</a>
     <a class="rp-toc-pill" href="#roles--permissions"><span class="rp-toc-num">5</span>Roles & permissions</a>
     <a class="rp-toc-pill" href="#faqs"><span class="rp-toc-num">6</span>FAQs</a>
   </div>
