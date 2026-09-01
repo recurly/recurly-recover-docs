@@ -111,7 +111,7 @@ The first time you sign-in, you will be prompted through configuration.
   </div>
 </div>
 
-# API Calls
+# API calls
 
 ## Submit a failed invoice
 
@@ -284,7 +284,7 @@ Use the `invoice_id` returned in the original API response. Once marked, Recurly
 
 When the Wallet feature is enabled, you can designate payment methods as primary or backup in your API request. You can submit multiple payment methods, but only one can be marked as primary.
 
-# Payment Gateways
+# Payment gateways
 
 Currently supported gateways are Stripe and Braintree. &#x20;
 
