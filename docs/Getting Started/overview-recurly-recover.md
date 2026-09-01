@@ -289,20 +289,20 @@ When the Wallet feature is enabled, you can designate payment methods as primary
 Currently supported gateways are Stripe and Braintree. &#x20;
 
 Stripe:
-"payment_gateway_references": \[ {
+
+<code><br />"payment_gateway_references": \[<br />{
     "token": "cus_TapC8aysC8GRkU",
     "reference_type": "stripe_customer"
 }, {
     "token": "pm_1SddYODhxUCUQqaNKCscliir",
     "reference_type": "stripe_payment_method"
-}
-]
+}<br />]</code>
 
 Braintree:
-"payment_gateway_references": \[ {
+
+<code><br />"payment_gateway_references": \[<br />{
     "token": "BT-0427-79"
-}
-]
+}<br />]</code>
 
 # Roles & permissions
 
