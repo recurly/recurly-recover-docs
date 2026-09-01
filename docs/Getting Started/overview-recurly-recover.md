@@ -290,17 +290,28 @@ Currently supported gateways are Stripe and Braintree. &#x20;
 
 Stripe:
 
-\`\`\`json<br />"payment_gateway_references": \[<br />{
-    "token": "cus_TapC8aysC8GRkU",
-    "reference_type": "stripe_customer"
-},<br />{
-    "token": "pm_1SddYODhxUCUQqaNKCscliir",
-    "reference_type": "stripe_payment_method"
-}<br />]\`\`\`
+```json
+"payment_gateway_references": [
+                   {
+                       "token": "cus_TapC8aysC8GRkU",
+                       "reference_type": "stripe_customer"
+                   },
+                   {
+                       "token": "pm_1SddYODhxUCUQqaNKCscliir",
+                       "reference_type": "stripe_payment_method"
+                   }
+               ]
+```
 
-Braintree:<br />\`\`\`json<br />"payment_gateway_references": \[<br />{
-    "token": "BT-0427-79"
-}<br />]\`\`\`
+Braintree:
+
+```json
+"payment_gateway_references": [
+    {
+        "token": "BT-0427-79"
+    }
+]
+```
 
 # Roles & permissions
 
