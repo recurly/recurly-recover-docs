@@ -110,7 +110,7 @@ The first time you sign-in, you will be prompted through configuration.
   </div>
 </div>
 
-#
+# API Calls
 
 ## Submit a failed invoice
 
