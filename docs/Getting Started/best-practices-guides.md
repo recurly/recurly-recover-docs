@@ -18,3 +18,17 @@ Select a topic below to learn more.</div>
 <a class="rp-toc-pill" href="#supported-gateways"><span class="rp-toc-num">3</span>Multiple Payment Methods</a>
 </div>
 </div>
+
+# Aggression Models: Pros and Cons
+
+<br />
+
+# Recover Testing
+
+<br />
+
+# Multiple Payment Methods
+
+<br />
+
+<br />
