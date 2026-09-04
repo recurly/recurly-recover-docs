@@ -45,4 +45,8 @@ If you are using Recurly Wallet, and would like to add multiple payment methods 
 
 Read about best practices associated with multiple payment methods, and multiple gateways, and how Recurly Wallet can assist with this setup.
 
-- Multiple Payment Methods Best Practices
+- <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multiple-payment-methods">Multiple Payment Methods Best Practices</Anchor>
+
+<br />
+
+<br />
