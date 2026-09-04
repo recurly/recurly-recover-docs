@@ -29,13 +29,15 @@ Recurly’s default behavior relies heavily on our gateway partners and we read 
 
 Read more about the pros and cons of each model:
 
-- Link here, TBD
+- [Aggression Models](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/recovery-aggression-models)&#x20;
 
 # Recover Testing
 
 Testing is an important part of enabling Recurly Recover. Follow the below guide in setting up Recovery invoices on your sandbox site ahead of go-live.
 
-* Link here, tbd (integration guide)
+* Single Payment Method, Single Gateway
+* Multi-Payment Method, Single Gateway
+* Multi-Payment Method, Multi-Gateway
 
 # Multiple Payment Methods
 
@@ -43,4 +45,4 @@ If you are using Recurly Wallet, and would like to add multiple payment methods 
 
 Read about best practices associated with multiple payment methods, and multiple gateways, and how Recurly Wallet can assist with this setup.
 
-- Documentation link
+- Multiple Payment Methods Best Practices
