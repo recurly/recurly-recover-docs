@@ -35,7 +35,7 @@ Read more about the pros and cons of each model:
 
 Testing is an important part of enabling Recurly Recover. Follow the below guide in setting up Recovery invoices on your sandbox site ahead of go-live.
 
-* Single Payment Method, Single Gateway
+* <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-gateway">Single Payment Method, Single Gateway</Anchor>
 * Multi-Payment Method, Single Gateway
 * Multi-Payment Method, Multi-Gateway
 
