@@ -37,7 +37,7 @@ Testing is an important part of enabling Recurly Recover. Follow the below guide
 
 * <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-gateway">Single Payment Method, Single Gateway</Anchor>
 * <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-single-gateway">Multi-Payment Method, Single Gateway</Anchor>
-* Multi-Payment Method, Multi-Gateway
+* <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-multi-gateway">Multi-Payment Method, Multi-Gateway</Anchor>
 
 # Multiple Payment Methods
 
