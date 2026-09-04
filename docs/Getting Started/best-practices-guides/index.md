@@ -31,7 +31,7 @@ Read more about the pros and cons of each model:
 
 - [Aggression Models](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/recovery-aggression-models)&#x20;
 
-# Recover Testing
+# Recover Testing Guides
 
 Testing is an important part of enabling Recurly Recover. Follow the below guide in setting up Recovery invoices on your sandbox site ahead of go-live.
 
