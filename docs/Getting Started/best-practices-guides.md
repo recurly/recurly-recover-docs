@@ -18,7 +18,7 @@ Select a topic below to learn more.</div>
 <div class="rp-toc">
 <a class="rp-toc-pill" href="#aggression-models-pros-and-cons"><span class="rp-toc-num">1</span>Aggression Models: Pros and Cons</a>
 <a class="rp-toc-pill" href="#recover-testing"><span class="rp-toc-num">2</span>Recover Testing</a>
-<a class="rp-toc-pill" href="#supported-gateways"><span class="rp-toc-num">3</span>Multiple Payment Methods</a>
+<a class="rp-toc-pill" href="#multiple-payment-methods"><span class="rp-toc-num">3</span>Multiple Payment Methods</a>
 </div>
 
 </div>
