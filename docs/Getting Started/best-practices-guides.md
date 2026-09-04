@@ -16,7 +16,7 @@ Select a topic below to learn more.</div>
 <div class="rp-plan"><i class="fa-solid fa-key" aria-hidden="true"></i> Available on all Recurly plans</div>
 
 <div class="rp-toc">
-<a class="rp-toc-pill" href="#definition"><span class="rp-toc-num">1</span>Aggression Models: Pros and Cons</a>
+<a class="rp-toc-pill" href="#aggression-models-pros-and-cons"><span class="rp-toc-num">1</span>Aggression Models: Pros and Cons</a>
 <a class="rp-toc-pill" href="#key-benefits"><span class="rp-toc-num">2</span>Recover Testing</a>
 <a class="rp-toc-pill" href="#supported-gateways"><span class="rp-toc-num">3</span>Multiple Payment Methods</a>
 </div>
