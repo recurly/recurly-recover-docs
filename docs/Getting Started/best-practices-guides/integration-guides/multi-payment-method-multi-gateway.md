@@ -18,7 +18,7 @@ If you are using gateway tokens, ensure the gateway you have enabled has access 
 
 ### Prerequisites & limitations
 
-- Ensure you have reviewed the basic API Guide and are familiar with the fields in the Recovery endpoint.
+- Ensure you have reviewed the [basic API Guide](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/submit-invoices-via-the-recovery-api) and are familiar with the fields in the Recovery endpoint.
 - You have enabled multiple gateways in your Recurly sandbox site.
 - If you are using gateway tokens, you have confirmed that the tokens in use are accessible via your enabled gateways. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
 - If your gateway tokens require NTID reference, you have the NTIDs available for Recurly to store and send.
