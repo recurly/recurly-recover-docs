@@ -33,8 +33,8 @@ If you are using gateway tokens, ensure the gateway you have enabled has access 
 
 ## Best Practices&#x20;
 
-* A&#x20;
-* B
+* **Add multiple payment methods** **against the same invoice&#x20;**&#x77;ithin the same API request. Do not add multiple invoices with different payment methods.
+* **Specify which method is primary versus backup** based on your customer's preferences in their account within your environment.
 * C
 
 ## Integration Guide
