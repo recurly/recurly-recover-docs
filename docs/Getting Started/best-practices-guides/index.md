@@ -37,7 +37,7 @@ Testing is an important part of enabling Recurly Recover. Follow the below guide
 
 Regardless of your set up or use cases, you’ll want to take advantage of Recurly’s custom descriptors to ensure the descriptors for the transactions you run in your own environment matches when Recurly sends the data through our integrations.
 
-* <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-mulri-gateway">Single Payment Method, Single or Multiiple Gateways</Anchor>
+* <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-mulri-gateway">Single Payment Method, Single or Multiple Gateways</Anchor>
 * <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-single-gateway">Multi-Payment Method, Single Gateway</Anchor>
 * <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-multi-gateway">Multi-Payment Method, Multi-Gateway</Anchor>
 
