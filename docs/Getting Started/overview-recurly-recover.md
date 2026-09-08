@@ -113,7 +113,7 @@ The first time you sign in, Recurly walks you through configuration.
   </div>
   <div class="rp-step">
     <div class="rp-step-num">3</div>
-    <div><h4>Set up webhooks</h4><p>Enter your <strong>Endpoint URL</strong> and select the events you want Recover to send. See <a href="/docs/recurly-recover-webhooks" target="_blank">Webhooks</a> for the full event reference.</p></div>
+    <div><h4>Set up webhooks</h4><p>Enter your <strong>Endpoint URL</strong> and select the events you want Recover to send. See <a href="https://docs.recurly.com/recurly-recover/docs/webhooks" target="_blank">Webhooks</a> for the full event reference.</p></div>
   </div>
   <div class="rp-step">
     <div class="rp-step-num">4</div>
@@ -121,12 +121,12 @@ The first time you sign in, Recurly walks you through configuration.
   </div>
   <div class="rp-step">
     <div class="rp-step-num">5</div>
-    <div><h4>Make your first API call</h4><p>Head to <a href="/docs/recurly-recover-recovery-api" target="_blank">Submit invoices via the Recovery API</a> to send your first failed invoice for collection.</p></div>
+    <div><h4>Make your first API call</h4><p>Head to <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api" target="_blank">Submit invoices via the Recovery API</a> to send your first failed invoice for collection.</p></div>
   </div>
 </div>
 
 <div class="rp-callout rp-callout-note">
-  <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> Recover currently supports <strong>Stripe</strong> and <strong>Braintree</strong> with reusable gateway tokens. <a href="/docs/recurly-recover-recovery-api" target="_blank">Learn more</a> about gateways and token support.</div>
+  <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> Recover currently supports <strong>Stripe</strong> and <strong>Braintree</strong> with reusable gateway tokens. <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api#supported-gateways" target="_blank">Learn more</a> about gateways and token support.</div>
 </div>
 
 # In this section
@@ -134,13 +134,13 @@ The first time you sign in, Recurly walks you through configuration.
 <div class="rp-nav-grid">
 
 <Cards>
-  <Card title="Submit invoices via the Recovery API" href="/docs/recurly-recover-recovery-api" target="_blank">
+  <Card title="Submit invoices via the Recovery API" href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api" target="_blank">
     Send a failed invoice for collection, read the response, and stop retries when a payment is collected elsewhere.
   </Card>
-  <Card title="Webhooks" href="/docs/recurly-recover-webhooks" target="_blank">
+  <Card title="Webhooks" href="https://docs.recurly.com/recurly-recover/docs/webhooks" target="_blank">
     Track retry progress and confirm final outcomes with Recover's four webhook events.
   </Card>
-  <Card title="Roles & permissions" href="/docs/recurly-recover-roles-permissions" target="_blank">
+  <Card title="Roles & permissions" href="https://docs.recurly.com/recurly-recover/docs/roles-permissions" target="_blank">
     Create roles and control who can reach configuration, integrations, and analytics.
   </Card>
 </Cards>
@@ -157,5 +157,11 @@ The first time you sign in, Recurly walks you through configuration.
 </Accordion>
 
 <Accordion title="What happens when I submit a past-due invoice via the API?" icon="fa-solid fa-file-invoice">
-  Recurly creates an account (with no subscription), a charge invoice, and one or more failed transactions. Your billing information is stored, and Recurly automatically calculates the next collection attempt based on your submission. See <a href="/docs/recurly-recover-recovery-api" target="_blank">Submit invoices via the Recovery API</a> for the full request and response.
+  Recurly creates an account (with no subscription), a charge invoice, and one or more failed transactions. Your billing information is stored, and Recurly automatically calculates the next collection attempt based on your submission. See <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api" target="_blank">Submit invoices via the Recovery API</a> for the full request and response.
 </Accordion>
+
+{/*
+📋 TODO before publishing:
+- [ ] Plan pill wording — confirm the commercial framing for Recover (e.g. plan name, "contact Sales" language). Current pill states only that Subscriptions isn't required, which the source supports.
+- [ ] Roles & permissions slug — the nav card points to .../roles-permissions. Confirm this is the slug when that page is built (the "&" in the title makes the auto-slug worth double-checking).
+*/}
