@@ -16,3 +16,12 @@ Recurly Recover enables your site with Recurly Wallet by default, giving you the
 * **Keep backup methods current&#x20;**— expired backups provide no real coverage. When a customer adds a new payment method to your company's wallet system, ensure you are providing that detail to Recurly. You may also periodically nudge customers to keep their payment methods current (recommend deleting expired cards from their wallet).
 * **Be transparent that a backup method may be charged if the primary fails**, so it isn't a surprise to the customer.
 * **Let the customer designate a preferred backup** vs. setting the backup arbitrarily — some customers want control over which method absorbs a failed charge
+
+### Ensure Success
+
+To ensure you are set up for success with multiple payment methods, you can follow the specific API guides and Testing guidelines for these specific use cases:
+
+- Multiple Payment Methods, Single Gateway
+- Multiple Payment Methods, Multiple Gateways
+
+Depending on which use case you fall under, follow the guidelines and ensure you’ve got the right setup in your Recurly site to support your recovery efforts. By default, all Recurly Recover sites are set up with Recurly Wallet, allowing multiple payment methods to be used if you have them available for your customers.
