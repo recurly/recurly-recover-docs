@@ -15,7 +15,7 @@ Recurly Recover enables your site with Recurly Wallet by default, giving you the
 * **Favor variety (mix payment methods) over a duplicate** — the ApplePay derivative of the same PAN offers little protection. Instead, preferring a different card network or a PayPal option is more resilient.
 * **Keep backup methods current&#x20;**— expired backups provide no real coverage. When a customer adds a new payment method to your company's wallet system, ensure you are providing that detail to Recurly. You may also periodically nudge customers to keep their payment methods current (recommend deleting expired cards from their wallet).
 * **Be transparent that a backup method may be charged if the primary fails**, so it isn't a surprise to the customer.
-* **Let the customer designate a preferred backup** vs. setting the backup arbitrarily — some customers want control over which method absorbs a failed charge
+* **Let the customer designate a preferred backup** vs. setting the backup arbitrarily — some customers want control over which method absorbs a failed charge. Use Recurly's wallet backup and primary designations to mirror customer preferences.
 
 ### Ensure Success
 
