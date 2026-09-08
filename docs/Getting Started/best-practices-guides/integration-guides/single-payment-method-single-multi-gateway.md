@@ -33,7 +33,9 @@ Text
 
 ## Best Practices&#x20;
 
-<br />
+* A&#x20;
+* B
+* C
 
 ## Integration Guide
 
