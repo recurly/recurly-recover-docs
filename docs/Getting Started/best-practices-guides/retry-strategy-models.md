@@ -34,7 +34,7 @@ Recurly's default retry model is gateway- and network-informed, using Recurly’
 - For merchants where speed matters more than long-term success, this model can delay success to standard timelines.
 - Merchants who retry hard-declines in their own environments won’t find the same level of success with this model.
 
-### Aggressive Retry Strategy (Opt-In)
+## Aggressive Retry Strategy (Opt-In)
 
 **Pros**&#x20;
 
