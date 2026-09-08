@@ -15,7 +15,34 @@ For merchants who prioritize maximum recovery over account health over time, Rec
 
 Our default strategy is built for sustainable, long-term recovery, while our more aggressive strategy is available for merchants who understand and accept the tradeoffs.
 
-&#x20;
+## &#x20;Default Retry Strategy (Recommended)
+
+Recurly's default retry model is gateway- and network-informed, using Recurly’s Intelligent Retries machine learning algorithm to inform retry timing.
+
+**Pros**
+
+- Lower risk of retry-limit violations or network penalties (Visa and Mastercard both enforce excessive-retry programs that can result in fines or account review)
+- Retries are targeted using network-provided signals (merchant advice codes) and hard/soft decline classifications, so retry attempts are concentrated where they’re likely to succeed.
+- Preserves a healthier decline/approval ratio with acquirers over time
+- Reduces appearance of looking like ‘testing’ behavior or fraud-like behavior with Issuers.
+
+**Cons**
+
+- For merchants where speed matters more than long-term success, this model can delay success to standard timelines.
+- Merchants who retry hard-declines in their own environments won’t find the same level of success with this model.
+
+### Aggressive Retry Strategy (Opt-In)
+
+**Pros**&#x20;
+
+- Retries against a broader set of decline codes, which will attempt transactions the default model will not attempt.
+- Useful for merchants with revenue models that are more sensitive to shorter dunning windows where marginal recovery matters more than long-term standing or network fines.
+
+**Cons**
+
+- Risks breaching card-network retry-limit mandates, which can result in per-transaction fines or a merchant being placed on monitoring or remediation plans with an acquirer.
+- Higher risk of transaction patterns being flagged as adversarial or fraud-like behavior.
+- Risks customer experience if retries are perceived as excessive (some customers are notified of declined transactions through their card apps)
 
 <br />
 
