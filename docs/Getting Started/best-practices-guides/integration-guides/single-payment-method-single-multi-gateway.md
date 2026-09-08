@@ -27,7 +27,7 @@ Generally, the Single method / Single gateway is the easiest to implement and te
 
 # Definition
 
-Text
+**Creating Recovery Invoices** refers to the process of generating a new invoice via the Recurly API specifically to retry collection on a failed or past-due subscription charge, without disrupting the original billing cycle or subscription state. This guide specifically covers using a single payment method with a single or multi-gateway setup.
 
 ***
 
