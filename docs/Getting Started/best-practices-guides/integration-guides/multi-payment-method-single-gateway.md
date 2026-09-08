@@ -1,5 +1,8 @@
 ---
 title: Multi-Payment Method, Single Gateway
+excerpt: >-
+  Create recovery invoices via API and learn best practices around testing
+  against multiple payment methods, and single gateway setup.
 deprecated: false
 hidden: true
 metadata:
