@@ -37,15 +37,14 @@ Text
 
 ## Integration Guide
 
-### Step 1: Generate a Recovery Invoice&#x20;
+### Example using Single Payment Method (Token) and Single Gateway
 
-```text
+```json
 ```
 
-### Step 2: Listen to Webhooks&#x20;
+### Example using Single Payment Method (Token) and Multi Gateway
 
-<br />
-
-### Step 3: Manage External Payment Method Lifecycle
+```json
+```
 
 ###
