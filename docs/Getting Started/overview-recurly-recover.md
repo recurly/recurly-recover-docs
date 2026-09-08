@@ -17,11 +17,19 @@ metadata:
     <a class="rp-toc-pill" href="#how-recurly-recover-works"><span class="rp-toc-num">2</span>How it works</a>
     <a class="rp-toc-pill" href="#before-you-begin"><span class="rp-toc-num">3</span>Before you begin</a>
     <a class="rp-toc-pill" href="#getting-started"><span class="rp-toc-num">4</span>Getting started</a>
-    <a class="rp-toc-pill" href="#limitations"><span class="rp-toc-num">5</span>Limitations</a>
-    <a class="rp-toc-pill" href="#in-this-section"><span class="rp-toc-num">6</span>In this section</a>
-    <a class="rp-toc-pill" href="#faqs"><span class="rp-toc-num">7</span>FAQs</a>
+    <a class="rp-toc-pill" href="#in-this-section"><span class="rp-toc-num">5</span>In this section</a>
+    <a class="rp-toc-pill" href="#faqs"><span class="rp-toc-num">6</span>FAQs</a>
   </div>
 </div>
+
+# Limitations
+
+<ul class="rp-list">
+  <li>Recurly Recover is designed for merchants who don't use Recurly for subscription management.</li>
+  <li>Each successful API call creates one account with one invoice. Calling the API again with the same account code returns an error.</li>
+  <li>Accounts can only be created through the API, not through the Admin UI.</li>
+  <li>Merchants who already use Recurly Subscriptions should use the retry logic built into Recurly Subscriptions instead.</li>
+</ul>
 
 # Key benefits
 
@@ -121,15 +129,6 @@ The first time you sign in, Recurly walks you through configuration.
   <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> Recover currently supports <strong>Stripe</strong> and <strong>Braintree</strong> with reusable gateway tokens. <a href="/docs/recurly-recover-recovery-api" target="_blank">Learn more</a> about gateways and token support.</div>
 </div>
 
-# Limitations
-
-<ul class="rp-list">
-  <li>Recurly Recover is designed for merchants who don't use Recurly for subscription management.</li>
-  <li>Each successful API call creates one account with one invoice. Calling the API again with the same account code returns an error.</li>
-  <li>Accounts can only be created through the API, not through the Admin UI.</li>
-  <li>Merchants who already use Recurly Subscriptions should use the retry logic built into Recurly Subscriptions instead.</li>
-</ul>
-
 # In this section
 
 <div class="rp-nav-grid">
@@ -160,3 +159,10 @@ The first time you sign in, Recurly walks you through configuration.
 <Accordion title="What happens when I submit a past-due invoice via the API?" icon="fa-solid fa-file-invoice">
   Recurly creates an account (with no subscription), a charge invoice, and one or more failed transactions. Your billing information is stored, and Recurly automatically calculates the next collection attempt based on your submission. See <a href="/docs/recurly-recover-recovery-api" target="_blank">Submit invoices via the Recovery API</a> for the full request and response.
 </Accordion>
+
+{/*
+📋 TODO before publishing:
+- [ ] Plan pill wording — confirm the commercial framing for Recover (e.g. plan name, "contact Sales" language). Current pill states only that Subscriptions isn't required, which the source supports.
+- [ ] Internal slugs — replace every /docs/recurly-recover-* href (the three nav cards, Getting started steps 3 and 5, and the last FAQ) with the real ReadMe slugs once the spoke pages exist.
+- [ ] "Learn more" gateway/token link — confirm where the supported-gateways note in Getting started should point (Recovery API page vs. a general Recurly gateways doc). Currently points to the Recovery API page.
+*/}
