@@ -1,5 +1,8 @@
 ---
 title: Multiple Payment Methods
+excerpt: >-
+  Review and implement best practices for using multiple payment methods to
+  ensure greater recovery results.
 deprecated: false
 hidden: true
 metadata:
@@ -16,6 +19,7 @@ Recurly Recover enables your site with Recurly Wallet by default, giving you the
 * **Keep backup methods current&#x20;**— expired backups provide no real coverage. When a customer adds a new payment method to your company's wallet system, ensure you are providing that detail to Recurly. You may also periodically nudge customers to keep their payment methods current (recommend deleting expired cards from their wallet).
 * **Be transparent that a backup method may be charged if the primary fails**, so it isn't a surprise to the customer.
 * **Let the customer designate a preferred backup** vs. setting the backup arbitrarily — some customers want control over which method absorbs a failed charge. Use Recurly's wallet backup and primary designations to mirror customer preferences.
+* **If you are using gateway tokens**, take special care you ensure you are sending us the correct `gateway_code` when submitting invoices. Since gateway tokens and the underlying payment method are usually tied to a specific account (with few exceptions), sending in the wrong gateway code could result in an error.
 
 ### Ensure Success
 
