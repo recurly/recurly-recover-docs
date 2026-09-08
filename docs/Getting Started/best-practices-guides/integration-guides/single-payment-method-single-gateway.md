@@ -5,6 +5,8 @@ excerpt: >-
   against a single payment method, and single or multi-gateway setup.
 deprecated: false
 hidden: true
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
