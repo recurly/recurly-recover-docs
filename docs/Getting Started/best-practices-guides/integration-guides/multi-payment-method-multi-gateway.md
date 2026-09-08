@@ -1,10 +1,12 @@
 ---
-title: Multi-Payment Method, Multi-Gateway
+title: Multi-payment method, multi-gateway
 excerpt: >-
   Create recovery invoices via API and learn best practices around testing
   against multiple payment methods, and a multi-gateway setup.
 deprecated: false
 hidden: true
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
