@@ -45,7 +45,84 @@ Generally, the Single method / Single gateway is the easiest to implement and te
 ### Example using Single Payment Method (Token) and Single Gateway
 
 ```json
+{
+  "currency": "str",
+  "due_at": "2019-08-24T14:15:22Z",
+  "po_number": "string",
+  "external_recovery_eligible": true,
+  "account": {
+    "address": {
+      "phone": "string",
+      "street1": "string",
+      "street2": "string",
+      "city": "string",
+      "region": "string",
+      "postal_code": "string",
+      "country": "string"
+    },
+    "billing_infos": [
+      {
+        "first_name": "string",
+        "last_name": "string",
+        "company": "string",
+        "address": {
+          "phone": "string",
+          "street1": "string",
+          "street2": "string",
+          "city": "string",
+          "region": "string",
+          "postal_code": "string",
+          "country": "string"
+        },
+        "ip_address": "string",
+        "gateway_code": "string",
+        "primary_payment_method": true,
+        "backup_payment_method": true,
+        "payment_gateway_references": [
+          {
+            "token": "string" // Single-part Tokens Only
+          }
+        ],
+        "network_transaction_id": "string",
+        "transactions": [
+          {
+            "gateway_error_code": "string",
+            "merchant_advice_code": "st",
+            "attempted_collection_date": "2019-08-24T14:15:22Z"
+          }
+        ]
+      }
+    ],
+    "code": "string",
+    "email": "user@example.com",
+    "custom_fields": [
+      {
+        "name": "string",
+        "value": "string"
+      }
+    ],
+    "dunning_campaign_id": "string"
+  },
+  "line_items": [
+    {
+      "tax": 0,
+      "custom_fields": [
+        {
+          "name": "string",
+          "value": "string"
+        }
+      ],
+      "harmonized_system_code": "string",
+      "product_code": "string",
+      "quantity": 1,
+      "description": "string",
+      "unit_amount": 0
+    }
+  ]
+}
 ```
+
+<br />
 
 ### Example using Single Payment Method (Token) and Multi Gateway
 
