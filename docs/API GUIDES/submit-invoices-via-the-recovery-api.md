@@ -84,8 +84,7 @@ curl -u YOUR_RECOVER_API_KEY: \
         "backup_payment_method": true,
         "payment_gateway_references": [
           {
-            "token": "string",
-            "reference_type": "stripe_confirmation_token"
+            "token": "string"
           }
         ],
         "network_transaction_id": "string",
