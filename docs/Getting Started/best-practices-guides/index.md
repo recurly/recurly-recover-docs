@@ -45,7 +45,7 @@ Regardless of your set up or use cases, you’ll want to take advantage of Recur
 
 If you would like to add multiple payment methods to a Recovery Invoice, you can do so. This increases the odds of the invoice being collected, as well as supports the same payment method in tokenized form if you are using multiple gateways.
 
-Read about best practices associated with multiple payment methods, and multiple gateways, and how Recurly Wallet can assist with this setup.
+Read about best practices associated with multiple payment methods, and multiple gateways, and how Recurly Wallet enables this setup.
 
 - <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multiple-payment-methods">Multiple Payment Methods Best Practices</Anchor>
 
