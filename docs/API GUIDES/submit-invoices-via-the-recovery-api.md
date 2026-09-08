@@ -126,6 +126,21 @@ curl -u YOUR_RECOVER_API_KEY: \
 }
 ```
 
+If you are using Stripe, the Customer ID and Payment Method IDs are two-part tokens, and you will provide the `payment_gateway_references` array as follows:&#x20;
+
+```json PGRs on Stripe
+"payment_gateway_references": [
+          {
+            "token": "stripe-customer-id", // ex: cus_xxxxxxxx
+            "reference_type":"stripe_customer"
+          },
+          {
+            "token": "stripe-pm-id", // ex: pm_xxxxxxxx
+            "reference_type":"stripe_payment_method"
+          }
+        ],
+```
+
 ## Fields that drive retry behavior
 
 The full schema is documented in the API reference. These are the fields that determine how Recover collects:
