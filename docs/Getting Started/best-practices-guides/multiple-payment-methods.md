@@ -21,7 +21,7 @@ Recurly Recover enables your site with Recurly Wallet by default, giving you the
 
 To ensure you are set up for success with multiple payment methods, you can follow the specific API guides and Testing guidelines for these specific use cases:
 
-- Multiple Payment Methods, Single Gateway
+- [Multiple Payment Methods, Single Gateway](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-single-gateway)
 - Multiple Payment Methods, Multiple Gateways
 
 Depending on which use case you fall under, follow the guidelines and ensure you’ve got the right setup in your Recurly site to support your recovery efforts. By default, all Recurly Recover sites are set up with Recurly Wallet, allowing multiple payment methods to be used if you have them available for your customers.
