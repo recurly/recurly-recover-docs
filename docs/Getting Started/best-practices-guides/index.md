@@ -29,7 +29,7 @@ Recurly’s default retry behavior relies heavily on our gateway partners and we
 
 Read more about the pros and cons of each model:
 
-- [Retry Strategies](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/recovery-aggression-models)&#x20;
+- [Retry Strategies](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/retry-strategy-models)&#x20;
 
 # Recover Testing Guides
 
