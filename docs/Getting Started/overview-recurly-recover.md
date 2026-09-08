@@ -159,9 +159,3 @@ The first time you sign in, Recurly walks you through configuration.
 <Accordion title="What happens when I submit a past-due invoice via the API?" icon="fa-solid fa-file-invoice">
   Recurly creates an account (with no subscription), a charge invoice, and one or more failed transactions. Your billing information is stored, and Recurly automatically calculates the next collection attempt based on your submission. See <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api" target="_blank">Submit invoices via the Recovery API</a> for the full request and response.
 </Accordion>
-
-{/*
-📋 TODO before publishing:
-- [ ] Plan pill wording — confirm the commercial framing for Recover (e.g. plan name, "contact Sales" language). Current pill states only that Subscriptions isn't required, which the source supports.
-- [ ] Roles & permissions slug — the nav card points to .../roles-permissions. Confirm this is the slug when that page is built (the "&" in the title makes the auto-slug worth double-checking).
-*/}
