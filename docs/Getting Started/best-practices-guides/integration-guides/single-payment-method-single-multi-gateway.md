@@ -12,13 +12,15 @@ metadata:
 ---
 # Overview
 
-Text
+This guide will cover the testing best practices for both the single/single and single/multiple (payment method&#x20;
+
+Generally, the Single method / Single gateway is the easiest to implement and test in your recovery suite. If you are using gateway tokens, multiple gateways and token to gateway_code hygiene is necessary for a successful implementation.
 
 ### Prerequisites & limitations
 
-- Bullet A
-- Bullet B
-- Bullet C
+- Ensure you have reviewed the basic API Guide and are familiar with the fields in the Recovery endpoint.
+- You have enabled one or more gateways in your Recurly sandbox site.
+- You have awareness of which tokens are accessible via your enabled gateways. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
 
 ***
 
