@@ -1,10 +1,12 @@
 ---
-title: Best Practices Guides
+title: Best practices
 excerpt: >-
   Overview of Recurly Recover's best practices for standard and aggressive
   strategies, testing, and using multiple payment methods.
 deprecated: false
 hidden: true
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
