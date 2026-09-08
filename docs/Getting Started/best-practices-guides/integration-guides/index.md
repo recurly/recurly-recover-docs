@@ -1,8 +1,10 @@
 ---
-title: Integration and Testing Guides
+title: Integration and testing
 excerpt: Review testing best practices and integration guides for your unique use case.
 deprecated: false
 hidden: true
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
