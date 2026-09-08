@@ -27,7 +27,7 @@ If you are using gateway tokens, ensure the gateway you have enabled has access 
 
 # Definition
 
-Text
+**Creating Recovery Invoices** refers to the process of generating a new invoice via the Recurly API specifically to retry collection on a failed or past-due subscription charge, without disrupting the original billing cycle or subscription state. This guide specifically covers using multiple payment methods with multiple gateways.
 
 ***
 
