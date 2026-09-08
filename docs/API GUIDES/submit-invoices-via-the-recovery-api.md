@@ -24,7 +24,7 @@ metadata:
 ### Prerequisites
 
 <ul class="rp-list">
-  <li>An active Recurly Recover account with an API key generated — see <a href="/docs/recurly-recover-overview#getting-started" target="_blank">Getting started</a>.</li>
+  <li>An active Recurly Recover account with an API key generated — see <a href="https://docs.recurly.com/recurly-recover/docs/recurly-recover-overview#getting-started" target="_blank">Getting started</a>.</li>
   <li>At least one retry window (dunning campaign) configured.</li>
   <li>A reusable gateway token for each customer's payment method from Stripe or Braintree.</li>
 </ul>
@@ -193,7 +193,7 @@ A `201` response confirms that Recurly created the account and started the retry
 ```
 
 <div class="rp-callout rp-callout-note">
-  <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> The response doesn't include the next scheduled retry date. Track retry progress through <a href="/docs/recurly-recover-webhooks" target="_blank">webhook notifications</a> instead.</div>
+  <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> The response doesn't include the next scheduled retry date. Track retry progress through <a href="https://docs.recurly.com/recurly-recover/docs/webhooks" target="_blank">webhook notifications</a> instead.</div>
 </div>
 
 # Stop retries
@@ -238,6 +238,15 @@ Every call creates exactly one account with one invoice. Submitting a request wi
 
 # What's next
 
-- <a href="/docs/recurly-recover-recovery-api-reference" target="_blank">Recovery API reference</a> — the complete endpoint and field schema
-- <a href="/docs/recurly-recover-webhooks" target="_blank">Webhooks</a> — track retry progress and confirm the final outcome of each invoice
-- <a href="/docs/recurly-recover-overview#getting-started" target="_blank">Getting started</a> — connect a gateway, set up webhooks, and generate your API key
+- <a href="https://docs.recurly.com/recurly-recover/docs/recovery-api-reference" target="_blank">Recovery API reference</a> — the complete endpoint and field schema
+- <a href="https://docs.recurly.com/recurly-recover/docs/webhooks" target="_blank">Webhooks</a> — track retry progress and confirm the final outcome of each invoice
+- <a href="https://docs.recurly.com/recurly-recover/docs/recurly-recover-overview#getting-started" target="_blank">Getting started</a> — connect a gateway, set up webhooks, and generate your API key
+
+{/*
+📋 TODO before publishing:
+- [ ] Recovery API reference slug — the What's next link points to .../recovery-api-reference. Confirm the real slug (or auto-generated API reference URL) once that page exists.
+- [ ] Request headers — confirm any required Recurly API version header (Accept: application/vnd.recurly.v...) to add to the curl examples.
+- [ ] Auth confirmation — verify the Recover API key uses the same HTTP Basic Auth pattern as Recurly API v3 (key as username, empty password).
+- [ ] Error reference — source documents only the duplicate-account-code error. Confirm whether a fuller HTTP status / error-type table should be added.
+- [ ] Request/response JSON — copied verbatim from the source (schema-style values like "string" and "str"). Swap in realistic example values, or truncate the response to key fields, if you'd prefer.
+*/}
