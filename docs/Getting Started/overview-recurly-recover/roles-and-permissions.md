@@ -104,8 +104,3 @@ A role can combine any number of these four categories:
 <Accordion title="Who can create and assign roles in Recurly Recover?" icon="fa-solid fa-user-shield">
   Only a user with the Admin permission category can create roles and invite or assign users. Every user granted access — regardless of role — automatically has access to the Recover dashboard.
 </Accordion>
-
-{/*
-📋 TODO before publishing:
-- [ ] Plan pill wording — same open question as the overview: confirm the commercial framing. Note that Step 1 here names two real plans (Recurly Recover Annual Monthly / Recurly Recover Monthly), which may be the language the pill should use.
-*/}
