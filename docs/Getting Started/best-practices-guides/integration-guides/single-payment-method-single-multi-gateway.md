@@ -18,7 +18,7 @@ Generally, the Single method / Single gateway is the easiest to implement and te
 
 ### Prerequisites & limitations
 
-- Ensure you have reviewed the basic API Guide and are familiar with the fields in the Recovery endpoint.
+- Ensure you have reviewed the [basic API Guide](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/submit-invoices-via-the-recovery-api) and are familiar with the fields in the Recovery endpoint.
 - You have enabled one or more gateways in your Recurly sandbox site.
 - If you are using gateway tokens, you have awareness of which tokens are accessible via your enabled gateways. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
 - If your gateway tokens require NTID reference, you have the NTIDs available for Recurly to store and send.
