@@ -5,7 +5,7 @@ hidden: true
 metadata:
   robots: index
 ---
-## Overview
+# Overview
 
 Recurly Recover enables your site with Recurly Wallet by default, giving you the option of adding one or many payment methods on a recover invoice. Customers with a single card or payment method on file are vulnerable to any decline — expired or reissued cards, or temporary holds all interrupt an invoice's recovery rate. See our best practices below to improve your recovery rates across the board.&#x20;
 
