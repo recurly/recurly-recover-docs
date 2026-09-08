@@ -1,17 +1,14 @@
 ---
 title: Integration and Testing Guides
+excerpt: Review testing best practices and integration guides for your unique use case.
 deprecated: false
 hidden: true
 metadata:
   robots: index
 ---
-## Overview&#x20;
+# Overview&#x20;
 
 Text&#x20;
-
-<br />
-
-<br />
 
 ## Use-Case Driven Testing Guides
 
