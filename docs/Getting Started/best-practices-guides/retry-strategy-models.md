@@ -1,5 +1,5 @@
 ---
-title: Retry Strategy Models
+title: Retry strategy models
 excerpt: >-
   Review our retry strategy pro and con list, and ensure you're using the
   strategy that's right for your business needs and risk level.
