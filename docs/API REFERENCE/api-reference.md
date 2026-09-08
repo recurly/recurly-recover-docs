@@ -50,9 +50,3 @@ Until the full schema lands here, the <a href="https://docs.recurly.com/recurly-
 
 - <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api#request-body" target="_blank">Request body</a> — the full `POST /invoices/recovery` payload
 - <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api#handle-the-response" target="_blank">Response</a> — the `201` response with the returned `charge_invoice`
-
-{/*
-📋 TODO before publishing:
-- [ ] Temporary page — replace this with the dedicated ReadMe API reference section for Recover once it exists, then repoint the "What's next" links on the Recovery API and Webhooks pages.
-- [ ] Field-level schema — add per-field tables (name, type, required, description) for the request and response, or let the generated API reference cover them.
-*/}
