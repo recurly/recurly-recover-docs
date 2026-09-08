@@ -206,7 +206,7 @@ Use when the payment was collected outside of Recurly.
 
 ```bash curl
 curl -u YOUR_RECOVER_API_KEY: \
-  -X PUT https://v3.recurly.com/invoices/YOUR_INVOICE_ID/mark_successful
+  -X PUT https://v3.recurly.com/invoices/{invoice_id}/mark_successful
 ```
 
 ## Mark as failed
@@ -215,7 +215,7 @@ Use when you want to abandon collection.
 
 ```bash curl
 curl -u YOUR_RECOVER_API_KEY: \
-  -X PUT https://v3.recurly.com/invoices/YOUR_INVOICE_ID/mark_failed
+  -X PUT https://v3.recurly.com/invoices/{invoice_id}/mark_failed
 ```
 
 # Payment method wallet
