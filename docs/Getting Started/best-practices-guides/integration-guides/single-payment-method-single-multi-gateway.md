@@ -33,9 +33,11 @@ Generally, the Single method / Single gateway is the easiest to implement and te
 
 ## Best Practices&#x20;
 
-* A&#x20;
-* B
-* C
+* **Use the original gateway** that the customer's subscription was set up on.
+* **Ensure the token exists&#x20;**&#x6F;n the target gateway.
+* **Pass the NTID** on gateways that require the value and do not handle storage on yours or Recurly's behalf.
+* **When using raw card details**, ensure you have the full card data (number and expiration date), and the original CIT NTID. Recurly retry transactions are merchant initiated.
+* **Enable Account Updater** if you are using raw card data.
 
 ## Integration Guide
 
