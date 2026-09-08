@@ -12,13 +12,16 @@ metadata:
 ---
 # Overview
 
-Text
+This guide will cover the testing best practices for using multiple payment methods on a single gateway.
+
+If you are using gateway tokens, ensure the gateway you have enabled has access to those tokens -- this is necessary for a successful implementation.
 
 ### Prerequisites & limitations
 
-- Bullet A
-- Bullet B
-- Bullet C
+- Ensure you have reviewed the basic API Guide and are familiar with the fields in the Recovery endpoint.
+- You have enabled a single gateway in your Recurly sandbox site.
+- If you are using gateway tokens, you have confirmed that the tokens in use are accessible via your enabled gateway. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
+- If your gateway tokens require NTID reference, you have the NTIDs available for Recurly to store and send.
 
 ***
 
@@ -30,19 +33,15 @@ Text
 
 ## Best Practices&#x20;
 
-<br />
+* A&#x20;
+* B
+* C
 
 ## Integration Guide
 
-### Step 1: Generate a Recovery Invoice&#x20;
+### Example using Multiple Payment Methods (Tokens) and Single Gateway
 
-```text
+```json
 ```
-
-### Step 2: Listen to Webhooks&#x20;
-
-<br />
-
-### Step 3: Manage External Payment Method Lifecycle
 
 ###
