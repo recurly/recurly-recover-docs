@@ -35,6 +35,6 @@ Whether a result reaches statistical significance depends on several factors:
 - The size of the impact from the configuration change
 - The number of invoices in each variant
 
-**We recommend at least 10,000 invoices per treatment group** to maximize the likelihood of reaching a statistically significant result for subtle differences of half a percent or less.  You may be able to reach statistical significance on smaller variants if your changes have a bigger effect.
+**We ideally recommend 10,000 or more invoices per treatment group** to maximize the likelihood of reaching a statistically significant result for subtle differences of half a percent or less.  You will be able to reach statistical significance with smaller groups if your changes have a bigger effect.  **A bare minimum of 500 invoices is strongly recommended for each variant.**
 
 We recognize this volume isn't always achievable, especially for smaller merchants. Even without statistical significance, experimentation still provides a useful directional signal, and we encourage merchants to experiment regardless of scale.  You will be able to recognize&#x20;
