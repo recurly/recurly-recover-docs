@@ -36,9 +36,7 @@ Generally, the Single method / Single gateway is the easiest to implement and te
 * **Use the original gateway** **and merchant account&#x20;**&#x74;hat the customer's subscription was set up on. This gives you the best opportunity for success.
 * **Ensure the token exists&#x20;**&#x6F;n the target gateway. Since tokens are typically tied to the specific gateway account they were created on, specifying a different account may result in an error.
 * **Pass the NTID** on gateways that require the value and do not handle storage on yours or Recurly's behalf.
-* **When using raw card details**, ensure you have the full card data (number and expiration date), and the original CIT NTID. Recurly retry transactions are merchant initiated.
-* **Enable Account Updater** if you are using raw card data.
-* **If using tokens with multiple gateways** you will need to submit multiple tokens that represent the same payment method. For example, if you want Recurly to attempt a single Visa on Stripe and Braintree, we will need the tokens for Stripe and Braintree even if they are the same underlying card number. You should review Multiple Payment Methods with Multiple Gateways best practices to ensure your testing is complete.
+* **When using tokens with multiple gateways** you will need to submit multiple tokens that represent the same payment method. For example, if you want Recurly to attempt a single Visa on Stripe and Braintree, we will need the tokens for Stripe and Braintree even if they are the same underlying card number. You should review Multiple Payment Methods with Multiple Gateways best practices to ensure your testing is complete.
 
 ## Integration Guide
 
@@ -121,8 +119,6 @@ Generally, the Single method / Single gateway is the easiest to implement and te
   ]
 }
 ```
-
-<br />
 
 ### Example using Single Payment Method (Token) and Multi Gateway
 
