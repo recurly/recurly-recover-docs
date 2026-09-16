@@ -26,7 +26,7 @@ For the gateways that issue these tokens, see <a href="https://docs.recurly.com/
 # Payment method wallet
 
 <div class="rp-callout rp-callout-note">
-  <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> Designating primary and backup methods requires the Wallet feature to be enabled on your account.</div>
+  <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> The Wallet feature is enabled by default on every Recover account. No setup is required to designate primary and backup methods.</div>
 </div>
 
-When the Wallet feature is enabled, you can designate payment methods as primary or backup in the same request. Set `primary_payment_method` or `backup_payment_method` to `true` on each entry in `billing_infos`. You can submit multiple payment methods, but only one can be marked as primary.
+The Wallet feature lets you designate payment methods as primary or backup in the same request. Set `primary_payment_method` or `backup_payment_method` to `true` on each entry in `billing_infos`. You can submit multiple payment methods, but only one can be marked as primary.
