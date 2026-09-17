@@ -4,7 +4,7 @@ excerpt: >-
   Review our retry strategy pro and con list, and ensure you're using the
   strategy that's right for your business needs and risk level.
 deprecated: false
-hidden: false
+hidden: true
 link:
   new_tab: false
 metadata:
