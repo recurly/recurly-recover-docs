@@ -39,31 +39,27 @@ metadata:
 </table>
 
 
-<Image src="[TODO: add image — Recovered Revenue key metric tiles]" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/31da117074fb2250816f66e7d1d724a1ce4dbb284144089dfed2edbbf1a3ba8d-image.png" border={true} />
 
 
 # Charts
 
-### Recovered Revenue
+### Recovered invoice amounts
 
 This chart shows recovered revenue for each period alongside the previous year, so you can track recovery trends and seasonality over time.
 
 
-<Image src="[TODO: add image — Recovered Revenue chart]" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/95bf0ed1decea0324a05c6e49a48888f1761dbd25f6ba7957f11842d55f0c8b7-image.png" border={true} />
 
 
-### Total Recovered (Count)
+### Recovered invoice counts
 
 This chart shows the number of recovered invoices for each period alongside the previous year, so you can see how recovery volume changes over time.
 
 
-<Image src="[TODO: add image — Total Recovered (Count) chart]" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/95de66f023845d5adec0991b65eebf673440e72e4bfeb60c043e901bcbd4ca02-image.png" border={true} />
 
 
-***
+<br />
 
-📋 TODO before publishing:
-
-- [ ] Add image — Recovered Revenue key metric tiles
-- [ ] Add image — Recovered Revenue chart
-- [ ] Add image — Total Recovered (Count) chart
+<br />
