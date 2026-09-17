@@ -4,7 +4,7 @@ excerpt: >-
   Review and implement best practices for using multiple payment methods to
   ensure greater recovery results.
 deprecated: false
-hidden: true
+hidden: false
 metadata:
   robots: index
 ---

@@ -2,7 +2,7 @@
 title: Integration and testing
 excerpt: Review testing best practices and integration guides for your unique use case.
 deprecated: false
-hidden: true
+hidden: false
 link:
   new_tab: false
 metadata:

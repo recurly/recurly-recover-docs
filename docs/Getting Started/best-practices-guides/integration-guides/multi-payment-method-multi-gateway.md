@@ -4,7 +4,7 @@ excerpt: >-
   Create recovery invoices via API and learn best practices around testing
   against multiple payment methods, and a multi-gateway setup.
 deprecated: false
-hidden: true
+hidden: false
 link:
   new_tab: false
 metadata:
