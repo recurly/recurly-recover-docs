@@ -58,7 +58,7 @@ This chart shows the relative share of transaction volume by payment method, so 
 This chart shows the successful transaction percentage for each payment gateway side by side, so you can compare authorization performance across your gateways.
 
 
-<Image src="[TODO: add image — Gateway Success Rate chart]" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/c70bb16d0114e2a3561d128a0a7fd731aa18e7b4096a5017510e6a03b3e76a9f-image.png" align="center" width="75%" border={true} />
 
 
 # Tables
