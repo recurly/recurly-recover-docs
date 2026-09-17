@@ -4,7 +4,7 @@ excerpt: >-
   Overview of Recurly Recover's best practices for standard and aggressive
   strategies, testing, and using multiple payment methods.
 deprecated: false
-hidden: true
+hidden: false
 link:
   new_tab: false
 metadata:
