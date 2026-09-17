@@ -58,43 +58,35 @@ This chart shows the relative share of transaction volume by payment method, so 
 This chart shows the successful transaction percentage for each payment gateway side by side, so you can compare authorization performance across your gateways.
 
 
-<Image src="https://files.readme.io/c70bb16d0114e2a3561d128a0a7fd731aa18e7b4096a5017510e6a03b3e76a9f-image.png" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/c70bb16d0114e2a3561d128a0a7fd731aa18e7b4096a5017510e6a03b3e76a9f-image.png" align="center" width="90%" border={true} />
 
 
 # Tables
 
-### Payment Method Success Rate
+### Payment method success rate
 
 Breaks down performance by payment method, showing the transaction count, successful transaction count, and successful transaction percentage for each.
 
 
-<Image src="[TODO: add image — Payment Method Success Rate table]" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/545d88b9f53784584e4f04f0c474e715aec9c5c094b2a00716caceac0203138d-image.png" border={true} />
 
 
-### IIN & Issuer Success Rate
+### IIN and issuer success rate
 
 Shows authorization performance by card BIN — the Issuer Identification Number (IIN) that identifies the issuing bank — alongside the payment method, country, transaction count, successful transaction count, and successful transaction percentage. Use it to identify underperforming issuers.
 
 
-<Image src="[TODO: add image — IIN & Issuer Success Rate table]" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/d4e58ce4f031927c29a571e9d40d6c2f88a139040ef84dbebef1831bb76ba55d-image.png" border={true} />
 
 
-### Payment Decline Reasons
+### Payment decline reasons
 
 Ranks the reasons transactions failed, categorized as hard, soft, or fraud declines, with the count for each failure type. Soft declines often represent recoverable revenue through retries or account updates, while hard declines signal issues that require more targeted intervention.
 
 
-<Image src="[TODO: add image — Payment Decline Reasons table]" align="center" width="75%" border={true} />
+<Image src="https://files.readme.io/aaa58e74f8e36c753c174f2607c211e0870b9b42d24c0d2877138a8f3a58ee9a-image.png" border={true} />
 
 
-***
+<br />
 
-📋 TODO before publishing:
-
-- [ ] Add image — Overall Success Rate tile
-- [ ] Add image — Payment Success Rate Over Time chart
-- [ ] Add image — Payment Method Distribution chart
-- [ ] Add image — Gateway Success Rate chart
-- [ ] Add image — Payment Method Success Rate table
-- [ ] Add image — IIN & Issuer Success Rate table
-- [ ] Add image — Payment Decline Reasons table
+<br />
