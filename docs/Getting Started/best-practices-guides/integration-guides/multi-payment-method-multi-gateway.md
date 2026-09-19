@@ -33,9 +33,11 @@ For streamlined gateway token usage, ensure the gateway you have enabled has acc
 
 ## Best Practices&#x20;
 
-* A&#x20;
-* B
-* C
+- **Add multiple payment methods** **against the same invoice&#x20;**&#x77;ithin the same API request. Do not add multiple invoices with different payment methods.
+
+- **Specify which method is primary versus backup** based on your customer's preferences in their account within your environment. For tokens that are the same paymen tmethod on different gateways, make the default wallet method associate with your default gateway. For example, if you have Braintree and Stripe tokens for the same Visa card, and Stripe is your default gateway, set the Stripe token as the account primary payment method.
+
+-
 
 ## Integration Guide
 
