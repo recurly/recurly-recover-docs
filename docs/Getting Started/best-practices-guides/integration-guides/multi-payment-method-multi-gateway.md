@@ -35,9 +35,9 @@ For streamlined gateway token usage, ensure the gateway you have enabled has acc
 
 - **Add multiple payment methods** **against the same invoice&#x20;**&#x77;ithin the same API request. Do not add multiple invoices with different payment methods.
 
-- **Specify which method is primary versus backup** based on your customer's preferences in their account within your environment. For tokens that are the same paymen tmethod on different gateways, make the default wallet method associate with your default gateway. For example, if you have Braintree and Stripe tokens for the same Visa card, and Stripe is your default gateway, set the Stripe token as the account primary payment method.
+- **Specify which method is primary versus backup** **based on your customer's preferences&#x20;**&#x69;n their account within your environment **and your default gateway**. For tokens that are the same paymen tmethod on different gateways, make the default wallet method associate with your default gateway. For example, if you have Braintree and Stripe tokens for the same Visa card, and Stripe is your default gateway, set the Stripe token as the account primary payment method.
 
--
+- **Ensure your gateway permissions are set to allow token meta-data inquiries** so that Recurly can identify which tokens share the same payment method, and which are unique. This will assist in targeting the correct tokens and payment methods to use.
 
 ## Integration Guide
 
