@@ -14,33 +14,33 @@ metadata:
 
 By default, Recurly's retry logic is informed by the card networks themselves — we distinguish hard declines (no retry) from soft declines (retry-eligible) to decide whether and when a retry is likely to succeed. This approach protects your account health with card networks and acquirers, reducing the risk of retry-limit penalties or fraud-pattern flags.
 
-Our default strategy is built for sustainable, long-term recovery, while our more aggressive strategy is available for merchants who prioritize maximum recovery over account health over time, Recurly can enable a more aggressive retry strategy on request. This can recover more revenue in the short term, but shifts risk to the merchant — including potential network penalties and degraded approval rates over time.
+Our default strategy is built for sustainable, long-term recovery, while our more aggressive strategy is available for merchants who prioritize maximum recovery over account health over time. Recurly can enable this aggressive retry strategy upon request. This can recover more revenue in the short term, but shifts risk to the merchant — including potential network penalties and degraded approval rates over time.
 
 Note that both of these strategies will produce identical results on short dunning windows of under 20 days.  Regardless of which strategy you choose, we recommend a dunning window of 27 days or longer to give you the best chance to recover each invoice.
 
 ## &#x20;Default Retry Strategy (Recommended)
 
-Recurly's default retry strategy is gateway- and network-informed, using Recurly’s Intelligent Retries machine learning algorithm to inform retry timing.
+Recurly's default retry strategy is gateway and network-informed, using Recurly’s Intelligent Retries machine learning algorithm to inform retry timing.
 
 **Pros**
 
 - Recovers around 98% of all invoices that the aggressive model could collect.
 - Lower risk of retry-limit violations or network penalties (Visa and Mastercard both enforce excessive-retry programs that can result in fines or account review)
-- Retries are targeted using network-provided signals (merchant advice codes) and hard/soft decline classifications, so retry attempts are concentrated where they’re likely to succeed.
+- Retries are targeted using network-provided signals (merchant advice codes, network codes, decline codes) alongside hard/soft decline classifications, so retry attempts are concentrated where they’re likely to succeed
 - Preserves a healthier decline/approval ratio with acquirers over time
-- Reduces appearance of looking like ‘testing’ behavior or fraud-like behavior with Issuers.
+- Reduces appearance of looking like ‘testing’ behavior or fraud-like behavior with Issuers
 
 **Cons**
 
-- For merchants where speed matters more than long-term success, this model can delay success to standard timelines.
-- Small reduction in overall recovery rate.
+- For merchants where speed matters more than long-term success, this model can delay success to standard timelines
+- Small reduction in overall recovery rate
 
 ## Aggressive Retry Strategy (Opt-In)
 
 **Pros**&#x20;
 
-- Retries against a broader set of decline codes, which will attempt transactions the default model will not attempt.
-- Recovers an additional 2% of invoices that the default strategy may not be able to get.  This is useful for merchants whose priority is maximizing churn reduction over the risks below.
+- Retries against a broader set of decline codes, which will attempt transactions the default model will not attempt
+- Recovers an additional 2% of invoices that the default strategy may not be able to produce.  This is useful for merchants whose priority is maximizing churn reduction over the risks below.
 
 **Cons**
 
