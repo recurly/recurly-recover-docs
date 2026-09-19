@@ -14,14 +14,14 @@ metadata:
 
 This guide will cover the testing best practices for using multiple payment methods on a single gateway.
 
-If you are using gateway tokens, ensure the gateway you have enabled has access to those tokens -- this is necessary for a successful implementation.
+For streamlined gateway token usage, ensure the gateway you have enabled has access to those tokens -- this is necessary for a successful implementation.
 
 ### Prerequisites & limitations
 
 - Ensure you have reviewed the [basic API Guide](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/submit-invoices-via-the-recovery-api) and are familiar with the fields in the Recovery endpoint.
 - You have enabled a single gateway in your Recurly sandbox site.
-- If you are using gateway tokens, you have confirmed that the tokens in use are accessible via your enabled gateway. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
-- If your gateway tokens require NTID reference, you have the NTIDs available for Recurly to store and send.
+- For gateway tokens, you have confirmed that the tokens in use are accessible via your enabled gateway. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
+- If your gateway tokens require NTID reference, you have the NTIDs available for Recurly to store and send. The only exceptions are Stripe, Braintree, and PayPal Complete. If you are not using one of these gateways, you must send us the NTID you provide the gateway for normal subscription processing.
 
 ***
 
