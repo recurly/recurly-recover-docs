@@ -23,21 +23,23 @@ Because recovery is a yes-or-no outcome for each invoice, the number of recoveri
 
 # Key considerations
 
-## 1. Random, apples-to-apples variant assignment
+<div class="rp-nav-grid">
 
-Invoices must be assigned to variants randomly. If you group invoices by any non-random criteria — customer segment, card type, or invoice size, for example — differences in recovery rates may reflect those underlying differences rather than the configuration you're testing. True random assignment keeps each variant a fair, comparable sample.
-
-## 2. Setting up variants
-
-Configure experiments by randomly assigning invoices to different dunning campaigns. Once an experiment is running, you can compare variant performance on the Dunning Comparison Dashboard.
-
-## 3. Only use completed invoices
-
-Experimental results are only valid for invoices that have completed their entire dunning cycle. Open invoices — those still being actively retried — haven't yet had the chance to succeed or fail, and including them will distort your results. Exclude every open invoice from your analysis.
-
-## 4. Understanding statistical significance
-
-Whether a result reaches statistical significance depends on several factors: your baseline recovery rate, the size of the impact from the configuration change, and the number of invoices in each variant.
+<Cards>
+  <Card title="1. Random, apples-to-apples variant assignment">
+    Assign invoices to variants randomly. Grouping by customer segment, card type, or invoice size instead can make your results reflect those differences rather than the configuration you're testing.
+  </Card>
+  <Card title="2. Setting up variants">
+    Configure experiments by randomly assigning invoices to different dunning campaigns, then compare variant performance on the Dunning Comparison Dashboard.
+  </Card>
+  <Card title="3. Only use completed invoices">
+    Only analyze invoices that have completed their full dunning cycle — open invoices haven't yet succeeded or failed, and including them will distort your results.
+  </Card>
+  <Card title="4. Understanding statistical significance">
+    Significance depends on your baseline recovery rate, the size of the change's impact, and how many invoices are in each variant.
+  </Card>
+</Cards>
+</div>
 
 <div class="rp-callout rp-callout-tip">
   <div><strong><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Tip</strong>Aim for 10,000 or more invoices per treatment group to maximize your chances of reaching significance for subtle differences of half a percent or less. Bigger effects can reach significance with smaller groups — but treat 500 invoices per variant as a strong minimum.</div>
