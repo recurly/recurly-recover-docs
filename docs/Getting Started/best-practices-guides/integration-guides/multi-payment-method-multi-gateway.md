@@ -1,8 +1,9 @@
 ---
 title: Multi-payment method, multi-gateway
 excerpt: >-
-  Create recovery invoices via API and learn best practices around testing
-  against multiple payment methods, and a multi-gateway setup.
+  Learn how to submit Recurly Recover invoices with multiple payment methods
+  spread across multiple gateways, including token access, primary/backup logic,
+  and NTID requirements.
 deprecated: false
 hidden: false
 link:
@@ -10,40 +11,48 @@ link:
 metadata:
   robots: index
 ---
-# Overview
+<div class="rp-page">
+  <div class="rp-overview">This guide covers testing best practices for using multiple payment methods across multiple gateways. For streamlined gateway token usage, confirm that each gateway you've enabled has access to its tokens — this is essential for a successful implementation.</div>
+  <div class="rp-toc">
+    <a class="rp-toc-pill" href="#definition"><span class="rp-toc-num">1</span>Definition</a>
+    <a class="rp-toc-pill" href="#integration-guide"><span class="rp-toc-num">2</span>Integration guide</a>
+  </div>
+</div>
 
-This guide will cover the testing best practices for using multiple payment methods on a single gateway.
+### Prerequisites and limitations
 
-For streamlined gateway token usage, ensure the gateway you have enabled has access to those tokens -- this is necessary for a successful implementation.
-
-### Prerequisites & limitations
-
-- Ensure you have reviewed the [basic API Guide](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/submit-invoices-via-the-recovery-api) and are familiar with the fields in the Recovery endpoint.
-- You have enabled multiple gateways in your Recurly sandbox site.
-- For gateway tokens, you have confirmed that the tokens in use are accessible via your enabled gateways. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
-- If your gateway tokens require NTID reference, you have the NTIDs available for Recurly to store and send. Exceptions are Stripe, Braintree, and PayPal Complete. If you are not using one of those gateways, expect to provide the NTID you send during standard subscription processing.
-
-***
+<ul class="rp-list">
+  <li>You've reviewed the <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api" target="_blank">basic API guide</a> and are familiar with the fields on the Recovery endpoint</li>
+  <li>You've enabled multiple gateways on your Recurly sandbox site</li>
+  <li>You've confirmed that the tokens you're using are accessible through your enabled gateways. For example, if you provide Recurly with Braintree gateway tokens, your enabled Braintree gateway must have access to them</li>
+  <li>If your gateway tokens require a Network Transaction ID (NTID), you have the NTIDs available for Recurly to store and send. Stripe, Braintree, and PayPal Complete are exceptions — for any other gateway, provide the NTID you send during standard subscription processing</li>
+</ul>
 
 # Definition
 
-**Creating Recovery Invoices** refers to the process of generating a new invoice via the Recurly API specifically to retry collection on a failed or past-due subscription charge, without disrupting the original billing cycle or subscription state. This guide specifically covers using multiple payment methods with multiple gateways.
+<div class="rp-definition">Creating a recovery invoice means generating a new invoice through the Recurly API specifically to retry collection on a failed or past-due subscription charge, without disrupting the original billing cycle or subscription state. This guide covers submitting multiple payment methods across multiple gateways.</div>
 
-***
+# Integration guide
 
-## Best Practices&#x20;
+## Best practices
 
-- **Add multiple payment methods** **against the same invoice&#x20;**&#x77;ithin the same API request. Do not add multiple invoices with different payment methods.
+<ul class="rp-list">
+  <li>Add multiple payment methods to the same invoice within the same API request. Don't submit separate invoices for different payment methods</li>
+  <li>Specify which method is primary and which is backup based on your customer's preferences and your default gateway. For tokens that represent the same payment method on different gateways, make the primary designation match your default gateway — for example, if you have Braintree and Stripe tokens for the same Visa card and Stripe is your default gateway, set the Stripe token as the account's primary payment method</li>
+  <li>Make sure your gateway permissions allow token metadata inquiries, so Recurly can identify which tokens share the same payment method and which are unique. This helps target the correct tokens and payment methods</li>
+</ul>
 
-- **Specify which method is primary versus backup** **based on your customer's preferences&#x20;**&#x69;n their account within your environment **and your default gateway**. For tokens that are the same paymen tmethod on different gateways, make the default wallet method associate with your default gateway. For example, if you have Braintree and Stripe tokens for the same Visa card, and Stripe is your default gateway, set the Stripe token as the account primary payment method.
-
-- **Ensure your gateway permissions are set to allow token meta-data inquiries** so that Recurly can identify which tokens share the same payment method, and which are unique. This will assist in targeting the correct tokens and payment methods to use.
-
-## Integration Guide
-
-### Example using Multiple Payment Methods (Tokens) and Multiple Gateways
+## Example: multiple payment methods, multiple gateways
 
 ```json
 ```
 
-###
+***
+
+📋 TODO before publishing:
+
+- [ ] Corrected the overview, which described a single gateway even though the title, Definition, and Best Practices all cover multiple gateways — confirm the corrected wording matches intent.
+- [ ] The multiple payment methods, multiple gateways example is empty in the source — add the payload before publishing.
+- [ ] The source cuts off after a trailing, empty heading following the example. Confirm whether content is missing and supply it if so.
+- [ ] No Testing your integration content was in the source — add sandbox/test-card guidance if this guide should include it.
+- [ ] No Error handling and troubleshooting content was in the source — add if applicable.
