@@ -10,37 +10,39 @@ link:
 metadata:
   robots: index
 ---
-# Overview
+<div class="rp-page">
+  <div class="rp-overview">This guide covers testing and integration best practices for submitting a single payment method against either a single gateway or multiple gateways. Single method, single gateway is the simplest setup to implement and test. If you're using gateway tokens across multiple gateways, careful token-to-gateway_code hygiene is essential for a successful implementation.</div>
+  <div class="rp-toc">
+    <a class="rp-toc-pill" href="#definition"><span class="rp-toc-num">1</span>Definition</a>
+    <a class="rp-toc-pill" href="#integration-guide"><span class="rp-toc-num">2</span>Integration guide</a>
+  </div>
+</div>
 
-This guide will cover the testing best practices for both the single/single and single/multiple (payment method&#x20;
+### Prerequisites and limitations
 
-Generally, the Single method / Single gateway is the easiest to implement and test in your recovery suite. If you are using gateway tokens, multiple gateways and token to `gateway_code` hygiene is necessary for a successful implementation.
-
-### Prerequisites & limitations
-
-- Ensure you have reviewed the [basic API Guide](https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api) and are familiar with the fields in the Recovery endpoint.
-- You have enabled one or more gateways in your Recurly sandbox site.
-- You have awareness of which gateway tokens are accessible via your enabled gateways. Example, if you provide Recurly with Braintree gateway tokens, the enabled Braintree gateway must have access to them.
-- If your gateway tokens require NTID reference, you have the NTIDs available for Recurly to store and send. Exceptions are Stripe, Braintree, and PayPal Complete. If you are using a gateway other than those three, expect to provide the NTID you are using for your normal subscription processing.
-
-***
+<ul class="rp-list">
+  <li>You've reviewed the <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api" target="_blank">basic API guide</a> and are familiar with the fields on the Recovery endpoint</li>
+  <li>You've enabled one or more gateways on your Recurly sandbox site</li>
+  <li>You know which gateway tokens are accessible through your enabled gateways. For example, if you provide Recurly with Braintree gateway tokens, your enabled Braintree gateway must have access to them</li>
+  <li>If your gateway tokens require a Network Transaction ID (NTID), you have the NTIDs available for Recurly to store and send. Stripe, Braintree, and PayPal Complete are exceptions — for any other gateway, provide the NTID you use for normal subscription processing</li>
+</ul>
 
 # Definition
 
-**Creating Recovery Invoices** refers to the process of generating a new invoice via the Recurly API specifically to retry collection on a failed or past-due subscription charge, without disrupting the original billing cycle or subscription state. This guide specifically covers using a single payment method with a single or multi-gateway setup.
+<div class="rp-definition">Creating a recovery invoice means generating a new invoice through the Recurly API specifically to retry collection on a failed or past-due subscription charge, without disrupting the original billing cycle or subscription state. This guide covers submitting a single payment method against either a single gateway or multiple gateways.</div>
 
-***
+# Integration guide
 
-## Best Practices&#x20;
+## Best practices
 
-* **Use the original gateway** **and merchant account&#x20;**&#x74;hat the customer's subscription was set up on. This gives you the best opportunity for success.
-* **Ensure the token exists&#x20;**&#x6F;n the target gateway. Since tokens are typically tied to the specific gateway account they were created on, specifying a different account may result in an error.
-* **Pass the NTID** on gateways that require the value and do not handle storage on yours or Recurly's behalf.
-* **When using tokens with multiple gateways** you will need to submit multiple tokens that represent the same payment method. For example, if you want Recurly to attempt a single Visa on Stripe and Braintree, we will need the tokens for Stripe and Braintree even if they are the same underlying card number. You should review Multiple Payment Methods with Multiple Gateways best practices to ensure your testing is complete.
+<ul class="rp-list">
+  <li>Use the original gateway and merchant account the customer's subscription was set up on — this gives you the best chance of success</li>
+  <li>Confirm the token exists on the target gateway. Tokens are typically tied to the specific gateway account they were created on, so specifying a different account can cause an error</li>
+  <li>Pass the NTID on any gateway that requires it and doesn't handle storage on your behalf or Recurly's</li>
+  <li>When using tokens across multiple gateways, submit a separate token for each gateway that represents the same payment method. For example, to have Recurly attempt a single Visa card on both Stripe and Braintree, you'll need a token from each gateway, even though they represent the same underlying card. Review <a href="https://docs.recurly.com/recurly-recover/docs/multiple-payment-methods" target="_blank">Multiple payment methods best practices</a> to make sure your testing is complete</li>
+</ul>
 
-## Integration Guide
-
-### Example using Single Payment Method (Token) and Single Gateway
+## Example: single payment method, single gateway
 
 ```json
 {
@@ -120,9 +122,16 @@ Generally, the Single method / Single gateway is the easiest to implement and te
 }
 ```
 
-### Example using Single Payment Method (Token) and Multi Gateway
+## Example: single payment method, multiple gateways
 
 ```json
 ```
 
-###
+***
+
+📋 TODO before publishing:
+
+- [ ] The "single payment method, multiple gateways" example is empty in the source — add the payload before publishing.
+- [ ] The source cuts off after a trailing, empty heading following the second example. Confirm whether content is missing (this may have been the start of an Error handling, Testing, or What's next section) and supply it if so.
+- [ ] No Testing your integration content was in the source — add sandbox/test-card guidance if this guide should include it.
+- [ ] No Error handling and troubleshooting content was in the source — add if applicable.
