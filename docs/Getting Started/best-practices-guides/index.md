@@ -1,8 +1,8 @@
 ---
 title: Best practices
 excerpt: >-
-  Overview of Recurly Recover's best practices for standard and aggressive
-  strategies, testing, and using multiple payment methods.
+  Best practices for configuring Recurly Recover — choosing a retry strategy,
+  testing recovery invoices, and using single or multiple payment methods.
 deprecated: false
 hidden: false
 link:
@@ -11,46 +11,68 @@ metadata:
   robots: index
 ---
 <div class="rp-page">
-
-<div class="rp-overview">Recurly Recover offers several configuration options depending on your use case. Learn about best practices when using our Standard Retry strategy versus a more aggressive model, how to test sending transactions, and insights about using single or multiple payment methods.
-Select a topic below to learn more.</div>
-
-<div class="rp-plan"><i class="fa-solid fa-key" aria-hidden="true"></i> Available on all Recurly plans</div>
-
-<div class="rp-toc">
-<a class="rp-toc-pill" href="#retry-strategies-pros-and-cons"><span class="rp-toc-num">1</span>Retry Strategies: Pros and Cons</a>
-<a class="rp-toc-pill" href="#recover-testing"><span class="rp-toc-num">2</span>Recover Testing</a>
-<a class="rp-toc-pill" href="#multiple-payment-methods"><span class="rp-toc-num">3</span>Multiple Payment Methods</a>
+  <div class="rp-overview">Recurly Recover gives you several configuration options depending on your use case. Below you'll find best practices for choosing between our standard retry strategy and a more aggressive model, testing your transactions before go-live, and working with single or multiple payment methods. Pick a topic below to get started.</div>
+  <div class="rp-plan"><i class="fa-solid fa-key" aria-hidden="true"></i> Available on all Recurly plans</div>
+  <div class="rp-toc">
+    <a class="rp-toc-pill" href="#retry-strategies-pros-and-cons"><span class="rp-toc-num">1</span>Retry strategies</a>
+    <a class="rp-toc-pill" href="#recover-testing-guides"><span class="rp-toc-num">2</span>Recover testing</a>
+    <a class="rp-toc-pill" href="#multiple-payment-methods"><span class="rp-toc-num">3</span>Multiple payment methods</a>
+  </div>
 </div>
 
+# Retry strategies: pros and cons
+
+Recurly's default retry behavior leans on our gateway partners. We read and respect hard and soft decline indicators, along with merchant advice codes from the card networks, so retries happen when they're most likely to succeed. If you understand the trade-offs, Recurly can also apply a more aggressive retry model on request.
+
+Read up on the pros and cons of each model before you decide.
+
+<div class="rp-nav-grid">
+
+<Cards>
+  <Card title="Retry strategy models" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/retry-strategy-models" target="_blank">
+    Compare Recurly's standard retry strategy with the more aggressive model, and weigh the trade-offs of each.
+  </Card>
+</Cards>
 </div>
 
-# Retry Strategies: Pros and Cons
+# Recover testing guides
 
-Recurly’s default retry behavior relies heavily on our gateway partners and we read and respect hard vs soft decline indicators as well as Merchant advice code indicators from the networks. Upon request, merchants who are aware of the risks, Recurly can employ a more aggressive approach.
+Testing is a key part of enabling Recurly Recover. Follow the guides below to set up recovery invoices on your sandbox site before go-live.
 
-Read more about the pros and cons of each model:
+Whatever your setup or use case, use Recurly's custom descriptors so the descriptors on the transactions you run in your own environment match what Recurly sends through our integrations.
 
-- [Retry Strategies](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/retry-strategy-models)&#x20;
+<div class="rp-nav-grid">
 
-# Recover Testing Guides
+<Cards>
+  <Card title="Single payment method, single or multiple gateways" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-mulri-gateway" target="_blank">
+    Set up and test recovery when subscribers use one payment method across one or more gateways.
+  </Card>
+  <Card title="Multi-payment method, single gateway" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-single-gateway" target="_blank">
+    Configure and test recovery for multiple payment methods routed through a single gateway.
+  </Card>
+  <Card title="Multi-payment method, multi-gateway" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-multi-gateway" target="_blank">
+    Test recovery when multiple payment methods are spread across multiple gateways.
+  </Card>
+</Cards>
+</div>
 
-Testing is an important part of enabling Recurly Recover. Follow the below guides in setting up Recovery invoices on your sandbox site ahead of go-live.&#x20;
+# Multiple payment methods
 
-Regardless of your set up or use cases, you’ll want to take advantage of Recurly’s custom descriptors to ensure the descriptors for the transactions you run in your own environment matches when Recurly sends the data through our integrations.
+You can add multiple payment methods to a recovery invoice. This raises the odds of collecting the invoice, and it lets you keep the same payment method in tokenized form when you're using multiple gateways.
 
-* <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-mulri-gateway">Single Payment Method, Single or Multiple Gateways</Anchor>
-* <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-single-gateway">Multi-Payment Method, Single Gateway</Anchor>
-* <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-multi-gateway">Multi-Payment Method, Multi-Gateway</Anchor>
+Learn the best practices for multiple payment methods, multiple gateways, and how Recurly Wallet supports this setup.
 
-# Multiple Payment Methods
+<div class="rp-nav-grid">
 
-If you would like to add multiple payment methods to a Recovery Invoice, you can do so. This increases the odds of the invoice being collected, as well as supports the same payment method in tokenized form if you are using multiple gateways.
+<Cards>
+  <Card title="Multiple payment methods best practices" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multiple-payment-methods" target="_blank">
+    See how multiple payment methods and Recurly Wallet work together to improve recovery rates.
+  </Card>
+</Cards>
+</div>
 
-Read about best practices associated with multiple payment methods, and multiple gateways, and how Recurly Wallet enables this setup.
+***
 
-- <Anchor target="_blank" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multiple-payment-methods">Multiple Payment Methods Best Practices</Anchor>
+📋 TODO before publishing:
 
-<br />
-
-<br />
+- [ ] Verify the "Single payment method, single or multiple gateways" URL. The slug reads `single-payment-method-single-mulri-gateway` — "mulri" looks like a typo for "multi." Preserved exactly as in the source; confirm whether the published page's slug is actually "mulri" or should be "multi" before publishing.
