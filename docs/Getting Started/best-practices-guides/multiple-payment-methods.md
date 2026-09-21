@@ -1,10 +1,12 @@
 ---
-title: Multiple payment ethods
+title: Multiple payment methods
 excerpt: >-
   Best practices for adding multiple payment methods to recovery invoices with
   Recurly Wallet, including gateway token and configuration requirements.
 deprecated: false
 hidden: false
+link:
+  new_tab: false
 metadata:
   robots: index
 ---
