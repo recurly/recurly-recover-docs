@@ -44,7 +44,7 @@ Whatever your setup or use case, use Recurly's custom descriptors so the descrip
 <div class="rp-nav-grid">
 
 <Cards>
-  <Card title="Single payment method, single or multiple gateways" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-mulri-gateway" target="_blank">
+  <Card title="Single payment method, single or multiple gateways" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/single-payment-method-single-multi-gateway" target="_blank">
     Set up and test recovery when subscribers use one payment method across one or more gateways.
   </Card>
   <Card title="Multi-payment method, single gateway" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-single-gateway" target="_blank">
@@ -70,9 +70,3 @@ Learn the best practices for multiple payment methods, multiple gateways, and ho
   </Card>
 </Cards>
 </div>
-
-***
-
-📋 TODO before publishing:
-
-- [ ] Verify the "Single payment method, single or multiple gateways" URL. The slug reads `single-payment-method-single-mulri-gateway` — "mulri" looks like a typo for "multi." Preserved exactly as in the source; confirm whether the published page's slug is actually "mulri" or should be "multi" before publishing.
