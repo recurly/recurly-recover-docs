@@ -59,10 +59,10 @@ Your exact setup depends on whether your payment methods live on one gateway or 
 <div class="rp-nav-grid">
 
 <Cards>
-  <Card title="Multiple payment methods, single gateway" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-single-gateway" target="_blank">
+  <Card title="Multiple payment methods, single gateway" href="https://docs.recurly.com/recurly-recover/docs/multi-payment-method-single-gateway" target="_blank">
     Configure and test recovery for several payment methods routed through a single gateway.
   </Card>
-  <Card title="Multiple payment methods, multiple gateways" href="https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/multi-payment-method-multi-gateway" target="_blank">
+  <Card title="Multiple payment methods, multiple gateways" href="https://docs.recurly.com/recurly-recover/docs/multi-payment-method-multi-gateway" target="_blank">
     Set up and test recovery when payment methods are spread across multiple gateways.
   </Card>
 </Cards>
