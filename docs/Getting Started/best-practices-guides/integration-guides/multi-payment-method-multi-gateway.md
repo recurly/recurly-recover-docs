@@ -49,10 +49,4 @@ metadata:
 
 ***
 
-📋 TODO before publishing:
-
-- [ ] Corrected the overview, which described a single gateway even though the title, Definition, and Best Practices all cover multiple gateways — confirm the corrected wording matches intent.
-- [ ] The multiple payment methods, multiple gateways example is empty in the source — add the payload before publishing.
-- [ ] The source cuts off after a trailing, empty heading following the example. Confirm whether content is missing and supply it if so.
-- [ ] No Testing your integration content was in the source — add sandbox/test-card guidance if this guide should include it.
-- [ ] No Error handling and troubleshooting content was in the source — add if applicable.
+For next steps and error handling, follow our dedicated integration guide: [Submit Invoices via Recovery API](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/submit-invoices-via-the-recovery-api)
