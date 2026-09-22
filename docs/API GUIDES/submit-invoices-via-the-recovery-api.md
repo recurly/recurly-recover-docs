@@ -260,7 +260,7 @@ The full schema is documented in the API reference. These are the fields that de
   <tr><td><code>account.code</code></td><td>Your unique identifier for the account. Reusing a code that already exists returns an error — each call creates one account with one invoice.</td></tr>
   <tr><td><code>account.dunning_campaign_id</code></td><td>The retry window Recover follows for this invoice. Assign a different campaign per request to test strategies across segments.</td></tr>
   <tr><td><code>gateway_code</code></td><td>Routes the transaction to the correct gateway connection.</td></tr>
-  <tr><td><code>payment_gateway_references</code></td><td>The reusable gateway <code>token</code> and its <code>reference_type</code>
+  <tr><td><code>payment_gateway_references</code></td><td>The reusable gateway <code>token</code> and its <code>reference_type.</code>
   <tr><td><code>transactions</code></td><td>Prior failed attempt history — <code>gateway_error_code</code>, <code>merchant_advice_code</code>, and <code>attempted_collection_date</code> — used to calculate the first retry date.</td></tr>
 </table>
 
