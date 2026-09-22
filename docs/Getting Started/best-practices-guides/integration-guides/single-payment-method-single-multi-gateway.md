@@ -141,8 +141,6 @@ If you are using Stripe, the PGR array is formatted in the following manner as S
 
 ***
 
-📋 TODO before publishing:
+For next steps, follow our dedicated integration guide:&#x20;
 
-- [x] The "single payment method, multiple gateways" example is empty in the source — add the payload before publishing.
-- [ ] The source cuts off after a trailing, empty heading following the second example. Confirm whether content is missing (this may have been the start of an Error handling, Testing, or What's next section) and supply it if so.
-
+<br />
