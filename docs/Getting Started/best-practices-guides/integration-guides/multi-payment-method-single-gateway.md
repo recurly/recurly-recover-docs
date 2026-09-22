@@ -106,6 +106,6 @@ When using a single gateway, your gateway_code strings will match. It is require
   }
 ```
 
-<br />
+***
 
-<br />
+For next steps and error handling, follow our dedicated integration guide: [Submit Invoices via Recovery API](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/submit-invoices-via-the-recovery-api)
