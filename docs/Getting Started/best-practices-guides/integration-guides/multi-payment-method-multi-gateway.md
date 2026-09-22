@@ -44,7 +44,119 @@ metadata:
 
 ## Example: multiple payment methods, multiple gateways
 
+The example below shows multiple concepts:&#x20;
+
+- 3 Separate gateways with 3 separate requirements for tokens:&#x20;
+  - Stripe tokens that are a token pair (pm/cus IDs)
+  - Gateways with single value and no NTID value specified (ex: Braintree)
+  - Gateway with single value and an NTID specified (ex: Adyen or CommerceHub)
+- Payment methods that were not used to attempt transactions. We will use these methods as well even if they weren't used in your system to attempt collection. You can specify these methods without providing the `transactions` object.
+- Setting the primary payment method (in this example, the Stripe token pair) and the backup method as a different gateways.
+
 ```json
+{
+  "currency": "USD",
+  "po_number": "NNNN",
+  "due_at": "YYYY-MM-DDTHH:MM:SS.MSZ", // Date and Time 
+  "account": {
+    "code": "account-code", // Account code
+    "dunning_campaign_id": "{{dunning_campaign_id}}", // Dunning Campaign ID
+    "billing_infos": [ 
+// each billing info with gateway code, and the transaction attempt, error code, attempted date, and MAC code
+      {
+        "gateway_code": "{{gateway_code}}", // Gateway code -- must have access to the gateway token provided
+        "primary_payment_method": true, // Wallet Primary indicator
+        "backup_payment_method": false,
+        "payment_gateway_references": [ // Stripe Token Format
+          {
+            "token": "pm_XXXXXXXXXXX",
+            "reference_type": "stripe_payment_method"
+          },
+          {
+            "token": "cus_XXXXXXXXXXX",
+            "reference_type": "stripe_customer"
+          }
+        ],
+        "transactions": [
+            {
+                "gateway_error_code": "gateway-responsed-code-value", // The actual gateway response code returned in your integration
+                "attempted_collection_date": "YYYY-MM-DDTHH:MM:SS.MSZ",
+                "merchant_advice_code": "NN"
+            }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}", // Gateway Code 
+        "primary_payment_method": false, 
+        "backup_payment_method": true, // Wallet Backup Indicator
+        "payment_gateway_references": [ // Single-Value Token + NTID example
+          {
+            "token": "XXXXXXXXXXX"
+          }
+        ],
+        "network_transaction_id": "string",
+        "transactions": [
+            {
+                "gateway_error_code": "gateway-responsed-code-value", // The actual gateway response code returned in your integration
+                "attempted_collection_date": "YYYY-MM-DDTHH:MM:SS.MSZ",
+                "merchant_advice_code": "NN"
+            }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}",
+        "primary_payment_method": false,
+        "backup_payment_method": false,
+        "payment_gateway_references": [
+          {
+            "token": "XXXXXXXXXXX"
+          }
+        ],
+        "transactions": [
+            {
+                "gateway_error_code": "gateway-responsed-code-value", // The actual gateway response code returned in your integration
+                "attempted_collection_date": "YYYY-MM-DDTHH:MM:SS.MSZ",
+                "merchant_advice_code": "NN"
+            }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}",
+        "primary_payment_method": false,
+        "backup_payment_method": false,
+        "payment_gateway_references": [
+          {
+            "token": "pm_XXXXXXXXXXX",
+            "reference_type": "stripe_payment_method"
+          },
+          {
+            "token": "cus_XXXXXXXXXXX",
+            "reference_type": "stripe_customer"
+          }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}",
+        "primary_payment_method": false,
+        "backup_payment_method": false,
+        "payment_gateway_references": [
+          {
+            "token": "XXXXXXXXXXX"
+          }
+        ]
+      }
+    ],
+    "email": "customer@example-domain.com"
+  },
+  "line_items": [
+    {
+      "description": "Description of Invoice", // Overwritten when using Vindicia
+      "unit_amount": 9.99
+    }
+  ],
+  "external_recovery_eligible": true,
+  "transaction_descriptor_suffix": "Descriptor Suffix" // New Descriptor Field (Suffix)
+}
 ```
 
 ***
