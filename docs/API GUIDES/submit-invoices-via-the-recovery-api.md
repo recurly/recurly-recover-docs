@@ -352,7 +352,7 @@ Recover currently supports the following gateways with reusable gateway tokens:
 
 <table class="rp-gw-table">
   <tr class="rp-thead-row"><td>Gateway</td><td>Token support</td></tr>
-  <tr><td>Stripe</td><td>Reusable gateway tokens.</code>)</td></tr>
+  <tr><td>Stripe</td><td>Reusable gateway tokens</code>)</td></tr>
   <tr><td>Braintree</td><td>Reusable gateway tokens</td></tr>
 </table>
 
