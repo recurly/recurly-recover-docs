@@ -23,8 +23,11 @@ Recover currently supports the following gateways, each with reusable gateway to
 
 <table class="rp-gw-table">
   <tr class="rp-thead-row"><td>Gateway</td><td>Token support</td></tr>
-  <tr><td>Stripe</td><td>Reusable gateway tokens (for example, <code>stripe_confirmation_token</code>)</td></tr>
+  <tr><td>Stripe</td><td>Reusable gateway tokens (for example, <code>stripe_customer</code>) and <code>stripe_payment_method</code></td></tr>
   <tr><td>Braintree</td><td>Reusable gateway tokens</td></tr>
+  <tr><td>Adyen</td><td>Reusable gateway tokens + Shopper Reference + NTID</td></tr>
+  <tr><td>CommerceHub</td><td>Reusable TransArmor Token + Meta-Data (BIN/4 and Expiry Date) + NTID</td></tr>
+  <tr><td>FreedomPay</td><td>Reusable Gateway Token + NTID</td></tr>
 </table>
 
 <div class="rp-callout rp-callout-note">
