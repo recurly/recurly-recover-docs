@@ -47,8 +47,4 @@ Because recovery is a yes-or-no outcome for each invoice, the number of recoveri
 
 We recognize this volume isn't always achievable, especially for smaller merchants. Even without statistical significance, experimentation still provides a useful directional signal, and we encourage merchants to experiment regardless of scale.
 
-***
-
-📋 TODO before publishing:
-
-- [ ] The source ends mid-sentence after "You will be able to recognize" — the rest of this thought (and possibly more content) is missing. Supply the remaining content before publishing.
+<br />
