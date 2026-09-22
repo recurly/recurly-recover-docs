@@ -122,16 +122,27 @@ metadata:
 }
 ```
 
-## Example: single payment method, multiple gateways
+## Stripe Formatting
+
+If you are using Stripe, the PGR array is formatted in the following manner as Stripe has two-part tokens. You must provide the Customer ID and the Payment Method ID as below.
 
 ```json
+ "payment_gateway_references": [
+          {
+            "token": "string",
+            "reference_type": "stripe_payment_method"
+          },
+          {
+            "token": "string",
+            "reference_type": "stripe_customer"
+          }
+        ],
 ```
 
 ***
 
 📋 TODO before publishing:
 
-- [ ] The "single payment method, multiple gateways" example is empty in the source — add the payload before publishing.
+- [x] The "single payment method, multiple gateways" example is empty in the source — add the payload before publishing.
 - [ ] The source cuts off after a trailing, empty heading following the second example. Confirm whether content is missing (this may have been the start of an Error handling, Testing, or What's next section) and supply it if so.
-- [ ] No Testing your integration content was in the source — add sandbox/test-card guidance if this guide should include it.
-- [ ] No Error handling and troubleshooting content was in the source — add if applicable.
+
