@@ -25,7 +25,7 @@ metadata:
   <li>You've reviewed the <a href="https://docs.recurly.com/recurly-recover/docs/submit-invoices-via-the-recovery-api" target="_blank">basic API guide</a> and are familiar with the fields on the Recovery endpoint</li>
   <li>You've enabled multiple gateways on your Recurly sandbox site</li>
   <li>You've confirmed that the tokens you're using are accessible through your enabled gateways. For example, if you provide Recurly with Braintree gateway tokens, your enabled Braintree gateway must have access to them</li>
-  <li>If your gateway tokens require a Network Transaction ID (NTID), you have the NTIDs available for Recurly to store and send. Stripe, Braintree, and PayPal Complete are exceptions — for any other gateway, provide the NTID you send during standard subscription processing</li>
+  <li>If your gateway tokens require a Network Transaction ID (NTID), you must provide the NTIDs via API for Recurly to store and send. Stripe, Braintree, and PayPal Complete are exceptions — for any other gateway, provide the NTID you send during standard subscription processing</li>
 </ul>
 
 # Definition
