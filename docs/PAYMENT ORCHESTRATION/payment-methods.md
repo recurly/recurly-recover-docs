@@ -19,7 +19,7 @@ metadata:
 
 # Supply a payment method
 
-Provide each payment method as a reusable gateway token in the `payment_gateway_references` array on a `billing_infos` entry. Each reference carries the `token` and its `reference_type` (for example, `stripe_confirmation_token`). Recover stores the method and uses it to collect on the retry schedule.
+Provide each payment method as a reusable gateway token in the `payment_gateway_references` array on a `billing_infos` entry. Each reference carries the `token` and its `reference_type` (for example, `stripe_payment_method`). Recover stores the method and uses it to collect on the retry schedule.
 
 For the gateways that issue these tokens, see <a href="https://docs.recurly.com/recurly-recover/docs/payment-gateways" target="_blank">Payment gateways</a>.
 
