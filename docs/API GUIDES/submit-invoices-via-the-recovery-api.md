@@ -141,6 +141,116 @@ If you are using Stripe, the Customer ID and Payment Method IDs are two-part tok
         ],
 ```
 
+If you are providing multiple payment methods in a single account for this Recover invoice, your payload will look like below. The example shows 5 payment methods associated with the invoice, 3 of which were used on a previous attempt.
+
+The example shows formats for tokens mixing between Stripe formatting and non-Stripe formatting.
+
+```json Multiple Payment Methods
+{
+  "currency": "USD",
+  "po_number": "NNNN",
+  "due_at": "YYYY-MM-DDTHH:MM:SS.MSZ", // Date and Time 
+  "account": {
+    "code": "account-code", // Account code
+    "dunning_campaign_id": "{{dunning_campaign_id}}", // Dunning Campaign ID
+    "billing_infos": [ 
+// each billing info with gateway code, and the transaction attempt, error code, attempted date, and MAC code
+      {
+        "gateway_code": "{{gateway_code}}", // Gateway code -- must have access to the gateway token provided
+        "primary_payment_method": true, // Wallet Primary indicator
+        "backup_payment_method": false,
+        "payment_gateway_references": [ // Stripe Token Format
+          {
+            "token": "pm_XXXXXXXXXXX",
+            "reference_type": "stripe_payment_method"
+          },
+          {
+            "token": "cus_XXXXXXXXXXX",
+            "reference_type": "stripe_customer"
+          }
+        ],
+        "transactions": [
+            {
+                "gateway_error_code": "gateway-responsed-code-value", // The actual gateway response code returned in your integration
+                "attempted_collection_date": "YYYY-MM-DDTHH:MM:SS.MSZ",
+                "merchant_advice_code": "NN"
+            }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}", // Gateway Code 
+        "primary_payment_method": false, 
+        "backup_payment_method": true, // Wallet Backup Indicator
+        "payment_gateway_references": [ // Non-Stripe Token Example
+          {
+            "token": "XXXXXXXXXXX"
+          }
+        ],
+        "network_transaction_id": "string", // Example token that requires NTID
+        "transactions": [
+            {
+                "gateway_error_code": "gateway-responsed-code-value", // The actual gateway response code returned in your integration
+                "attempted_collection_date": "YYYY-MM-DDTHH:MM:SS.MSZ",
+                "merchant_advice_code": "NN"
+            }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}",
+        "primary_payment_method": false,
+        "backup_payment_method": false,
+        "payment_gateway_references": [
+          {
+            "token": "XXXXXXXXXXX" // Example token that does not required separate NTID
+          }
+        ],
+        "transactions": [
+            {
+                "gateway_error_code": "gateway-responsed-code-value", 
+                "attempted_collection_date": "YYYY-MM-DDTHH:MM:SS.MSZ",
+                "merchant_advice_code": "NN"
+            }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}",
+        "primary_payment_method": false,
+        "backup_payment_method": false,
+        "payment_gateway_references": [
+          {
+            "token": "pm_XXXXXXXXXXX",
+            "reference_type": "stripe_payment_method"
+          },
+          {
+            "token": "cus_XXXXXXXXXXX",
+            "reference_type": "stripe_customer"
+          }
+        ]
+      },
+      {
+        "gateway_code": "{{gateway_code}}",
+        "primary_payment_method": false,
+        "backup_payment_method": false,
+        "payment_gateway_references": [
+          {
+            "token": "XXXXXXXXXXX"
+          }
+        ]
+      }
+    ],
+    "email": "customer@example-domain.com"
+  },
+  "line_items": [
+    {
+      "description": "Description of Invoice", // Overwritten when using Vindicia
+      "unit_amount": 9.99
+    }
+  ],
+  "external_recovery_eligible": true,
+  "transaction_descriptor_suffix": "Descriptor Suffix" // New Descriptor Field (Suffix)
+}
+```
+
 ## Fields that drive retry behavior
 
 The full schema is documented in the API reference. These are the fields that determine how Recover collects:
