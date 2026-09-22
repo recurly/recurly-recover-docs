@@ -162,7 +162,11 @@ POST https://v3.recurly.com/invoices/recovery
         "payment_gateway_references": [
           {
             "token": "string",
-            "reference_type": "stripe_confirmation_token"
+            "reference_type": "stripe_payment_method"
+          },
+          {
+            "token": "string",
+            "reference_type": "stripe_customer"
           }
         ],
         "network_transaction_id": "string",
