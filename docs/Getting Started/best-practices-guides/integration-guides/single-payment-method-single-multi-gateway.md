@@ -141,6 +141,6 @@ If you are using Stripe, the PGR array is formatted in the following manner as S
 
 ***
 
-For next steps, follow our dedicated integration guide:&#x20;
+For next steps, follow our dedicated integration guide: [Submit Invoices via Recovery API](https://docs.recurly.com/recurly-recover/v1.0_retry-agent-best-practices-guides/docs/submit-invoices-via-the-recovery-api)
 
 <br />
