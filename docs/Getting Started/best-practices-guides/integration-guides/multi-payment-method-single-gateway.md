@@ -42,14 +42,70 @@ metadata:
 
 ## Example: multiple payment methods, single gateway
 
+In this example, the singular gateway is Stripe, so gateway token formatting will follow Stripe-style PGR array. If you are not using Stripe, your PGR array will have a single object, and will not contain a reference type.
+
+When using a single gateway, your gateway_code strings will match. It is required that the Stripe Customer IDs also match within a single account to avoid issues in token handling. If you have set up your Stripe token behavior to have a 1:1 relationship with the Customer ID do not send these tokens in a separate invoice to avoid overcharging.
+
 ```json
+{
+    "currency": "USD",
+    "po_number": "NNNN",
+    "due_at": "YYYY-MM-DDTHH:MM:SS.MSZ", // Date and Time 
+    "account": {
+      "code": "account-code", // Account code
+      "dunning_campaign_id": "{{dunning_campaign_id}}", // Dunning Campaign ID
+      "billing_infos": [ 
+        {
+          "gateway_code": "1234567890", 
+          "primary_payment_method": true, // Wallet Primary indicator
+          "backup_payment_method": false,
+          "payment_gateway_references": [ // Stripe Token Format
+            {
+              "token": "pm_67890",
+              "reference_type": "stripe_payment_method"
+            },
+            {
+              "token": "cus_12345",
+              "reference_type": "stripe_customer"
+            }
+          ],
+          "transactions": [
+              {
+                  "gateway_error_code": "gateway-responsed-code-value", // The actual gateway response code returned in your integration
+                  "attempted_collection_date": "YYYY-MM-DDTHH:MM:SS.MSZ",
+                  "merchant_advice_code": "NN"
+              }
+          ]
+        },
+        {
+          "gateway_code": "1234567890",
+          "primary_payment_method": false,
+          "backup_payment_method": false,
+          "payment_gateway_references": [
+            {
+              "token": "pm_12345",
+              "reference_type": "stripe_payment_method"
+            },
+            {
+              "token": "cus_12345",
+              "reference_type": "stripe_customer"
+            }
+          ]
+        }
+      ],
+      "email": "customer@example-domain.com"
+    },
+    "line_items": [
+      {
+        "description": "Description of Invoice", // Overwritten when using Vindicia
+        "unit_amount": 9.99
+      }
+    ],
+    "external_recovery_eligible": true,
+    "transaction_descriptor_suffix": "Descriptor Suffix" // New Descriptor Field (Suffix)
+  }
 ```
 
-***
+<br />
 
-📋 TODO before publishing:
-
-- [ ] The multiple payment methods, single gateway example is empty in the source — add the payload before publishing.
-- [ ] The source cuts off after a trailing, empty heading following the example. Confirm whether content is missing and supply it if so.
-- [ ] No Testing your integration content was in the source — add sandbox/test-card guidance if this guide should include it.
-- [ ] No Error handling and troubleshooting content was in the source — add if applicable.
+<br />
