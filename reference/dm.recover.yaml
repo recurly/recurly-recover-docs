@@ -3665,8 +3665,8 @@ components:
     PaymentGatewayReferencesEnum:
       type: string
       description: >-
-        The type of reference token. Required if token is passed in for Stripe
-        Gateway or Ebanx UPI.
+        The type of reference token. The value can be omitted for gateways that
+        only support one type of token.
       enum:
         - stripe_confirmation_token
         - upi_vpa
