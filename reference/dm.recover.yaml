@@ -1,0 +1,4302 @@
+openapi: 3.0.0
+info:
+  title: Recurly Recover API
+  description: >-
+    # Recurly Recover API
+
+
+    This API exposes the Recurly Revenue Recovery endpoints for partners.
+
+
+    Use it to submit failed payments to Recurly for recovery, report payment
+    results, and track the related accounts, invoices, transactions, and dunning
+    campaigns.
+
+
+    ## Capabilities
+
+
+    - **Create an invoice for revenue recovery** — Submit a failed payment to
+    Recurly for retry. Send the account, billing information, line items, and
+    details of the failed transaction. Recurly creates the invoice and manages
+    collection.
+
+    - **Mark an invoice as successful or failed** — Report the outcome of a
+    payment handled outside Recurly. A successful mark stops collection and
+    records the revenue. A failed mark halts dunning.
+
+    - **List and fetch accounts, invoices, and transactions** — Track recovery
+    activity in Recurly.
+
+    - **List and fetch dunning campaigns** — Review the settings that control
+    retries and dunning emails.
+
+    - **Redact an account** — Permanently erase personal data (GDPR right to
+    erasure).
+
+
+    ## Authentication
+
+
+    Authenticate with HTTP Basic auth. Use your API key as the username. Leave
+    the password empty.
+
+
+    ## Versioning
+
+
+    Every request must send the API version in the `Accept` header:
+
+
+    ```
+
+    Accept: application/vnd.recurly.v2021-02-25
+
+    ```
+
+
+    The `+json` media type is also accepted:
+    `application/vnd.recurly.v2021-02-25+json`. Requests without a versioned
+    `Accept` header return a `406 Not Acceptable` response.
+
+
+    Every response includes a `Recurly-Version` header with the version that
+    processed the request:
+
+
+    ```
+
+    Recurly-Version: recurly.v2021-02-25
+
+    ```
+
+
+    ## Pagination
+
+
+    List endpoints return results in pages. See the [Pagination
+    Guide](/developers/guides/pagination.html).
+  version: '2021-02-25'
+servers:
+  - url: https://v3.recurly.com
+  - url: https://v3.eu.recurly.com
+security:
+  - api_key: []
+tags:
+  - name: Account
+    description: >-
+      Accounts are core to managing your customers inside of Recurly. The
+      account object stores the entire Recurly history of your customer and acts
+      as the entry point for working with a customer's billing information,
+      subscription data, transactions, invoices and more.
+  - name: Invoice
+    description: >-
+      An invoice relates charges, credits, and payments together. When a
+      subscription is created or renewed or a charge is created on the account,
+      Recurly will sum the charges, discount or tax as appropriate, and send the
+      invoice out for collection.
+  - name: Transaction
+    description: >-
+      Purchasing information is sent to your payment gateway in an action called
+      a transaction. This includes the customer's billing information and the
+      amount of money to be charged, voided, or refunded.
+  - name: Revenue Recovery
+    description: Revenue recovery
+  - name: Dunning Campaigns
+    description: >-
+      Settings used when attempting to dun customers whose payments are
+      declined.
+paths:
+  /accounts:
+    get:
+      tags:
+        - Account
+      operationId: list_accounts
+      x-product:
+        - recover
+      summary: List a site's accounts
+      description: >-
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn
+        how to use pagination in the API and Client Libraries.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/ids'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort_dates'
+        - $ref: '#/components/parameters/filter_begin_time'
+        - $ref: '#/components/parameters/filter_end_time'
+        - $ref: '#/components/parameters/filter_account_email'
+        - $ref: '#/components/parameters/filter_account_subscriber'
+        - $ref: '#/components/parameters/filter_account_past_due'
+      responses:
+        '200':
+          description: A list of the site's accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountList'
+        '400':
+          description: Invalid or unpermitted parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{account_id}:
+    parameters:
+      - $ref: '#/components/parameters/account_id'
+    get:
+      tags:
+        - Account
+      operationId: get_account
+      x-product:
+        - recover
+      summary: Fetch an account
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+      responses:
+        '200':
+          description: An account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{account_id}/redact:
+    parameters:
+      - $ref: '#/components/parameters/account_id'
+    put:
+      tags:
+        - Account
+      operationId: redact_account
+      x-product:
+        - recover
+      summary: Redact an account (GDPR Right to Erasure)
+      description: >-
+        Permanently and irreversibly removes all personally identifiable
+        information (PII) from an account to fulfill a data subject's right to
+        erasure under GDPR and similar privacy regulations (e.g. CCPA). This
+        includes billing information, shipping addresses, and transaction
+        details such as names, email addresses, and payment card data. The
+        underlying account and transaction records are retained for financial
+        and audit purposes, but all personal data fields are cleared. The
+        account must have no active subscriptions, uninvoiced charges, or
+        partially paid invoices before it can be redacted. Redaction is
+        processed asynchronously and cannot be undone.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+      responses:
+        '200':
+          description: >-
+            Account has been accepted for redaction and will be processed
+            asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '422':
+          description: >-
+            Account cannot be redacted. Common reasons include active
+            subscriptions, uninvoiced charges, or partially paid invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{account_id}/invoices:
+    get:
+      tags:
+        - Invoice
+      operationId: list_account_invoices
+      x-product:
+        - recover
+      summary: List an account's invoices
+      description: >-
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn
+        how to use pagination in the API and Client Libraries.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/account_id'
+        - $ref: '#/components/parameters/ids'
+        - $ref: '#/components/parameters/invoice_state'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort_dates'
+        - $ref: '#/components/parameters/filter_begin_time'
+        - $ref: '#/components/parameters/filter_end_time'
+        - $ref: '#/components/parameters/filter_invoice_type'
+      responses:
+        '200':
+          description: A list of the account's invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceList'
+        '400':
+          description: Invalid or unpermitted parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site or account ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{account_id}/transactions:
+    get:
+      tags:
+        - Transaction
+      operationId: list_account_transactions
+      x-product:
+        - recover
+      summary: List an account's transactions
+      description: >-
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn
+        how to use pagination in the API and Client Libraries.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/account_id'
+        - $ref: '#/components/parameters/ids'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort_dates'
+        - $ref: '#/components/parameters/filter_begin_time'
+        - $ref: '#/components/parameters/filter_end_time'
+        - $ref: '#/components/parameters/filter_transaction_type'
+        - $ref: '#/components/parameters/filter_transaction_success'
+      responses:
+        '200':
+          description: A list of the account's transactions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionList'
+        '400':
+          description: Invalid or unpermitted parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site or subscription ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invoices:
+    get:
+      tags:
+        - Invoice
+      operationId: list_invoices
+      x-product:
+        - recover
+      summary: List a site's invoices
+      description: >-
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn
+        how to use pagination in the API and Client Libraries.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/ids'
+        - $ref: '#/components/parameters/invoice_state'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort_dates'
+        - $ref: '#/components/parameters/filter_begin_time'
+        - $ref: '#/components/parameters/filter_end_time'
+        - $ref: '#/components/parameters/filter_invoice_type'
+      responses:
+        '200':
+          description: A list of the site's invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceList'
+        '400':
+          description: Invalid or unpermitted parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invoices/{invoice_id}:
+    get:
+      tags:
+        - Invoice
+      operationId: get_invoice
+      x-product:
+        - recover
+      summary: Fetch an invoice
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/invoice_id'
+      responses:
+        '200':
+          description: An invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Incorrect site or invoice ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invoices/{invoice_id}/mark_failed:
+    put:
+      tags:
+        - Invoice
+      operationId: mark_invoice_failed
+      x-product:
+        - recover
+      summary: Mark an open invoice as failed
+      description: >
+        Indicates that the invoice was not successfully paid for and that
+        collection attempts should stop. This functionality is mostly used to
+        halt the dunning procedures for an invoice.
+
+
+        Only invoices with the `pending`, `processing` or `past_due` states can
+        be marked as failed.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/invoice_id'
+      responses:
+        '200':
+          description: The updated invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Incorrect site or invoice ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Tried marking a closed (successful or failed) invoice as failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invoices/{invoice_id}/mark_successful:
+    put:
+      tags:
+        - Invoice
+      operationId: mark_invoice_successful
+      x-product:
+        - recover
+      summary: Mark an open invoice as successful
+      description: >
+        Indicates that the invoice was successfully paid for and that automated
+        collection attempts should stop - this functionality is typically used
+        to indicate that payment was received via another method and that
+        revenue should be recognized.
+
+
+        Only invoices with the `pending`, `processing`, `past_due` or `failed`
+        states can be marked as paid.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/invoice_id'
+      responses:
+        '200':
+          description: The updated invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Incorrect site or invoice ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Tried marking a closed (successful or failed) invoice as successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invoices/recovery:
+    post:
+      tags:
+        - Revenue Recovery
+      operationId: create_invoice_retry
+      x-product:
+        - recover
+      summary: Create an invoice for revenue recovery
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecoveryInvoiceCreate'
+        required: true
+      responses:
+        '201':
+          description: Returns the new invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceCollection'
+        '400':
+          description: Bad request, perhaps invalid JSON?
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: >-
+            Invalid parameters, no pending line items, or error running the
+            transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMayHaveTransaction'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /transactions:
+    get:
+      tags:
+        - Transaction
+      operationId: list_transactions
+      x-product:
+        - recover
+      summary: List a site's transactions
+      description: >-
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn
+        how to use pagination in the API and Client Libraries.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/ids'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort_dates'
+        - $ref: '#/components/parameters/filter_begin_time'
+        - $ref: '#/components/parameters/filter_end_time'
+        - $ref: '#/components/parameters/filter_transaction_type'
+        - $ref: '#/components/parameters/filter_transaction_success'
+      responses:
+        '200':
+          description: A list of the site's transactions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionList'
+        '400':
+          description: Invalid or unpermitted parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site or subscription ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /transactions/{transaction_id}:
+    get:
+      tags:
+        - Transaction
+      operationId: get_transaction
+      x-product:
+        - recover
+      summary: Fetch a transaction
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/transaction_id'
+      responses:
+        '200':
+          description: A transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '404':
+          description: Incorrect site or transaction ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /dunning_campaigns:
+    get:
+      tags:
+        - Dunning Campaigns
+      operationId: list_dunning_campaigns
+      x-product:
+        - recover
+      summary: List the dunning campaigns for a site
+      description: >-
+        See the [Pagination Guide](/developers/guides/pagination.html) to learn
+        how to use pagination in the API and Client Libraries.
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+        - $ref: '#/components/parameters/sort_dates'
+      responses:
+        '200':
+          description: A list of the the dunning_campaigns on an account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningCampaignList'
+        '404':
+          description: Incorrect site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /dunning_campaigns/{dunning_campaign_id}:
+    parameters:
+      - $ref: '#/components/parameters/dunning_campaign_id'
+    get:
+      tags:
+        - Dunning Campaigns
+      operationId: get_dunning_campaign
+      x-product:
+        - recover
+      summary: Fetch a dunning campaign
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+      responses:
+        '200':
+          description: Settings for a dunning campaign.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DunningCampaign'
+        '400':
+          description: Bad request; perhaps missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site or campaign ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    accept_header:
+      name: Accept
+      in: header
+      description: >-
+        The API version to use for this request, e.g.
+        `application/vnd.recurly.v2021-02-25`. Requests without a versioned
+        `Accept` header return a 406 response.
+      required: true
+      schema:
+        default: application/vnd.recurly.v2021-02-25
+        $ref: '#/components/schemas/AcceptHeaderEnum'
+    account_id:
+      name: account_id
+      in: path
+      description: >-
+        Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For
+        code use prefix `code-`, e.g. `code-bob`.
+      required: true
+      schema:
+        type: string
+    invoice_id:
+      name: invoice_id
+      in: path
+      description: >-
+        Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For
+        number use prefix `number-`, e.g. `number-1000`. For number with prefix
+        or country code, use `number-` and `prefix`, e.g. `number-TEST-FR1001`
+      required: true
+      schema:
+        type: string
+    invoice_state:
+      name: state
+      in: query
+      description: Invoice state.
+      schema:
+        $ref: '#/components/schemas/InvoiceStateQueryParamEnum'
+    transaction_id:
+      name: transaction_id
+      in: path
+      description: >-
+        Transaction ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`.
+        For UUID use prefix `uuid-`, e.g. `uuid-123457890`.
+      required: true
+      schema:
+        type: string
+    dunning_campaign_id:
+      name: dunning_campaign_id
+      in: path
+      description: Dunning Campaign ID, e.g. `e28zov4fw0v2`.
+      required: true
+      schema:
+        type: string
+    ids:
+      name: ids
+      in: query
+      description: >
+        Filter results by their IDs. Up to 200 IDs can be passed at once using
+
+        commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`.
+
+
+        **Important notes:**
+
+
+        * The `ids` parameter cannot be used with any other ordering or
+        filtering
+          parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc)
+        * Invalid or unknown IDs will be ignored, so you should check that the
+          results correspond to your request.
+        * Records are returned in an arbitrary order. Since results are all
+          returned at once you can sort the records yourself.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    limit:
+      name: limit
+      in: query
+      description: Limit number of records 1-200.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 20
+    order:
+      name: order
+      in: query
+      description: Sort order.
+      schema:
+        default: desc
+        $ref: '#/components/schemas/AlphanumericSortEnum'
+    sort_dates:
+      name: sort
+      in: query
+      description: >
+        Sort field. You *really* only want to sort by `updated_at` in ascending
+
+        order. In descending order updated records will move behind the cursor
+        and could
+
+        prevent some records from being returned.
+      schema:
+        default: created_at
+        $ref: '#/components/schemas/TimestampSortEnum'
+    filter_begin_time:
+      name: begin_time
+      in: query
+      description: >
+        Inclusively filter by begin_time when `sort=created_at` or
+        `sort=updated_at`.
+
+        **Note:** this value is an ISO8601 timestamp. A partial timestamp that
+        does not include a time zone will default to UTC.
+      schema:
+        type: string
+        format: date-time
+    filter_end_time:
+      name: end_time
+      in: query
+      description: >
+        Inclusively filter by end_time when `sort=created_at` or
+        `sort=updated_at`.
+
+        **Note:** this value is an ISO8601 timestamp. A partial timestamp that
+        does not include a time zone will default to UTC.
+      schema:
+        type: string
+        format: date-time
+    filter_account_email:
+      name: email
+      in: query
+      description: >-
+        Filter for accounts with this exact email address. A blank value will
+        return accounts with both `null` and `""` email addresses. Note that
+        multiple accounts can share one email address.
+      schema:
+        type: string
+    filter_account_subscriber:
+      name: subscriber
+      in: query
+      description: |
+        Filter for accounts with or without a subscription in the `active`,
+        `canceled`, or `future` state.
+      schema:
+        type: boolean
+    filter_account_past_due:
+      name: past_due
+      in: query
+      description: Filter for accounts with an invoice in the `past_due` state.
+      schema:
+        $ref: '#/components/schemas/TrueEnum'
+    filter_transaction_type:
+      name: type
+      in: query
+      description: >-
+        Filter by type field. The value `payment` will return both `purchase`
+        and `capture` transactions.
+      schema:
+        $ref: '#/components/schemas/FilterTransactionTypeEnum'
+    filter_transaction_success:
+      name: success
+      in: query
+      description: Filter by success field.
+      schema:
+        $ref: '#/components/schemas/TrueEnum'
+    filter_invoice_type:
+      name: type
+      in: query
+      description: |
+        Filter by type when:
+        - `type=charge`, only charge invoices will be returned.
+        - `type=credit`, only credit invoices will be returned.
+        - `type=non-legacy`, only charge and credit invoices will be returned.
+        - `type=legacy`, only legacy invoices will be returned.
+      schema:
+        $ref: '#/components/schemas/FilterInvoiceTypeEnum'
+  securitySchemes:
+    api_key:
+      type: http
+      description: >-
+        Enter the API key as the username and set the password to an empty
+        string. You can locate and manage your API keys from the [API
+        Credentials](https://app.recurly.com/go/developer/api_keys) page.
+      scheme: basic
+  schemas:
+    AcceptHeaderEnum:
+      type: string
+      enum:
+        - application/vnd.recurly.v2021-02-25
+        - application/vnd.recurly.v2021-02-25+json
+    AccountList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+    InvoiceList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoice'
+    TransactionList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    Account:
+      allOf:
+        - $ref: '#/components/schemas/AccountReadOnly'
+        - $ref: '#/components/schemas/AccountResponse'
+    AccountReadOnly:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 13
+          readOnly: true
+        object:
+          type: string
+          title: Object type
+          readOnly: true
+        state:
+          description: Accounts can be either active or inactive.
+          readOnly: true
+          $ref: '#/components/schemas/ActiveStateEnum'
+        hosted_login_token:
+          type: string
+          description: >-
+            The unique token for automatically logging the account in to the
+            hosted management pages. You may automatically log the user into
+            their hosted management pages by directing the user to:
+            `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
+          readOnly: true
+          maxLength: 32
+        shipping_addresses:
+          type: array
+          description: The shipping addresses on the account.
+          items:
+            $ref: '#/components/schemas/ShippingAddress'
+        has_live_subscription:
+          type: boolean
+          description: >-
+            Indicates if the account has a subscription that is either active,
+            canceled, future, or paused.
+        has_active_subscription:
+          type: boolean
+          description: Indicates if the account has an active subscription.
+        has_future_subscription:
+          type: boolean
+          description: Indicates if the account has a future subscription.
+        has_canceled_subscription:
+          type: boolean
+          description: Indicates if the account has a canceled subscription.
+        has_paused_subscription:
+          type: boolean
+          description: Indicates if the account has a paused subscription.
+        has_past_due_invoice:
+          type: boolean
+          description: Indicates if the account has a past due invoice.
+        created_at:
+          type: string
+          format: date-time
+          description: When the account was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: When the account was last changed.
+          readOnly: true
+        deleted_at:
+          type: string
+          format: date-time
+          description: If present, when the account was last marked inactive.
+          readOnly: true
+    AccountResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            The unique identifier of the account. This cannot be changed once
+            the account is created.
+          maxLength: 50
+          readOnly: true
+        username:
+          type: string
+          description: A secondary value for the account.
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          description: >-
+            The email address used for communicating with this customer. The
+            customer will also use this email address to log into your hosted
+            account management pages. This value does not need to be unique.
+          maxLength: 255
+        override_business_entity_id:
+          type: string
+          title: Override Business Entity ID
+          description: >-
+            Unique ID to identify the business entity assigned to the account.
+            Available when the `Multiple Business Entities` feature is enabled.
+        preferred_locale:
+          description: >-
+            Used to determine the language and locale of emails sent on behalf
+            of the merchant to the customer.
+          $ref: '#/components/schemas/PreferredLocaleEnum'
+        preferred_time_zone:
+          type: string
+          example: America/Los_Angeles
+          description: >-
+            The [IANA time zone
+            name](https://docs.recurly.com/docs/email-time-zones-and-time-stamps#supported-api-iana-time-zone-names)
+            used to determine the time zone of emails sent on behalf of the
+            merchant to the customer.
+        cc_emails:
+          type: string
+          description: >-
+            Additional email address that should receive account correspondence.
+            These should be separated only by commas. These CC emails will
+            receive all emails that the `email` field also receives.
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        company:
+          type: string
+          maxLength: 50
+        vat_number:
+          type: string
+          description: >-
+            The VAT number of the account (to avoid having the VAT applied).
+            This is only used for manually collected invoices.
+          maxLength: 20
+        tax_exempt:
+          type: boolean
+          description: >-
+            The tax status of the account. `true` exempts tax on the account,
+            `false` applies tax on the account.
+        exemption_certificate:
+          type: string
+          description: >-
+            The tax exemption certificate number for the account. If the
+            merchant has an integration for the Vertex tax provider, this
+            optional value will be sent in any tax calculation requests for the
+            account.
+          maxLength: 30
+        external_accounts:
+          type: array
+          description: The external accounts belonging to this account
+          items:
+            $ref: '#/components/schemas/ExternalAccount'
+        parent_account_id:
+          type: string
+          maxLength: 13
+          description: The UUID of the parent account associated with this account.
+        bill_to:
+          maxLength: 6
+          description: >-
+            An enumerable describing the billing behavior of the account,
+            specifically whether the account is self-paying or will rely on the
+            parent account to pay.
+          $ref: '#/components/schemas/BillToEnum'
+        dunning_campaign_id:
+          type: string
+          title: Dunning Campaign ID
+          description: >-
+            Unique ID to identify a dunning campaign. Used to specify if a
+            non-default dunning campaign should be assigned to this account. For
+            sites without multiple dunning campaigns enabled, the default
+            dunning campaign will always be used.
+        invoice_template_id:
+          type: string
+          title: Invoice Template ID
+          description: >-
+            Unique ID to identify an invoice template. Available when the site
+            is on a Pro or Elite plan. Used to specify if a non-default invoice
+            template will be used to generate invoices for the account. For
+            sites without multiple invoice templates enabled, the default
+            template will always be used.
+        address:
+          $ref: '#/components/schemas/Address'
+        billing_info:
+          $ref: '#/components/schemas/BillingInfo'
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        entity_use_code:
+          type: string
+          description: >-
+            The Avalara AvaTax value that can be passed to identify the customer
+            type for tax purposes. The range of values can be A - R (more info
+            at Avalara). Value is case-sensitive.
+        bill_date:
+          title: Bill Date
+          type: string
+          format: date-time
+          description: >-
+            The preferred billing date for the account. This date will be used
+            as the billing date for when activating new subscriptions on the
+            account.
+    AccountMini:
+      type: object
+      title: Account mini details
+      properties:
+        id:
+          type: string
+          maxLength: 13
+          readOnly: true
+        object:
+          type: string
+          title: Object type
+          readOnly: true
+        code:
+          type: string
+          description: The unique identifier of the account.
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          description: The email address used for communicating with this customer.
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        company:
+          type: string
+          maxLength: 255
+        parent_account_id:
+          type: string
+          maxLength: 13
+        bill_to:
+          type: string
+          maxLength: 6
+        dunning_campaign_id:
+          type: string
+          title: Dunning Campaign ID
+          description: >-
+            Unique ID to identify a dunning campaign. Used to specify if a
+            non-default dunning campaign should be assigned to this account. For
+            sites without multiple dunning campaigns enabled, the default
+            dunning campaign will always be used.
+    InvoiceAddress:
+      allOf:
+        - $ref: '#/components/schemas/Address'
+        - $ref: '#/components/schemas/AddressWithName'
+      type: object
+      properties:
+        name_on_account:
+          type: string
+          title: Name on account
+        company:
+          type: string
+          title: Company
+    Address:
+      type: object
+      properties:
+        phone:
+          type: string
+          title: Phone number
+        street1:
+          type: string
+          title: Street 1
+          maxLength: 50
+        street2:
+          type: string
+          title: Street 2
+          maxLength: 50
+        city:
+          type: string
+          title: City
+        region:
+          type: string
+          title: State/Province
+          description: State or province.
+        postal_code:
+          type: string
+          title: Zip/Postal code
+          description: Zip or postal code.
+        country:
+          type: string
+          title: Country
+          description: Country, 2-letter ISO 3166-1 alpha-2 code.
+        geo_code:
+          type: string
+          maxLength: 20
+          description: >-
+            Code that represents a geographic entity (location or object). Only
+            returned when Vertex or Avalara for Communications is enabled.
+    RecoveryAddress:
+      type: object
+      properties:
+        phone:
+          type: string
+          title: Phone number
+        street1:
+          type: string
+          title: Street 1
+          maxLength: 50
+        street2:
+          type: string
+          title: Street 2
+          maxLength: 50
+        city:
+          type: string
+          title: City
+        region:
+          type: string
+          title: State/Province
+          description: State or province.
+        postal_code:
+          type: string
+          title: Zip/Postal code
+          description: Zip or postal code.
+        country:
+          type: string
+          title: Country
+          description: Country, 2-letter ISO 3166-1 alpha-2 code.
+    RecoveryInvoiceCreate:
+      type: object
+      properties:
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        due_at:
+          type: string
+          format: date-time
+          title: Due at
+          description: Date invoice was originally due. Must be in the past.
+        po_number:
+          type: string
+          title: Purchase order number
+          description: This identifies the PO number associated with the subscription.
+          maxLength: 50
+        external_recovery_eligible:
+          type: boolean
+          title: External recovery eligible
+          description: >-
+            Must be set to `true` to acknowledge that the invoice is eligible
+            for external recovery. Requests with `false`, omitted, or
+            non-boolean values will be rejected.
+        account:
+          $ref: '#/components/schemas/RecoveryAccountCreate'
+        line_items:
+          type: array
+          title: Line items
+          description: >-
+            Line items to include on the invoice. Currency is specified at the
+            root level and must not be included in individual line items.
+          items:
+            $ref: '#/components/schemas/RecoveryLineItemCreate'
+        transaction_descriptor_suffix:
+          type: string
+          title: Transaction Descriptor Suffix
+          maxLength: 255
+          description: >-
+            Optionally overrides the suffix component of the composed
+            transaction descriptor. If omitted, the suffix is derived from the
+            subscription's plan name or the invoice description, with a Trial
+            prefix on Visa trial conversions. Subject to gateway availability
+            and payment method support.
+      required:
+        - currency
+        - due_at
+        - external_recovery_eligible
+        - account
+        - line_items
+    RecoveryBillingInfoCreate:
+      type: object
+      title: Recovery billing info
+      properties:
+        first_name:
+          type: string
+          title: First name
+          maxLength: 50
+        last_name:
+          type: string
+          title: Last name
+          maxLength: 50
+        company:
+          type: string
+          title: Company name
+          maxLength: 100
+        address:
+          $ref: '#/components/schemas/RecoveryAddress'
+        ip_address:
+          type: string
+          title: IP address
+          description: >-
+            *STRONGLY RECOMMENDED* Customer's IP address when updating their
+            billing information.
+          maxLength: 20
+        gateway_code:
+          type: string
+          title: An identifier for a specific payment gateway.
+          maxLength: 12
+        primary_payment_method:
+          type: boolean
+          title: Primary Payment Method
+          description: >-
+            The `primary_payment_method` field is used to designate the primary
+            billing info on the account. An account can have a maximum of 1
+            primary. If a user sets a different payment method as a primary,
+            then the existing primary will no longer be marked as such.
+        backup_payment_method:
+          type: boolean
+          description: >-
+            The `backup_payment_method` field is used to designate a billing
+            info as a backup on the account that will be tried if the initial
+            billing info used for an invoice is declined. All payment methods,
+            including the billing info marked `primary_payment_method` can be
+            set as a backup. An account can have a maximum of 1 backup, if a
+            user sets a different payment method as a backup, the existing
+            backup will no longer be marked as such.
+        payment_gateway_references:
+          type: array
+          description: >-
+            Array of Payment Gateway References, each a reference to a
+            third-party gateway object of varying types.
+          items:
+            $ref: '#/components/schemas/PaymentGatewayReferences'
+        payment_method:
+          $ref: '#/components/schemas/RecoveryPaymentMethodCreate'
+          description: >-
+            Merchant-supplied fallback payment method metadata. Recurly's own
+            gateway-token lookup is authoritative and will override any of these
+            fields it can determine itself; these fields are only used to fill
+            gaps when that lookup is unavailable.
+        network_transaction_id:
+          type: string
+          title: Network Transaction ID
+          description: >
+            Network transaction ID from the previous customer-in-session
+            subscription signup or billing info storage.
+
+
+            - 10-15 alphanumeric characters for Mastercard
+
+            - 14-15 alphanumeric for Visa
+
+            - 15 digits for all other brands
+
+            - 16 alphanumeric characters for Cartes Bancaires, which are
+            processed as Visa or Mastercard
+          maxLength: 16
+        transactions:
+          type: array
+          title: Transactions
+          description: >-
+            Transactions from previous collection attempts for this payment
+            method. Optional, unless this billing_info is the primary payment
+            method and the account's dunning campaign skips Recurly's own retry
+            attempts entirely -- in that case at least one entry is required.
+          items:
+            $ref: '#/components/schemas/RecoveryTransactionCreate'
+      required:
+        - gateway_code
+        - payment_gateway_references
+    RecoveryPaymentMethodCreate:
+      type: object
+      title: Recovery payment method
+      description: >
+        Merchant-supplied fallback for payment method metadata on the revenue
+        recovery
+
+        endpoint. Recurly's own gateway-token lookup is authoritative for these
+        fields;
+
+        a value supplied here is only used to fill a gap when that lookup is
+        restricted
+
+        or fails, and is overwritten if that lookup later succeeds.
+
+
+        Not accepted on the Purchase endpoint or the standard
+        billing_info/billing_infos
+
+        endpoints — Recover only.
+      properties:
+        object:
+          $ref: '#/components/schemas/RecoveryPaymentMethodEnum'
+          description: The payment method type.
+        card_type:
+          description: >-
+            The card brand (e.g. `Visa`, `MasterCard`). Present for
+            `credit_card`, `apple_pay`, and
+            `google_pay`/`google_pay_device_pan`; omitted for
+            `paypal_billing_agreement`.
+          $ref: '#/components/schemas/CardTypeEnum'
+        first_six:
+          type: string
+          description: >
+            For a plain card, the card's own first six digits (BIN).
+
+
+            For a tokenized wallet payment (`apple_pay`, `google_pay`, or
+
+            `google_pay_device_pan`), this is the DPAN's (the wallet/device
+            token's own
+
+            number) first six digits — **not** the underlying card's (FPAN). The
+            FPAN is
+
+            never accepted or represented; no separate wallet-specific field is
+            provided.
+          maxLength: 6
+        last_four:
+          type: string
+          description: >-
+            The card's (or, for a tokenized wallet payment, the DPAN's) last
+            four digits. See `first_six` for the DPAN-vs-FPAN distinction on
+            wallets.
+          maxLength: 4
+        exp_month:
+          type: integer
+          description: Expiration month.
+          maxLength: 2
+        exp_year:
+          type: integer
+          description: Expiration year.
+          maxLength: 4
+    RecoveryPaymentMethodEnum:
+      type: string
+      enum:
+        - credit_card
+        - apple_pay
+        - google_pay
+        - google_pay_device_pan
+        - paypal_billing_agreement
+    RecoveryAccountCreate:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/RecoveryAddress'
+        billing_infos:
+          type: array
+          title: Billing Infos
+          description: >-
+            If the premium Wallet feature is enabled, more than one payment
+            method can be associated with an account, and one can be designated
+            as a primary and one as a backup. Without the Wallet feature, only
+            one payment method will be accepted.
+          items:
+            $ref: '#/components/schemas/RecoveryBillingInfoCreate'
+        code:
+          type: string
+          description: >-
+            The unique identifier of the account. This cannot be changed once
+            the account is created.
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          description: The email address used for communicating with this customer.
+          maxLength: 255
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        dunning_campaign_id:
+          type: string
+          title: Dunning Campaign ID
+          description: >-
+            Unique ID to identify a dunning campaign. Used to specify if a
+            non-default dunning campaign should be assigned to this account. For
+            sites without multiple dunning campaigns enabled, the default
+            dunning campaign will always be used.
+      required:
+        - code
+        - billing_infos
+    RecoveryLineItemCreate:
+      required:
+        - unit_amount
+      type: object
+      title: Recovery line item
+      properties:
+        tax:
+          type: number
+          format: float
+          title: Tax
+          description: The tax amount for the line item.
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        harmonized_system_code:
+          type: string
+          title: Harmonized System Code
+          description: >-
+            The Harmonized System (HS) code is an internationally standardized
+            system of names and numbers to classify traded products. The HS
+            code, sometimes called Commodity Code, is used by customs
+            authorities around the world to identify products when assessing
+            duties and taxes. The HS code may also be referred to as the tariff
+            code or customs code. Values should contain only digits and
+            decimals.
+          maxLength: 25
+          pattern: ^\d+(\.\d+)*$
+        product_code:
+          type: string
+          title: Product code
+          description: >-
+            Optional field to track a product code or SKU for the line item.
+            This can be used to later reporting on product purchases.
+          maxLength: 50
+        quantity:
+          type: integer
+          title: Quantity
+          description: >-
+            This number will be multiplied by the unit amount to compute the
+            subtotal before any discounts or taxes.
+          default: 1
+        description:
+          type: string
+          title: Description
+          description: Description that appears on the invoice.
+          maxLength: 255
+        unit_amount:
+          type: number
+          format: float
+          title: Unit amount
+          description: >-
+            A positive or negative amount will result in a positive
+            `unit_amount`.
+    RecoveryTransactionCreate:
+      required:
+        - gateway_error_code
+        - attempted_collection_date
+      type: object
+      properties:
+        gateway_error_code:
+          type: string
+          title: Gateway error code
+          description: >-
+            The error code returned by the payment gateway for the original
+            payment collection attempt.
+          maxLength: 50
+        merchant_advice_code:
+          type: string
+          title: Merchant advice code
+          description: >-
+            The advice code returned by the payment gateway for the original
+            payment collection attempt. This field is only applicable for
+            certain gateways.
+          maxLength: 2
+        attempted_collection_date:
+          type: string
+          format: date-time
+          title: Attempted collection date
+          description: The date the original payment collection was attempted.
+    AddressWithName:
+      allOf:
+        - $ref: '#/components/schemas/Address'
+      type: object
+      properties:
+        first_name:
+          type: string
+          title: First name
+        last_name:
+          type: string
+          title: Last name
+    BillingInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 13
+          readOnly: true
+        object:
+          type: string
+          title: Object type
+          readOnly: true
+        account_id:
+          type: string
+          maxLength: 13
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        company:
+          type: string
+          maxLength: 100
+        address:
+          $ref: '#/components/schemas/Address'
+        vat_number:
+          type: string
+          description: >-
+            Customer's VAT number (to avoid having the VAT applied). This is
+            only used for automatically collected invoices.
+        valid:
+          type: boolean
+          readOnly: true
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        fraud:
+          type: object
+          x-class-name: FraudInfo
+          title: Fraud information
+          description: Most recent fraud result.
+          readOnly: true
+          properties:
+            score:
+              type: integer
+              title: Kount score
+              minimum: 1
+              maximum: 99
+            decision:
+              title: Kount decision
+              maxLength: 10
+              $ref: '#/components/schemas/KountDecisionEnum'
+            risk_rules_triggered:
+              type: object
+              title: Kount rules
+        primary_payment_method:
+          type: boolean
+          description: >-
+            The `primary_payment_method` field is used to indicate the primary
+            billing info on the account. The first billing info created on an
+            account will always become primary. This payment method will be used
+        backup_payment_method:
+          type: boolean
+          description: >-
+            The `backup_payment_method` field is used to indicate a billing info
+            as a backup on the account that will be tried if the initial billing
+            info used for an invoice is declined.
+        payment_gateway_references:
+          type: array
+          description: >-
+            Array of Payment Gateway References, each a reference to a
+            third-party gateway object of varying types.
+          items:
+            $ref: '#/components/schemas/PaymentGatewayReferences'
+        created_at:
+          type: string
+          format: date-time
+          description: When the billing information was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: When the billing information was last changed.
+          readOnly: true
+        updated_by:
+          type: object
+          x-class-name: BillingInfoUpdatedBy
+          readOnly: true
+          properties:
+            ip:
+              type: string
+              description: Customer's IP address when updating their billing information.
+              maxLength: 20
+            country:
+              type: string
+              description: >-
+                Country, 2-letter ISO 3166-1 alpha-2 code matching the origin IP
+                address, if known by Recurly.
+              maxLength: 2
+    LineItemDiscount:
+      type: object
+      title: Line item discount
+      description: A discount applied to a line item charge by a coupon redemption.
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be `line_item_discount`.
+          readOnly: true
+        coupon_id:
+          type: string
+          title: Coupon ID
+          description: The ID of the coupon that generated this discount.
+          readOnly: true
+        coupon_redemption_id:
+          type: string
+          title: Coupon Redemption ID
+          description: The ID of the coupon redemption that generated this discount.
+          readOnly: true
+        order_applied:
+          type: integer
+          title: Order applied
+          description: >-
+            The order in which this discount was applied when multiple coupons
+            were redeemed.
+          readOnly: true
+        discount_amount:
+          type: number
+          format: float
+          title: Discount amount
+          description: The amount discounted on this line item by this coupon redemption.
+          readOnly: true
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+          readOnly: true
+    CouponDiscount:
+      type: object
+      description: >
+        Details of the discount a coupon applies. Will contain a `type`
+
+        property and one of the following properties: `percent`, `fixed`,
+        `trial`.
+      properties:
+        type:
+          $ref: '#/components/schemas/DiscountTypeEnum'
+        percent:
+          description: This is only present when `type=percent`.
+          type: integer
+        currencies:
+          type: array
+          description: This is only present when `type=fixed`.
+          items:
+            $ref: '#/components/schemas/CouponDiscountPricing'
+        trial:
+          type: object
+          x-class-name: CouponDiscountTrial
+          description: This is only present when `type=free_trial`.
+          properties:
+            unit:
+              title: Trial unit
+              description: >-
+                Temporal unit of the free trial. When `billing_period`, `length`
+                represents the number of billing cycles.
+              $ref: '#/components/schemas/FreeTrialUnitEnum'
+            length:
+              type: integer
+              title: Trial length
+              description: >-
+                Trial length measured in the units specified by the sibling
+                `unit` property
+    CouponDiscountPricing:
+      type: object
+      properties:
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        amount:
+          type: number
+          format: float
+          title: Discount Amount
+          description: Value of the fixed discount that this coupon applies.
+    CouponMini:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Coupon ID
+          readOnly: true
+        object:
+          type: string
+          title: Object type
+          readOnly: true
+        code:
+          type: string
+          title: Coupon code
+          description: The code the customer enters to redeem the coupon.
+        name:
+          type: string
+          title: Name
+          description: The internal name for the coupon.
+        state:
+          title: State
+          description: Indicates if the coupon is redeemable, and if it is not, why.
+          $ref: '#/components/schemas/CouponStateEnum'
+        discount:
+          $ref: '#/components/schemas/CouponDiscount'
+        coupon_type:
+          title: 'Coupon type (TODO: implement coupon generation)'
+          description: >-
+            Whether the coupon is "single_code" or "bulk". Bulk coupons will
+            require a `unique_code_template` and will generate unique codes
+            through the `/generate` endpoint.
+          $ref: '#/components/schemas/CouponTypeEnum'
+        expired_at:
+          type: string
+          title: Expired at
+          description: >-
+            The date and time the coupon was expired early or reached its
+            `max_redemptions`.
+          format: date-time
+    CouponRedemptionRemainingDuration:
+      type: object
+      properties:
+        type:
+          type: string
+          title: Duration Type
+          description: >-
+            The coupon's duration type. `temporal` includes an `expires_at`
+            timestamp. `billing_periods` includes a `redemptions_remaining`
+            count of billing cycles. `forever` and `single_use` have no
+            additional fields.
+          $ref: '#/components/schemas/CouponDurationEnum'
+          readOnly: true
+        expires_at:
+          type: string
+          title: Expires at
+          format: date-time
+          description: >-
+            Present when `type` is `temporal`. The datetime after which this
+            redemption will no longer apply.
+          readOnly: true
+        redemptions_remaining:
+          type: integer
+          title: Redemptions Remaining
+          description: >-
+            The number of redemption periods remaining for which this coupon
+            will still apply.
+          readOnly: true
+    CouponRedemptionMini:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Coupon Redemption ID
+          readOnly: true
+        object:
+          type: string
+          title: Object type
+          description: Will always be `coupon`.
+          readOnly: true
+        coupon:
+          $ref: '#/components/schemas/CouponMini'
+        state:
+          title: Coupon Redemption state
+          $ref: '#/components/schemas/ActiveStateEnum'
+        remaining_duration:
+          readOnly: true
+          $ref: '#/components/schemas/CouponRedemptionRemainingDuration'
+        discounted:
+          type: number
+          format: float
+          title: Amount Discounted
+          description: >-
+            The amount that was discounted upon the application of the coupon,
+            formatted with the currency.
+        created_at:
+          type: string
+          title: Created at
+          format: date-time
+          readOnly: true
+    CreditPayment:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Credit Payment ID
+          maxLength: 13
+        object:
+          type: string
+          title: Object type
+        uuid:
+          type: string
+          title: Recurly UUID
+          description: >-
+            The UUID is useful for matching data with the CSV exports and
+            building URLs into Recurly's UI.
+          maxLength: 32
+        action:
+          title: Action
+          description: The action for which the credit was created.
+          $ref: '#/components/schemas/CreditPaymentActionEnum'
+        account:
+          $ref: '#/components/schemas/AccountMini'
+        applied_to_invoice:
+          $ref: '#/components/schemas/InvoiceMini'
+        original_invoice:
+          $ref: '#/components/schemas/InvoiceMini'
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        amount:
+          type: number
+          format: float
+          title: Amount
+          description: Total credit payment amount applied to the charge invoice.
+        original_credit_payment_id:
+          type: string
+          title: Original Credit Payment ID
+          description: >-
+            For credit payments with action `refund`, this is the credit payment
+            that was refunded.
+          maxLength: 13
+        refund_transaction:
+          $ref: '#/components/schemas/Transaction'
+        created_at:
+          type: string
+          title: Created at
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          title: Last updated at
+          format: date-time
+          readOnly: true
+        voided_at:
+          type: string
+          title: Voided at
+          format: date-time
+          readOnly: true
+    CustomField:
+      type: object
+      title: Custom field
+      properties:
+        name:
+          type: string
+          title: Field name
+          description: >-
+            Fields must be created in the UI before values can be assigned to
+            them.
+          pattern: /^[a-z0-9_-]+$/i
+          maxLength: 50
+        value:
+          type: string
+          title: Field value
+          description: >-
+            Any values that resemble a credit card number or security code
+            (CVV/CVC) will be rejected.
+          maxLength: 255
+        source_record_type:
+          type: string
+          title: Source record type
+          description: >-
+            The type of record this custom field was automatically copied from.
+            Only present when the field was copied from another record.
+          readOnly: true
+          $ref: '#/components/schemas/SourceRecordTypeEnum'
+        source_record_id:
+          type: string
+          title: Source record ID
+          description: >-
+            The UUID of the record this custom field was automatically copied
+            from. Only present when the field was copied from another record.
+          readOnly: true
+      required:
+        - name
+        - value
+    CustomFields:
+      type: array
+      title: Custom fields
+      description: >-
+        The custom fields will only be altered when they are included in a
+        request. Sending an empty array will not remove any existing values. To
+        remove a field send the name with a null or empty value.
+      items:
+        $ref: '#/components/schemas/CustomField'
+    InvoiceCustomFields:
+      type: array
+      title: Custom fields
+      description: >-
+        A list of custom fields that were on the account at the time of invoice
+        creation and were marked to be displayed on invoices. Read-only; cannot
+        be set directly on the invoice.
+      readOnly: true
+      items:
+        $ref: '#/components/schemas/CustomField'
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Invoice ID
+          readOnly: true
+        uuid:
+          type: string
+          title: Invoice UUID
+          readOnly: true
+        object:
+          type: string
+          title: Object type
+          readOnly: true
+        type:
+          title: Invoice type
+          description: Invoices are either charge, credit, or legacy invoices.
+          $ref: '#/components/schemas/InvoiceTypeEnum'
+        origin:
+          title: Origin
+          description: The event that created the invoice.
+          $ref: '#/components/schemas/OriginEnum'
+        state:
+          title: Invoice state
+          $ref: '#/components/schemas/InvoiceStateEnum'
+        account:
+          $ref: '#/components/schemas/AccountMini'
+        billing_info_id:
+          type: string
+          title: Billing info ID
+          description: >-
+            The `billing_info_id` is the value that represents a specific
+            billing info for an end customer. When `billing_info_id` is used to
+            assign billing info to the subscription, all future billing events
+            for the subscription will bill to the specified billing info.
+            `billing_info_id` can ONLY be used for sites utilizing the Wallet
+            feature.
+        subscription_ids:
+          type: array
+          title: Subscription IDs
+          description: >-
+            If the invoice is charging or refunding for one or more
+            subscriptions, these are their IDs.
+          items:
+            type: string
+            title: Subscription ID
+            maxLength: 13
+        previous_invoice_id:
+          type: string
+          title: Previous invoice ID
+          description: >-
+            On refund invoices, this value will exist and show the invoice ID of
+            the purchase invoice the refund was created from. This field is only
+            populated for sites without the [Only Bill What
+            Changed](https://docs.recurly.com/docs/only-bill-what-changed)
+            feature enabled. Sites with Only Bill What Changed enabled should
+            use the [related_invoices
+            endpoint](https://recurly.com/developers/api/v2021-02-25/index.html#operation/list_related_invoices)
+            to see purchase invoices refunded by this invoice.
+          maxLength: 13
+        number:
+          type: string
+          title: Invoice number
+          description: >-
+            If VAT taxation and the Country Invoice Sequencing feature are
+            enabled, invoices will have country-specific invoice numbers for
+            invoices billed to EU countries (ex: FR1001). Non-EU invoices will
+            continue to use the site-level invoice number sequence.
+        collection_method:
+          title: Collection method
+          description: >-
+            An automatic invoice means a corresponding transaction is run using
+            the account's billing information at the same time the invoice is
+            created. Manual invoices are created without a corresponding
+            transaction. The merchant must enter a manual payment transaction or
+            have the customer pay the invoice with an automatic method, like
+            credit card, PayPal, Amazon, or ACH bank payment.
+          default: automatic
+          $ref: '#/components/schemas/CollectionMethodEnum'
+        po_number:
+          type: string
+          title: Purchase order number
+          description: >-
+            For manual invoicing, this identifies the PO number associated with
+            the subscription.
+          maxLength: 50
+        net_terms:
+          type: integer
+          title: Net terms
+          description: >-
+            Integer paired with `Net Terms Type` and representing the number
+
+            of days past the current date (for `net` Net Terms Type) or days
+            after
+
+            the last day of the current month (for `eom` Net Terms Type) that
+            the
+
+            invoice will become past due. For `manual` collection method, an
+            additional 24 hours is
+
+            added to ensure the customer has the entire last day to make payment
+            before
+
+            becoming past due. For example:
+
+
+            If an invoice is due `net 0`, it is due 'On Receipt' and will become
+            past due 24 hours after it's created.
+
+            If an invoice is due `net 30`, it will become past due at 31 days
+            exactly.
+
+            If an invoice is due `eom 30`, it will become past due 31 days from
+            the last day of the current month.
+
+
+            For `automatic` collection method, the additional 24 hours is not
+            added. For example, On-Receipt is due immediately, and `net 30` will
+            become due exactly 30 days from invoice generation, at which point
+            Recurly will attempt collection.
+
+            When `eom` Net Terms Type is passed, the value for `Net Terms` is
+            restricted to `0, 15, 30, 45, 60, or 90`.
+
+
+            For more information on how net terms work with `manual` collection
+            visit our docs page
+            (https://docs.recurly.com/docs/manual-payments#section-collection-terms)
+
+            or visit
+            (https://docs.recurly.com/docs/automatic-invoicing-terms#section-collection-terms)
+            for information about net terms using `automatic` collection.
+          minimum: 0
+          default: 0
+        net_terms_type:
+          $ref: '#/components/schemas/NetTermsTypeEnum'
+        address:
+          $ref: '#/components/schemas/InvoiceAddress'
+        shipping_address:
+          $ref: '#/components/schemas/ShippingAddress'
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        discount:
+          type: number
+          format: float
+          title: Discount
+          description: Total discounts applied to this invoice.
+        coupon_redemptions:
+          type: array
+          title: Coupon Redemptions
+          description: The coupon redemptions applied to this invoice.
+          items:
+            $ref: '#/components/schemas/CouponRedemptionMini'
+        subtotal:
+          type: number
+          format: float
+          title: Subtotal
+          description: The summation of charges and credits, before discounts and taxes.
+        subtotal_after_discount:
+          type: number
+          format: float
+          title: Subtotal After Discount
+          description: The summation of charges and credits, after discounts applied.
+        tax:
+          type: number
+          format: float
+          title: Tax
+          description: The total tax on this invoice.
+        reference_only_currency_conversion:
+          $ref: '#/components/schemas/ReferenceOnlyCurrencyConversion'
+        total:
+          type: number
+          format: float
+          title: Total
+          description: >-
+            The final total on this invoice. The summation of invoice charges,
+            discounts, credits, and tax.
+        refundable_amount:
+          type: number
+          format: float
+          title: Refundable amount
+          description: >-
+            The refundable amount on a charge invoice. It will be null for all
+            other invoices.
+        paid:
+          type: number
+          format: float
+          title: Paid
+          description: The total amount of successful payments transaction on this invoice.
+        balance:
+          type: number
+          format: float
+          title: Balance
+          description: The outstanding balance remaining on this invoice.
+        tax_info:
+          $ref: '#/components/schemas/TaxInfo'
+        used_tax_service:
+          type: boolean
+          title: Used Tax Service?
+          description: >-
+            Will be `true` when the invoice had a successful response from the
+            tax service and `false` when the invoice was not sent to tax service
+            due to a lack of address or enabled jurisdiction or was processed
+            without tax due to a non-blocking error returned from the tax
+            service.
+        vat_number:
+          type: string
+          title: VAT number
+          description: >-
+            VAT registration number for the customer on this invoice. This will
+            come from the VAT Number field in the Billing Info or the Account
+            Info depending on your tax settings and the invoice collection
+            method.
+          maxLength: 20
+        vat_reverse_charge_notes:
+          type: string
+          title: VAT reverse charge notes
+          description: >-
+            VAT Reverse Charge Notes only appear if you have EU VAT enabled or
+            are using your own Avalara AvaTax account and the customer is in the
+            EU, has a VAT number, and is in a different country than your own.
+            This will default to the VAT Reverse Charge Notes text specified on
+            the Tax Settings page in your Recurly admin, unless custom notes
+            were created with the original subscription.
+        terms_and_conditions:
+          type: string
+          title: Terms and conditions
+          description: >-
+            This will default to the Terms and Conditions text specified on the
+            Invoice Settings page in your Recurly admin. Specify custom notes to
+            add or override Terms and Conditions.
+        customer_notes:
+          type: string
+          title: Customer notes
+          description: >-
+            This will default to the Customer Notes text specified on the
+            Invoice Settings. Specify custom notes to add or override Customer
+            Notes.
+        line_items:
+          type: array
+          title: Line Items
+          items:
+            $ref: '#/components/schemas/LineItem'
+        has_more_line_items:
+          type: boolean
+          title: Has more Line Items
+          description: >-
+            Identifies if the invoice has more line items than are returned in
+            `line_items`. If `has_more_line_items` is `true`, then a request
+            needs to be made to the `list_invoice_line_items` endpoint.
+        transactions:
+          type: array
+          title: Transactions
+          items:
+            $ref: '#/components/schemas/Transaction'
+        credit_payments:
+          type: array
+          title: Credit payments
+          items:
+            $ref: '#/components/schemas/CreditPayment'
+        created_at:
+          type: string
+          format: date-time
+          title: Created at
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          title: Last updated at
+          readOnly: true
+        due_at:
+          type: string
+          format: date-time
+          title: Due at
+          description: Date invoice is due. This is the date the net terms are reached.
+        closed_at:
+          type: string
+          format: date-time
+          title: Closed at
+          description: Date invoice was marked paid or failed.
+        dunning_campaign_id:
+          type: string
+          title: Dunning Campaign ID
+          description: >-
+            Unique ID to identify the dunning campaign used when dunning the
+            invoice. For sites without multiple dunning campaigns enabled, this
+            will always be the default dunning campaign.
+        dunning_events_sent:
+          type: integer
+          title: Dunning Event Sent
+          description: Number of times the event was sent.
+        final_dunning_event:
+          type: boolean
+          title: Final Dunning Event
+          description: Last communication attempt.
+        business_entity_id:
+          type: string
+          title: Business Entity ID
+          description: >-
+            Unique ID to identify the business entity assigned to the invoice.
+            Available when the `Multiple Business Entities` feature is enabled.
+        custom_fields:
+          $ref: '#/components/schemas/InvoiceCustomFields'
+    InvoiceCollection:
+      type: object
+      title: Invoice collection
+      properties:
+        object:
+          type: string
+          title: Object type
+        charge_invoice:
+          $ref: '#/components/schemas/Invoice'
+        credit_invoices:
+          type: array
+          title: Credit invoices
+          items:
+            $ref: '#/components/schemas/Invoice'
+        verification_transactions:
+          type: array
+          title: Verification transactions
+          description: >-
+            Verification transactions (used for free trial payment method
+            validation)
+          items:
+            $ref: '#/components/schemas/Transaction'
+    InvoiceMini:
+      type: object
+      title: Invoice mini details
+      properties:
+        id:
+          type: string
+          title: Invoice ID
+          maxLength: 13
+        object:
+          type: string
+          title: Object type
+        number:
+          type: string
+          title: Invoice number
+        business_entity_id:
+          type: string
+          title: Business Entity ID
+          description: >-
+            Unique ID to identify the business entity assigned to the invoice.
+            Available when the `Multiple Business Entities` feature is enabled.
+        type:
+          title: Invoice type
+          $ref: '#/components/schemas/InvoiceTypeEnum'
+        state:
+          title: Invoice state
+          $ref: '#/components/schemas/InvoiceStateEnum'
+    LineItem:
+      type: object
+      title: Line item
+      properties:
+        id:
+          type: string
+          title: Line item ID
+          maxLength: 13
+        object:
+          type: string
+          title: Object type
+        uuid:
+          type: string
+          title: UUID
+          description: >-
+            The UUID is useful for matching data with the CSV exports and
+            building URLs into Recurly's UI.
+          maxLength: 32
+        type:
+          title: Line item type
+          description: >-
+            Charges are positive line items that debit the account. Credits are
+            negative line items that credit the account.
+          $ref: '#/components/schemas/LineItemTypeEnum'
+        item_code:
+          type: string
+          title: Item Code
+          description: >-
+            Unique code to identify an item. Available when the Credit Invoices
+            feature is enabled.
+          pattern: /^[a-z0-9_+-]+$/
+          maxLength: 50
+        item_id:
+          type: string
+          title: Item ID
+          description: >-
+            System-generated unique identifier for an item. Available when the
+            Credit Invoices feature is enabled.
+          maxLength: 13
+        external_sku:
+          type: string
+          title: External SKU
+          description: >-
+            Optional Stock Keeping Unit assigned to an item. Available when the
+            Credit Invoices feature is enabled.
+          maxLength: 50
+        revenue_schedule_type:
+          title: Revenue schedule type
+          $ref: '#/components/schemas/LineItemRevenueScheduleTypeEnum'
+        state:
+          title: Current state of the line item
+          description: >-
+            Pending line items are charges or credits on an account that have
+            not been applied to an invoice yet. Invoiced line items will always
+            have an `invoice_id` value.
+          $ref: '#/components/schemas/LineItemStateEnum'
+        legacy_category:
+          title: Legacy category
+          description: >
+            Category to describe the role of a line item on a legacy invoice:
+
+            - "charges" refers to charges being billed for on this invoice.
+
+            - "credits" refers to refund or proration credits. This portion of
+            the invoice can be considered a credit memo.
+
+            - "applied_credits" refers to previous credits applied to this
+            invoice. See their original_line_item_id to determine where the
+            credit first originated.
+
+            - "carryforwards" can be ignored. They exist to consume any
+            remaining credit balance. A new credit with the same amount will be
+            created and placed back on the account.
+          $ref: '#/components/schemas/LegacyCategoryEnum'
+        account:
+          $ref: '#/components/schemas/AccountMini'
+        bill_for_account_id:
+          type: string
+          title: Bill For Account ID
+          maxLength: 13
+          description: The UUID of the account responsible for originating the line item.
+        subscription_id:
+          type: string
+          title: Subscription ID
+          description: >-
+            If the line item is a charge or credit for a subscription, this is
+            its ID.
+          maxLength: 13
+        plan_id:
+          type: string
+          title: Plan ID
+          description: >-
+            If the line item is a charge or credit for a plan or add-on, this is
+            the plan's ID.
+          maxLength: 13
+        plan_code:
+          type: string
+          title: Plan code
+          description: >-
+            If the line item is a charge or credit for a plan or add-on, this is
+            the plan's code.
+          maxLength: 50
+        add_on_id:
+          type: string
+          title: Add-on ID
+          description: If the line item is a charge or credit for an add-on this is its ID.
+          maxLength: 13
+        add_on_code:
+          type: string
+          title: Add-on code
+          description: >-
+            If the line item is a charge or credit for an add-on, this is its
+            code.
+          maxLength: 50
+        invoice_id:
+          type: string
+          title: Invoice ID
+          description: Once the line item has been invoiced this will be the invoice's ID.
+          maxLength: 13
+        invoice_number:
+          type: string
+          title: Invoice number
+          description: >-
+            Once the line item has been invoiced this will be the invoice's
+            number. If VAT taxation and the Country Invoice Sequencing feature
+            are enabled, invoices will have country-specific invoice numbers for
+            invoices billed to EU countries (ex: FR1001). Non-EU invoices will
+            continue to use the site-level invoice number sequence.
+        previous_line_item_id:
+          type: string
+          title: Previous line item ID
+          description: >-
+            Will only have a value if the line item is a credit created from a
+            previous credit, or if the credit was created from a charge refund.
+          maxLength: 13
+        original_line_item_invoice_id:
+          type: string
+          title: Original line item's invoice ID
+          description: >-
+            The invoice where the credit originated. Will only have a value if
+            the line item is a credit created from a previous credit, or if the
+            credit was created from a charge refund.
+          maxLength: 13
+        origin:
+          title: Origin of line item
+          description: >-
+            A credit created from an original charge will have the value of the
+            charge's origin.
+          $ref: '#/components/schemas/LineItemOriginEnum'
+        accounting_code:
+          type: string
+          title: Accounting code
+          description: >-
+            Internal accounting code to help you reconcile your revenue to the
+            correct ledger. Line items created as part of a subscription invoice
+            will use the plan or add-on's accounting code, otherwise the value
+            will only be present if you define an accounting code when creating
+            the line item.
+          maxLength: 20
+        product_code:
+          type: string
+          title: Product code
+          description: >-
+            For plan-related line items this will be the plan's code, for add-on
+            related line items it will be the add-on's code. For item-related
+            line items it will be the item's `external_sku`.
+          maxLength: 50
+        credit_reason_code:
+          title: Credit reason code
+          description: The reason the credit was given when line item is `type=credit`.
+          default: general
+          $ref: '#/components/schemas/FullCreditReasonCodeEnum'
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        amount:
+          type: number
+          format: float
+          title: Total after discounts and taxes
+          description: '`(quantity * unit_amount) - discount + tax`'
+        description:
+          type: string
+          title: Description
+          description: >-
+            Description that appears on the invoice. For subscription related
+            items this will be filled in automatically.
+          maxLength: 255
+        quantity:
+          type: integer
+          title: Quantity
+          description: >-
+            This number will be multiplied by the unit amount to compute the
+            subtotal before any discounts or taxes.
+          default: 1
+        quantity_decimal:
+          type: string
+          title: Quantity Decimal
+          description: >-
+            A floating-point alternative to Quantity. If this value is present,
+            it will be used in place of Quantity for calculations, and Quantity
+            will be the rounded integer value of this number. This field
+            supports up to 9 decimal places. The Decimal Quantity feature must
+            be enabled to utilize this field.
+        unit_amount:
+          type: number
+          format: float
+          title: Unit amount
+          description: Positive amount for a charge, negative amount for a credit.
+        unit_amount_decimal:
+          type: string
+          title: Unit amount decimal
+          description: Positive amount for a charge, negative amount for a credit.
+        tax_inclusive:
+          type: boolean
+          title: Tax Inclusive?
+          description: >-
+            Determines whether or not tax is included in the unit amount. The
+            Tax Inclusive Pricing feature (separate from the Mixed Tax Pricing
+            feature) must be enabled to utilize this flag.
+        subtotal:
+          type: number
+          format: float
+          title: Total before discounts and taxes
+          description: '`quantity * unit_amount`'
+        discount:
+          type: number
+          format: float
+          title: Discount
+          description: The sum of all discounts applied to the line item.
+        discounts:
+          type: array
+          title: Discounts
+          description: >-
+            The breakdown of discounts applied to the line item by coupon
+            redemption.
+          items:
+            $ref: '#/components/schemas/LineItemDiscount'
+        liability_gl_account_code:
+          type: string
+          title: Accounting code for the ledger account.
+          description: |
+            Unique code to identify the ledger account. Each code must start
+            with a letter or number. The following special characters are
+            allowed: `-_.,:`
+          pattern: /^[A-Za-z0-9](( *)?[\-A-Za-z0-9_.,:])*$/
+          maxLength: 255
+        revenue_gl_account_code:
+          type: string
+          title: Accounting code for the ledger account.
+          description: |
+            Unique code to identify the ledger account. Each code must start
+            with a letter or number. The following special characters are
+            allowed: `-_.,:`
+          pattern: /^[A-Za-z0-9](( *)?[\-A-Za-z0-9_.,:])*$/
+          maxLength: 255
+        performance_obligation_id:
+          type: string
+          title: Performance Obligation ID
+          description: |
+            The ID of a performance obligation. Performance obligations are
+            only accessible as a part of the Recurly RevRec Standard and
+            Recurly RevRec Advanced features.
+          maxLength: 13
+        tax:
+          type: number
+          format: float
+          title: Tax
+          description: The tax amount for the line item.
+        taxable:
+          type: boolean
+          title: Taxable?
+          description: '`true` if the line item is taxable, `false` if it is not.'
+        tax_exempt:
+          type: boolean
+          title: Tax exempt?
+          description: >-
+            `true` exempts tax on charges, `false` applies tax on charges. If
+            not defined, then defaults to the Plan and Site settings. This
+            attribute does not work for credits (negative line items). Credits
+            are always applied post-tax. Pre-tax discounts should use the
+            Coupons feature.
+        avalara_transaction_type:
+          type: integer
+          title: Avalara Transaction Type
+          description: >-
+            Used by Avalara for Communications taxes. The transaction type in
+            combination with the service type describe how the line item is
+            taxed. Refer to [the
+            documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types)
+            for more available t/s types.
+          minimum: 0
+        avalara_service_type:
+          type: integer
+          title: Avalara Service Type
+          description: >-
+            Used by Avalara for Communications taxes. The transaction type in
+            combination with the service type describe how the line item is
+            taxed. Refer to [the
+            documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types)
+            for more available t/s types.
+          minimum: 0
+        vertex_transaction_type:
+          $ref: '#/components/schemas/VertexTransactionTypeEnum'
+        tax_code:
+          type: string
+          maxLength: 50
+          title: Tax code
+          description: >-
+            Optional field used by Avalara, Vertex, and Recurly's In-the-Box tax
+            solution to determine taxation rules. You can pass in specific tax
+            codes using any of these tax integrations. For Recurly's In-the-Box
+            tax offering you can also choose to instead use simple values of
+            `unknown`, `physical`, or `digital` tax codes.
+        harmonized_system_code:
+          type: string
+          title: Harmonized System Code
+          description: >-
+            The Harmonized System (HS) code is an internationally standardized
+            system of names and numbers to classify traded products. The HS
+            code, sometimes called Commodity Code, is used by customs
+            authorities around the world to identify products when assessing
+            duties and taxes. The HS code may also be referred to as the tariff
+            code or customs code. Values should contain only digits and
+            decimals.
+          maxLength: 25
+          pattern: ^\d+(\.\d+)*$
+        tax_info:
+          $ref: '#/components/schemas/TaxInfo'
+        origin_tax_address_source:
+          $ref: '#/components/schemas/OriginTaxAddressSourceEnum'
+        destination_tax_address_source:
+          $ref: '#/components/schemas/DestinationTaxAddressSourceEnum'
+        proration_rate:
+          type: number
+          format: float
+          title: Proration rate
+          description: >-
+            When a line item has been prorated, this is the rate of the
+            proration. Proration rates were made available for line items
+            created after March 30, 2017. For line items created prior to that
+            date, the proration rate will be `null`, even if the line item was
+            prorated.
+          minimum: 0
+          maximum: 1
+        refund:
+          type: boolean
+          title: Refund?
+        refunded_quantity:
+          type: integer
+          title: Refunded Quantity
+          description: >-
+            For refund charges, the quantity being refunded. For non-refund
+            charges, the total quantity refunded (possibly over multiple
+            refunds).
+        refunded_quantity_decimal:
+          type: string
+          title: Refunded Quantity Decimal
+          description: >-
+            A floating-point alternative to Refunded Quantity. For refund
+            charges, the quantity being refunded. For non-refund charges, the
+            total quantity refunded (possibly over multiple refunds). The
+            Decimal Quantity feature must be enabled to utilize this field.
+        credit_applied:
+          type: number
+          format: float
+          title: Credit Applied
+          description: >-
+            The amount of credit from this line item that was applied to the
+            invoice.
+        shipping_address:
+          $ref: '#/components/schemas/ShippingAddress'
+        start_date:
+          type: string
+          format: date-time
+          title: Start date
+          description: >-
+            If an end date is present, this is value indicates the beginning of
+            a billing time range. If no end date is present it indicates billing
+            for a specific date.
+        end_date:
+          type: string
+          format: date-time
+          title: End date
+          description: If this date is provided, it indicates the end of a time range.
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        created_at:
+          type: string
+          format: date-time
+          title: Created at
+          description: When the line item was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: Last updated at
+          description: When the line item was last changed.
+    PaymentGatewayReferences:
+      type: object
+      title: Payment Gateway References Object
+      description: >-
+        Array of Payment Gateway References, each a reference to a third-party
+        gateway object of varying types.
+      properties:
+        token:
+          type: string
+          title: Token
+          description: >-
+            Reference value used when the external token was created. If a
+            Stripe gateway or Ebanx gateway is used, this value will need to be
+            accompanied by its reference_type.
+        reference_type:
+          type: string
+          title: Reference Type
+          $ref: '#/components/schemas/PaymentGatewayReferencesEnum'
+    ShippingAddress:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Shipping Address ID
+          maxLength: 13
+          readOnly: true
+        object:
+          type: string
+          title: Object type
+          readOnly: true
+        account_id:
+          type: string
+          title: Account ID
+          maxLength: 13
+          readOnly: true
+        nickname:
+          type: string
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        company:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        vat_number:
+          type: string
+          maxLength: 20
+        phone:
+          type: string
+          maxLength: 30
+        street1:
+          type: string
+          maxLength: 255
+        street2:
+          type: string
+          maxLength: 255
+        city:
+          type: string
+          maxLength: 255
+        region:
+          type: string
+          maxLength: 255
+          description: State or province.
+        postal_code:
+          type: string
+          maxLength: 20
+          description: Zip or postal code.
+        country:
+          type: string
+          maxLength: 50
+          description: Country, 2-letter ISO 3166-1 alpha-2 code.
+        geo_code:
+          type: string
+          maxLength: 20
+          description: >-
+            Code that represents a geographic entity (location or object). Only
+            returned when Vertex or Avalara for Communications is enabled.
+        created_at:
+          type: string
+          title: Created at
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          title: Updated at
+          format: date-time
+          readOnly: true
+    ReferenceOnlyCurrencyConversion:
+      type: object
+      title: Reference Only Currency Conversion
+      properties:
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        subtotal_in_cents:
+          type: number
+          format: float
+          title: Subtotal In Cents
+          description: The subtotal converted to the currency.
+        tax_in_cents:
+          type: number
+          format: float
+          title: Tax In Cents
+          description: The tax converted to the currency.
+        rate:
+          type: string
+          title: Rate
+          description: The conversion rate to the currency.
+        source:
+          type: string
+          title: Source
+          description: The source of the conversion rate.
+        date:
+          type: string
+          title: Date
+          format: date
+          description: The date of the conversion rate.
+    TaxInfo:
+      type: object
+      title: Tax info
+      description: Only for merchants using Recurly's In-The-Box taxes.
+      properties:
+        type:
+          type: string
+          title: Type
+          description: >-
+            Provides the tax type as "vat" for EU VAT, "usst" for U.S. Sales
+            Tax, or the 2 letter country code for country level tax types like
+            Canada, Australia, New Zealand, Israel, and all non-EU European
+            countries. Not present when Avalara for Communications is enabled.
+        region:
+          type: string
+          title: Region
+          description: >-
+            Provides the tax region applied on an invoice. For U.S. Sales Tax,
+            this will be the 2 letter state code. For EU VAT this will be the 2
+            letter country code. For all country level tax types, this will
+            display the regional tax, like VAT, GST, or PST. Not present when
+            Avalara for Communications is enabled.
+        rate:
+          type: number
+          format: float
+          title: Rate
+          description: >-
+            The combined tax rate. Not present when Avalara for Communications
+            is enabled.
+        tax_details:
+          type: array
+          description: >-
+            Provides additional tax details for Communications taxes when
+            Avalara for Communications or Vertex Tax Breakdown is enabled or
+            Canadian Sales Tax. Tax details will only be populated for the
+            Invoice response when fetching a single invoice and not for the
+            InvoiceList or LineItemList. Only populated for a single LineItem
+            fetch when Avalara for Communications is enabled.
+          items:
+            $ref: '#/components/schemas/TaxDetail'
+    TaxDetail:
+      type: object
+      title: Tax detail
+      properties:
+        type:
+          type: string
+          title: Type
+          description: >-
+            Provides the tax type for the region or type of Comminications tax
+            when Avalara for Communications or Vertex is enabled. For Canadian
+            Sales Tax, this will be GST, HST, QST or PST.
+        region:
+          type: string
+          title: Region
+          description: >-
+            Provides the tax region applied on an invoice. For Canadian Sales
+            Tax, this will be either the 2 letter province code or country code.
+            Not present when Avalara for Communications is enabled.
+        rate:
+          type: number
+          format: float
+          title: Rate
+          description: Provides the tax rate for the region.
+        tax:
+          type: number
+          format: float
+          title: Tax
+          description: The total tax applied for this tax type.
+        name:
+          type: string
+          title: Name
+          description: >-
+            Provides the name of the Communications tax applied. Present only
+            when Avalara for Communications or Vertex is enabled.
+        level:
+          type: string
+          title: Level
+          description: >-
+            Provides the jurisdiction level for the Communications tax applied.
+            Example values include city, state and federal. Present only when
+            Avalara for Communications or Vertex is enabled.
+        billable:
+          type: boolean
+          title: Billable
+          description: >-
+            Whether or not the line item is taxable. Only populated for a single
+            LineItem fetch when Avalara for Communications or Vertex is enabled.
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Transaction ID
+          maxLength: 13
+        object:
+          type: string
+          title: Object type
+        uuid:
+          type: string
+          title: Recurly UUID
+          description: >-
+            The UUID is useful for matching data with the CSV exports and
+            building URLs into Recurly's UI.
+          maxLength: 32
+        original_transaction_id:
+          type: string
+          title: Original Transaction ID
+          description: >-
+            If this transaction is a refund (`type=refund`), this will be the ID
+            of the original transaction on the invoice being refunded.
+          maxLength: 13
+        account:
+          $ref: '#/components/schemas/AccountMini'
+        initiator:
+          $ref: '#/components/schemas/TransactionInitiatorEnum'
+        invoice:
+          $ref: '#/components/schemas/InvoiceMini'
+        merchant_reason_code:
+          $ref: '#/components/schemas/TransactionMerchantReasonCodeEnum'
+        voided_by_invoice:
+          $ref: '#/components/schemas/InvoiceMini'
+        subscription_ids:
+          type: array
+          title: Subscription IDs
+          description: >-
+            If the transaction is charging or refunding for one or more
+            subscriptions, these are their IDs.
+          items:
+            type: string
+            title: Subscription ID
+            maxLength: 13
+        type:
+          title: Transaction type
+          description: >
+            - `authorization` – verifies billing information and places a hold
+            on money in the customer's account.
+
+            - `capture` – captures funds held by an authorization and completes
+            a purchase.
+
+            - `purchase` – combines the authorization and capture in one
+            transaction.
+
+            - `refund` – returns all or a portion of the money collected in a
+            previous transaction to the customer.
+
+            - `verify` – a $0 or $1 transaction used to verify billing
+            information which is immediately voided.
+          $ref: '#/components/schemas/TransactionTypeEnum'
+        origin:
+          title: Origin of transaction
+          description: Describes how the transaction was triggered.
+          $ref: '#/components/schemas/TransactionOriginEnum'
+        currency:
+          type: string
+          title: Currency
+          description: 3-letter ISO 4217 currency code.
+          maxLength: 3
+        description:
+          type: string
+          title: Description
+          description: The description that gets sent to the gateway.
+        amount:
+          type: number
+          format: float
+          title: Amount
+          description: Total transaction amount sent to the payment gateway.
+        status:
+          title: Transaction status
+          description: >-
+            The current transaction status. Note that the status may change,
+            e.g. a `pending` transaction may become `declined` or `success` may
+            later become `void`.
+          $ref: '#/components/schemas/TransactionStatusEnum'
+        success:
+          type: boolean
+          title: Success?
+          description: Did this transaction complete successfully?
+        backup_payment_method_used:
+          type: boolean
+          title: Backup Payment Method Used?
+          description: Indicates if the transaction was completed using a backup payment
+        refunded:
+          type: boolean
+          title: Refunded?
+          description: Indicates if part or all of this transaction was refunded.
+        billing_address:
+          $ref: '#/components/schemas/AddressWithName'
+        collection_method:
+          description: The method by which the payment was collected.
+          $ref: '#/components/schemas/CollectionMethodEnum'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        payment_gateway_references:
+          type: array
+          description: >-
+            Array of Payment Gateway References captured at transaction time,
+            each a reference to a third-party gateway object of varying types.
+          items:
+            $ref: '#/components/schemas/PaymentGatewayReferences'
+        ip_address_v4:
+          type: string
+          title: IP address
+          description: >
+            IP address provided when the billing information was collected:
+
+
+            - When the customer enters billing information into the Recurly.js
+            or Hosted Payment Pages, Recurly records the IP address.
+
+            - When the merchant enters billing information using the API, the
+            merchant may provide an IP address.
+
+            - When the merchant enters billing information using the UI, no IP
+            address is recorded.
+        ip_address_country:
+          type: string
+          title: >-
+            Origin IP address country, 2-letter ISO 3166-1 alpha-2 code, if
+            known by Recurly.
+        status_code:
+          type: string
+          title: Status code
+        status_message:
+          type: string
+          title: Status message
+          description: >-
+            For declined (`success=false`) transactions, the message displayed
+            to the merchant.
+        customer_message:
+          type: string
+          title: Customer message
+          description: >-
+            For declined (`success=false`) transactions, the message displayed
+            to the customer.
+        customer_message_locale:
+          type: string
+          title: Language code for the message
+        payment_gateway:
+          type: object
+          x-class-name: TransactionPaymentGateway
+          properties:
+            id:
+              type: string
+            object:
+              type: string
+              title: Object type
+            type:
+              type: string
+            name:
+              type: string
+        gateway_message:
+          type: string
+          title: Gateway message
+          description: Transaction message from the payment gateway.
+        gateway_reference:
+          type: string
+          title: Gateway reference
+          description: Transaction reference number from the payment gateway.
+        gateway_approval_code:
+          type: string
+          title: Transaction approval code from the payment gateway.
+        gateway_response_code:
+          type: string
+          title: >-
+            For declined transactions (`success=false`), this field lists the
+            gateway error code.
+        gateway_response_time:
+          type: number
+          format: float
+          title: Gateway response time
+          description: Time, in seconds, for gateway to process the transaction.
+        gateway_response_values:
+          type: object
+          title: Gateway response values
+          description: The values in this field will vary from gateway to gateway.
+        cvv_check:
+          title: CVV check
+          description: >-
+            When processed, result from checking the CVV/CVC value on the
+            transaction.
+          $ref: '#/components/schemas/CvvCheckEnum'
+        avs_check:
+          title: AVS check
+          description: >-
+            When processed, result from checking the overall AVS on the
+            transaction.
+          $ref: '#/components/schemas/AvsCheckEnum'
+        created_at:
+          type: string
+          format: date-time
+          title: Created at
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated at
+        voided_at:
+          type: string
+          format: date-time
+          title: Voided at
+        collected_at:
+          type: string
+          format: date-time
+          title: >-
+            Collected at, or if not collected yet, the time the transaction was
+            created.
+        action_result:
+          type: object
+          description: >-
+            Action result params to be used in Recurly-JS to complete a payment
+            when using asynchronous payment methods, e.g., Boleto, iDEAL and
+            Sofort.
+          title: Action result
+        vat_number:
+          type: string
+          description: >-
+            VAT number for the customer on this transaction. If the customer's
+            Billing Info country is BR or AR, then this will be their Tax
+            Identifier. For all other countries this will come from the VAT
+            Number field in the Billing Info.
+          title: VAT Number
+        fraud_info:
+          $ref: '#/components/schemas/TransactionFraudInfo'
+        next_action:
+          type: object
+          x-class-name: TransactionNextAction
+          description: >-
+            Next action values are used for any required customer follow-up
+            action. Currently, this is supported for Ebanx when using Pix
+            Automatico.
+          properties:
+            type:
+              type: string
+              title: Next action type
+              description: The type of next action required.
+              $ref: '#/components/schemas/NextActionTypeEnum'
+            value:
+              type: string
+              title: Next action value
+              description: The value associated with the next action type.
+          title: Next action
+    TransactionFraudInfo:
+      type: object
+      title: Fraud information
+      readOnly: true
+      properties:
+        object:
+          type: string
+          title: Object type
+          readOnly: true
+        score:
+          type: integer
+          title: Kount score
+          minimum: 1
+          maximum: 99
+        decision:
+          title: Kount decision
+          maxLength: 10
+          $ref: '#/components/schemas/KountDecisionEnum'
+        reference:
+          type: string
+          title: Kount transaction reference ID
+        risk_rules_triggered:
+          type: array
+          title: Risk Rules Triggered
+          description: A list of fraud risk rules that were triggered for the transaction.
+          items:
+            $ref: '#/components/schemas/FraudRiskRule'
+    FraudRiskRule:
+      type: object
+      properties:
+        code:
+          type: string
+          title: The Kount rule number.
+        message:
+          type: string
+          title: Description of why the rule was triggered
+    DunningCampaign:
+      type: object
+      description: Settings for a dunning campaign.
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          title: Object type
+        code:
+          type: string
+          description: Campaign code.
+        name:
+          type: string
+          description: Campaign name.
+        description:
+          type: string
+          description: Campaign description.
+        default_campaign:
+          type: boolean
+          description: >-
+            Whether or not this is the default campaign for accounts or plans
+            without an assigned dunning campaign.
+        dunning_cycles:
+          type: array
+          description: Dunning Cycle settings.
+          items:
+            $ref: '#/components/schemas/DunningCycle'
+        created_at:
+          type: string
+          format: date-time
+          description: When the current campaign was created in Recurly.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the current campaign was updated in Recurly.
+        deleted_at:
+          type: string
+          format: date-time
+          description: When the current campaign was deleted in Recurly.
+    DunningCampaignList:
+      type: object
+      properties:
+        object:
+          type: string
+          title: Object type
+          description: Will always be List.
+        has_more:
+          type: boolean
+          description: Indicates there are more results on subsequent pages.
+        next:
+          type: string
+          description: Path to subsequent page of results.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DunningCampaign'
+    DunningCycle:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DunningCycleTypeEnum'
+        applies_to_manual_trial:
+          type: boolean
+          description: >-
+            Whether the dunning settings will be applied to manual trials. Only
+            applies to trial cycles.
+        first_communication_interval:
+          type: integer
+          description: >-
+            The number of days after a transaction failure before the first
+            dunning email is sent.
+        send_immediately_on_hard_decline:
+          type: boolean
+          description: >-
+            Whether or not to send an extra email immediately to customers whose
+            initial payment attempt fails with either a hard decline or invalid
+            billing info.
+        intervals:
+          type: array
+          description: Dunning intervals.
+          items:
+            $ref: '#/components/schemas/DunningInterval'
+        expire_subscription:
+          type: boolean
+          description: >-
+            Whether the subscription(s) should be cancelled at the end of the
+            dunning cycle.
+        fail_invoice:
+          type: boolean
+          description: >-
+            Whether the invoice should be failed at the end of the dunning
+            cycle.
+        total_dunning_days:
+          type: integer
+          description: >-
+            The number of days between the first dunning email being sent and
+            the end of the dunning cycle.
+        total_recycling_days:
+          type: integer
+          description: >-
+            The number of days between a transaction failure and the end of the
+            dunning cycle.
+        version:
+          type: integer
+          description: Current campaign version.
+        created_at:
+          type: string
+          format: date-time
+          description: When the current settings were created in Recurly.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the current settings were updated in Recurly.
+    DunningInterval:
+      type: object
+      properties:
+        days:
+          type: integer
+          description: Number of days before sending the next email.
+        email_template:
+          type: string
+          description: Email template being used.
+        email_template_id:
+          type: string
+          nullable: true
+          description: >-
+            The id of the custom email template assigned to this interval, from
+            `GET /dunning_campaigns/email_templates`. `null` means the system
+            default template for this interval. Accepted on write; round-tripped
+            on read.
+    ExternalAccount:
+      type: object
+      title: External Account
+      properties:
+        object:
+          type: string
+          default: external_account
+        id:
+          type: string
+          description: UUID of the external_account .
+        external_account_code:
+          type: string
+          description: Represents the account code for the external account.
+        external_connection_type:
+          type: string
+          description: >-
+            Represents the connection type. One of the connection types of your
+            enabled App Connectors
+        created_at:
+          type: string
+          format: date-time
+          description: Created at
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated at
+          readOnly: true
+    PaymentMethod:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        card_type:
+          description: Visa, MasterCard, American Express, Discover, JCB, etc.
+          $ref: '#/components/schemas/CardTypeEnum'
+        first_six:
+          type: string
+          description: >
+            Credit card number's first six digits.
+
+
+            For a tokenized wallet payment (`apple_pay`, `google_pay`, or
+
+            `google_pay_device_pan`), this is the DPAN's (the wallet/device
+            token's own
+
+            number) first six digits, not the underlying card's (FPAN).
+          maxLength: 6
+        last_four:
+          type: string
+          description: >
+            Credit card number's last four digits. Will refer to bank account if
+            payment
+
+            method is ACH.
+
+
+            For a tokenized wallet payment (`apple_pay`, `google_pay`, or
+
+            `google_pay_device_pan`), this is the DPAN's last four digits, not
+            the
+
+            underlying card's (FPAN).
+          maxLength: 4
+        last_two:
+          type: string
+          description: The IBAN bank account's last two digits.
+          maxLength: 2
+        exp_month:
+          type: integer
+          description: Expiration month.
+          maxLength: 2
+        exp_year:
+          type: integer
+          description: Expiration year.
+          maxLength: 4
+        gateway_token:
+          type: string
+          description: >-
+            A token used in place of a credit card in order to perform
+            transactions.
+          maxLength: 50
+        cc_bin_country:
+          type: string
+          description: >-
+            The 2-letter ISO 3166-1 alpha-2 country code associated with the
+            card's issuer, if known.
+        funding_source:
+          $ref: '#/components/schemas/CardFundingSourceEnum'
+          description: The funding source of the card, if known.
+        gateway_code:
+          type: string
+          description: An identifier for a specific payment gateway.
+          maxLength: 13
+        gateway_attributes:
+          type: object
+          description: Gateway specific attributes associated with this PaymentMethod
+          x-class-name: GatewayAttributes
+          properties:
+            account_reference:
+              type: string
+              description: >-
+                Used by Adyen and Braintree gateways. For Adyen the Shopper
+                Reference value used when the external token was created. For
+                Braintree the PayPal PayerID is populated in the response.
+              maxLength: 264
+        card_network_preference:
+          description: >-
+            Represents the card network preference associated with the billing
+            info for dual badged cards. Must be a supported card network.
+          $ref: '#/components/schemas/CardNetworkEnum'
+        billing_agreement_id:
+          type: string
+          description: >-
+            Billing Agreement identifier. Only present for Amazon or Paypal
+            payment methods.
+        name_on_account:
+          type: string
+          description: The name associated with the bank account.
+        account_type:
+          description: The bank account type. Only present for ACH payment methods.
+          $ref: '#/components/schemas/AccountTypeEnum'
+        routing_number:
+          type: string
+          description: >-
+            The bank account's routing number. Only present for ACH payment
+            methods.
+        routing_number_bank:
+          type: string
+          description: The bank name of this routing number.
+        username:
+          type: string
+          description: >-
+            Username of the associated payment method. Currently only associated
+            with Venmo.
+    Error:
+      type: object
+      properties:
+        type:
+          title: Type
+          $ref: '#/components/schemas/ErrorTypeEnum'
+        message:
+          type: string
+          title: Message
+        params:
+          type: array
+          title: Parameter specific errors
+          items:
+            type: object
+            properties:
+              param:
+                type: string
+    ErrorMayHaveTransaction:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            transaction_error:
+              type: object
+              x-class-name: TransactionError
+              title: Transaction error details
+              description: This is only included on errors with `type=transaction`.
+              properties:
+                object:
+                  type: string
+                  title: Object type
+                transaction_id:
+                  type: string
+                  title: Transaction ID
+                  maxLength: 13
+                category:
+                  title: Category
+                  $ref: '#/components/schemas/ErrorCategoryEnum'
+                code:
+                  title: Code
+                  $ref: '#/components/schemas/ErrorCodeEnum'
+                decline_code:
+                  title: Decline code
+                  $ref: '#/components/schemas/DeclineCodeEnum'
+                message:
+                  type: string
+                  title: Customer message
+                merchant_advice:
+                  type: string
+                  title: Merchant message
+                three_d_secure_action_token_id:
+                  type: string
+                  title: 3-D Secure action token id
+                  description: >-
+                    Returned when 3-D Secure authentication is required for a
+                    transaction. Pass this value to Recurly.js so it can
+                    continue the challenge flow.
+                  maxLength: 22
+                fraud_info:
+                  $ref: '#/components/schemas/TransactionFraudInfo'
+    AlphanumericSortEnum:
+      type: string
+      enum:
+        - asc
+        - desc
+    TimestampSortEnum:
+      type: string
+      enum:
+        - created_at
+        - updated_at
+    ActiveStateEnum:
+      type: string
+      enum:
+        - active
+        - inactive
+    TrueEnum:
+      type: string
+      enum:
+        - true
+    LineItemStateEnum:
+      type: string
+      enum:
+        - invoiced
+        - pending
+    LineItemTypeEnum:
+      type: string
+      enum:
+        - charge
+        - credit
+    VertexTransactionTypeEnum:
+      type: string
+      title: Vertex Transaction Type
+      description: >-
+        Used by Vertex for tax calculations. Possible values are sale, rental,
+        lease.
+      enum:
+        - sale
+        - rental
+        - lease
+    FilterTransactionTypeEnum:
+      type: string
+      enum:
+        - authorization
+        - capture
+        - payment
+        - purchase
+        - refund
+        - verify
+    FilterInvoiceTypeEnum:
+      type: string
+      enum:
+        - charge
+        - credit
+        - legacy
+        - non-legacy
+    PreferredLocaleEnum:
+      type: string
+      enum:
+        - da-DK
+        - de-CH
+        - de-DE
+        - en-AU
+        - en-CA
+        - en-GB
+        - en-IE
+        - en-NZ
+        - en-US
+        - es-ES
+        - es-MX
+        - es-US
+        - fi-FI
+        - fr-BE
+        - fr-CA
+        - fr-CH
+        - fr-FR
+        - hi-IN
+        - it-IT
+        - ja-JP
+        - ko-KR
+        - nl-BE
+        - nl-NL
+        - pl-PL
+        - pt-BR
+        - pt-PT
+        - ro-RO
+        - ru-RU
+        - sk-SK
+        - sv-SE
+        - tr-TR
+        - zh-CN
+    BillToEnum:
+      type: string
+      enum:
+        - parent
+        - self
+    PaymentGatewayReferencesEnum:
+      type: string
+      description: >-
+        The type of reference token. Required if token is passed in for Stripe
+        Gateway or Ebanx UPI.
+      enum:
+        - stripe_confirmation_token
+        - upi_vpa
+    KountDecisionEnum:
+      type: string
+      enum:
+        - approve
+        - decline
+        - escalate
+        - review
+    CouponStateEnum:
+      type: string
+      enum:
+        - expired
+        - maxed_out
+        - redeemable
+    CouponDurationEnum:
+      type: string
+      enum:
+        - forever
+        - single_use
+        - temporal
+        - billing_periods
+    FreeTrialUnitEnum:
+      type: string
+      enum:
+        - day
+        - month
+        - week
+        - billing_period
+    CouponTypeEnum:
+      type: string
+      enum:
+        - bulk
+        - single_code
+    DiscountTypeEnum:
+      type: string
+      enum:
+        - fixed
+        - free_trial
+        - percent
+    CreditPaymentActionEnum:
+      type: string
+      enum:
+        - payment
+        - reduction
+        - refund
+        - write_off
+    NetTermsTypeEnum:
+      type: string
+      title: Net Terms Type
+      description: >
+        Optionally supplied string that may be either `net` or `eom`
+        (end-of-month).
+
+        When `net`, an invoice becomes past due the specified number of `Net
+        Terms` days from the current date.
+
+        When `eom` an invoice becomes past due the specified number of `Net
+        Terms` days from the last day of the current month.
+      enum:
+        - net
+        - eom
+      default: net
+    InvoiceTypeEnum:
+      type: string
+      enum:
+        - charge
+        - credit
+        - legacy
+    OriginEnum:
+      type: string
+      enum:
+        - carryforward_credit
+        - carryforward_gift_credit
+        - credit
+        - external_refund
+        - gift_card
+        - immediate_change
+        - import
+        - line_item_refund
+        - open_amount_refund
+        - prepayment
+        - purchase
+        - refund
+        - renewal
+        - termination
+        - usage_correction
+        - write_off
+    InvoiceStateEnum:
+      type: string
+      default: all
+      enum:
+        - open
+        - pending
+        - processing
+        - past_due
+        - paid
+        - closed
+        - failed
+        - voided
+    InvoiceStateQueryParamEnum:
+      type: string
+      default: all
+      enum:
+        - pending
+        - processing
+        - past_due
+        - paid
+        - failed
+        - open
+        - closed
+        - voided
+    CollectionMethodEnum:
+      type: string
+      enum:
+        - automatic
+        - manual
+    LineItemRevenueScheduleTypeEnum:
+      type: string
+      enum:
+        - at_invoice
+        - at_range_end
+        - at_range_start
+        - evenly
+        - never
+    LegacyCategoryEnum:
+      type: string
+      enum:
+        - applied_credit
+        - carryforward
+        - charge
+        - credit
+    LineItemOriginEnum:
+      type: string
+      enum:
+        - add_on
+        - add_on_trial
+        - carryforward
+        - coupon
+        - credit
+        - debit
+        - one_time
+        - plan
+        - plan_trial
+        - setup_fee
+        - prepayment
+    FullCreditReasonCodeEnum:
+      type: string
+      enum:
+        - general
+        - gift_card
+        - promotional
+        - refund
+        - service
+        - write_off
+    TransactionTypeEnum:
+      type: string
+      enum:
+        - authorization
+        - capture
+        - purchase
+        - refund
+        - verify
+    TransactionOriginEnum:
+      type: string
+      enum:
+        - api
+        - chargeback
+        - external_recovery
+        - force_collect
+        - hpp
+        - merchant
+        - recurly_admin
+        - recurlyjs
+        - recurring
+        - refunded_externally
+        - transparent
+        - token_api
+        - api_force_collect
+        - api_sub_change
+        - api_verify_card
+        - refund_balance
+        - amazon_v2_ipn
+    TransactionStatusEnum:
+      type: string
+      enum:
+        - chargeback
+        - declined
+        - error
+        - pending
+        - processing
+        - scheduled
+        - success
+        - void
+    NextActionTypeEnum:
+      type: string
+      description: The type of next action required for the transaction.
+      enum:
+        - qr_code
+    CvvCheckEnum:
+      type: string
+      enum:
+        - D
+        - I
+        - M
+        - 'N'
+        - P
+        - S
+        - U
+        - X
+    AvsCheckEnum:
+      type: string
+      enum:
+        - A
+        - B
+        - C
+        - D
+        - E
+        - F
+        - G
+        - H
+        - I
+        - J
+        - K
+        - L
+        - M
+        - 'N'
+        - O
+        - P
+        - Q
+        - R
+        - S
+        - T
+        - U
+        - V
+        - W
+        - X
+        - 'Y'
+        - Z
+    PaymentMethodEnum:
+      type: string
+      enum:
+        - bacs
+        - amazon
+        - amazon_billing_agreement
+        - apple_pay
+        - apple_pay_merchant_token
+        - bank_account_info
+        - braintree_apple_pay
+        - check
+        - credit_card
+        - eft
+        - gateway_token
+        - google_pay
+        - google_pay_device_pan
+        - iban_bank_account
+        - money_order
+        - other
+        - paypal
+        - paypal_billing_agreement
+        - roku
+        - sepadirectdebit
+        - venmo
+        - wire_transfer
+        - braintree_v_zero
+        - boleto
+        - cash_app
+        - upi_autopay
+        - pix_automatico
+        - mercadopago
+        - klarna
+        - braintree_google_pay
+        - stripe_link
+    CardTypeEnum:
+      type: string
+      enum:
+        - American Express
+        - Dankort
+        - Diners Club
+        - Discover
+        - ELO
+        - Forbrugsforeningen
+        - Hipercard
+        - JCB
+        - Laser
+        - Maestro
+        - MasterCard
+        - Test Card
+        - Union Pay
+        - Unknown
+        - Visa
+        - Tarjeta Naranja
+    CardNetworkEnum:
+      type: string
+      enum:
+        - Bancontact
+        - CartesBancaires
+        - Dankort
+        - MasterCard
+        - Visa
+    CardFundingSourceEnum:
+      type: string
+      enum:
+        - credit
+        - debit
+        - charge
+        - prepaid
+        - deferred_debit
+    AccountTypeEnum:
+      type: string
+      enum:
+        - checking
+        - savings
+    ErrorTypeEnum:
+      type: string
+      enum:
+        - bad_request
+        - immutable_subscription
+        - internal_server_error
+        - invalid_api_key
+        - invalid_api_version
+        - invalid_content_type
+        - invalid_permissions
+        - invalid_token
+        - missing_feature
+        - not_found
+        - rate_limited
+        - service_not_available
+        - simultaneous_request
+        - tax_service_error
+        - transaction
+        - unauthorized
+        - unavailable_in_api_version
+        - unknown_api_version
+        - validation
+    ErrorCategoryEnum:
+      type: string
+      enum:
+        - three_d_secure_required
+        - three_d_secure_action_required
+        - amazon
+        - api_error
+        - approved
+        - communication
+        - configuration
+        - duplicate
+        - fraud
+        - hard
+        - invalid
+        - not_enabled
+        - not_supported
+        - recurly
+        - referral
+        - skles
+        - soft
+        - unknown
+    ErrorCodeEnum:
+      type: string
+      enum:
+        - ach_cancel
+        - ach_chargeback
+        - ach_credit_return
+        - ach_exception
+        - ach_return
+        - ach_transactions_not_supported
+        - ach_validation_exception
+        - amazon_amount_exceeded
+        - amazon_declined_review
+        - amazon_invalid_authorization_status
+        - amazon_invalid_close_attempt
+        - amazon_invalid_create_order_reference
+        - amazon_invalid_order_status
+        - amazon_not_authorized
+        - amazon_order_not_modifiable
+        - amazon_transaction_count_exceeded
+        - api_error
+        - approved
+        - approved_fraud_review
+        - authorization_already_captured
+        - authorization_amount_depleted
+        - authorization_expired
+        - batch_processing_error
+        - billing_agreement_already_accepted
+        - billing_agreement_not_accepted
+        - billing_agreement_not_found
+        - billing_agreement_replaced
+        - call_issuer
+        - call_issuer_update_cardholder_data
+        - cancelled
+        - cannot_refund_unsettled_transactions
+        - card_not_activated
+        - card_type_not_accepted
+        - cardholder_requested_stop
+        - contact_gateway
+        - contract_not_found
+        - currency_not_supported
+        - customer_canceled_transaction
+        - cvv_required
+        - declined
+        - declined_card_number
+        - declined_exception
+        - declined_expiration_date
+        - declined_missing_data
+        - declined_saveable
+        - declined_security_code
+        - deposit_referenced_chargeback
+        - direct_debit_type_not_accepted
+        - duplicate_transaction
+        - exceeds_daily_limit
+        - exceeds_max_amount
+        - expired_card
+        - finbot_disconnect
+        - finbot_unavailable
+        - fraud_address
+        - fraud_address_recurly
+        - fraud_advanced_verification
+        - fraud_gateway
+        - fraud_generic
+        - fraud_ip_address
+        - fraud_manual_decision
+        - fraud_risk_check
+        - fraud_security_code
+        - fraud_stolen_card
+        - fraud_too_many_attempts
+        - fraud_velocity
+        - gateway_account_setup_incomplete
+        - gateway_error
+        - gateway_rate_limited
+        - gateway_timeout
+        - gateway_token_not_found
+        - gateway_unavailable
+        - gateway_validation_exception
+        - insufficient_funds
+        - invalid_account_number
+        - invalid_amount
+        - invalid_billing_agreement_status
+        - invalid_card_number
+        - invalid_data
+        - invalid_email
+        - invalid_gateway_access_token
+        - invalid_gateway_configuration
+        - invalid_issuer
+        - invalid_login
+        - invalid_merchant_type
+        - invalid_name
+        - invalid_payment_method
+        - invalid_payment_method_hard
+        - invalid_transaction
+        - issuer_unavailable
+        - lifecycle_decline
+        - merch_max_transaction_limit_exceeded
+        - moneybot_disconnect
+        - moneybot_unavailable
+        - no_billing_information
+        - no_gateway
+        - no_gateway_found_for_transaction_amount
+        - partial_approval
+        - partial_credits_not_supported
+        - payer_authentication_rejected
+        - payment_cannot_void_authorization
+        - payment_not_accepted
+        - paypal_account_issue
+        - paypal_cannot_pay_self
+        - paypal_declined_use_alternate
+        - paypal_expired_reference_id
+        - paypal_hard_decline
+        - paypal_invalid_billing_agreement
+        - paypal_primary_declined
+        - processor_not_available
+        - processor_unavailable
+        - recurly_credentials_not_found
+        - recurly_error
+        - recurly_failed_to_get_token
+        - recurly_token_mismatch
+        - recurly_token_not_found
+        - reference_transactions_not_enabled
+        - restricted_card
+        - restricted_card_chargeback
+        - rjs_token_expired
+        - roku_invalid_card_number
+        - roku_invalid_cib
+        - roku_invalid_payment_method
+        - roku_zip_code_mismatch
+        - simultaneous
+        - ssl_error
+        - temporary_hold
+        - three_d_secure_action_required
+        - three_d_secure_action_result_token_mismatch
+        - three_d_secure_authentication
+        - three_d_secure_connection_error
+        - three_d_secure_credential_error
+        - three_d_secure_not_supported
+        - too_busy
+        - too_many_attempts
+        - total_credit_exceeds_capture
+        - transaction_already_refunded
+        - transaction_already_voided
+        - transaction_cannot_be_authorized
+        - transaction_cannot_be_refunded
+        - transaction_cannot_be_refunded_currently
+        - transaction_cannot_be_voided
+        - transaction_failed_to_settle
+        - transaction_not_found
+        - transaction_service_v2_disconnect
+        - transaction_service_v2_unavailable
+        - transaction_settled
+        - transaction_stale_at_gateway
+        - try_again
+        - unknown
+        - unmapped_partner_error
+        - vaultly_service_unavailable
+        - zero_dollar_auth_not_supported
+    DeclineCodeEnum:
+      type: string
+      enum:
+        - account_closed
+        - call_issuer
+        - card_not_activated
+        - card_not_supported
+        - cardholder_requested_stop
+        - do_not_honor
+        - do_not_try_again
+        - exceeds_daily_limit
+        - generic_decline
+        - expired_card
+        - fraudulent
+        - insufficient_funds
+        - incorrect_address
+        - incorrect_security_code
+        - invalid_amount
+        - invalid_number
+        - invalid_transaction
+        - issuer_unavailable
+        - lifecycle_decline
+        - lost_card
+        - pickup_card
+        - policy_decline
+        - restricted_card
+        - restricted_card_chargeback
+        - security_decline
+        - stolen_card
+        - try_again
+        - update_cardholder_data
+        - requires_3d_secure
+    DunningCycleTypeEnum:
+      type: string
+      description: The type of invoice this cycle applies to.
+      enum:
+        - automatic
+        - manual
+        - trial
+    OriginTaxAddressSourceEnum:
+      type: string
+      title: Origin tax address source
+      description: >-
+        The source of the address that will be used as the origin in determining
+        taxes. Available only when the site is on an Elite plan. A value of
+        "origin" refers to the "Business entity tax address". A value of
+        "destination" refers to the "Customer tax address".
+      default: origin
+      enum:
+        - origin
+        - destination
+    DestinationTaxAddressSourceEnum:
+      type: string
+      title: Destination tax address source
+      description: >-
+        The source of the address that will be used as the destinaion in
+        determining taxes. Available only when the site is on an Elite plan. A
+        value of "destination" refers to the "Customer tax address". A value of
+        "origin" refers to the "Business entity tax address".
+      default: destination
+      enum:
+        - destination
+        - origin
+    TransactionMerchantReasonCodeEnum:
+      type: string
+      default: none
+      description: >
+        This conditional parameter is useful for merchants in specific
+        industries who need to submit one-time Merchant Initiated transactions
+        in specific cases.
+
+        Not all gateways support these methods, but will support a generic
+        one-time Merchant Initiated transaction.
+
+        Only use this if the initiator value is "merchant". Otherwise, it will
+        be ignored.
+          - Incremental: Send `incremental` with an additional purchase if the original authorization amount is not sufficient to cover the costs of your service or product. For example, if the customer adds goods or services or there are additional expenses.
+          - No Show: Send `no_show` if you charge customers a fee due to an agreed-upon cancellation policy in your industry.
+          - Resubmission: Send `resubmission` if you need to attempt collection on a declined transaction. You may also use the force collection behavior which has the same effect.
+          - Service Extension: Send `service_extension` if you are in a service industry and the customer has increased/extended their service in some way. For example: adding a day onto a car rental agreement.
+          - Split Shipment: Send `split_shipment` if you sell physical product and need to split up a shipment into multiple transactions when the customer is no longer in session.
+          - Top Up: Send `top_up` if you process one-time transactions based on a pre-arranged agreement with your customer where there is a pre-arranged account balance that needs maintaining. For example, if the customer has agreed to maintain an account balance of 30.00 and their current balance is 20.00, the MIT amount would be at least 10.00 to meet that 30.00 threshold.
+      enum:
+        - incremental
+        - no_show
+        - resubmission
+        - service_extension
+        - split_shipment
+        - top_up
+    TransactionInitiatorEnum:
+      type: string
+      description: >-
+        Must be sent for one-time transactions in order to provide context on
+        which entity is submitting the transaction to ensure proper fraud checks
+        are observed, such as 3DS. If the customer is in session, send
+        `customer`. If this is a merchant initiated one-time transaction, send
+        `merchant`.
+      enum:
+        - customer
+        - merchant
+    SourceRecordTypeEnum:
+      type: string
+      description: The type of record a custom field was automatically copied from.
+      enum:
+        - account
+        - plan
+        - product
+        - subscription
+x-tagGroups:
+  - name: Customers
+    tags:
+      - Account
+  - name: Invoices and Payments
+    tags:
+      - Invoice
+      - Transaction
+      - Revenue Recovery
+  - name: Configuration
+    tags:
+      - Dunning Campaigns
