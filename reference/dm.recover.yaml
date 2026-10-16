@@ -3670,6 +3670,8 @@ components:
       enum:
         - stripe_confirmation_token
         - upi_vpa
+        - stripe_customer
+        - stripe_payment_method
     KountDecisionEnum:
       type: string
       enum:
