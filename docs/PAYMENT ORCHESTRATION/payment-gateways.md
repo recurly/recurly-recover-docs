@@ -38,7 +38,7 @@ Recover currently supports the following gateways, each with reusable gateway to
 
 Each gateway connection gets a unique **gateway code**. You pass this value in your API requests to route each transaction to the right connection.
 
-To route different card types or merchant category codes through separate accounts, add multiple connections for the same provider — each one gets its own gateway code. Pass the matching `gateway_code` on the request to control exactly where a transaction is collected.
+To route different card types or gateway tokens through separate accounts, add multiple connections for the same or different providers — each one gets its own gateway code. Pass the matching `gateway_code` on the request to control exactly where a transaction is collected.
 
 <div class="rp-callout rp-callout-tip">
   <div><strong><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Tip</strong> Connect and manage gateways in the onboarding flow — see <a href="https://docs.recurly.com/recurly-recover/docs/recurly-recover-overview#getting-started" target="_blank">Getting started</a>.</div>
