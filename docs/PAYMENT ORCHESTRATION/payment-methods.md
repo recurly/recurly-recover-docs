@@ -23,10 +23,16 @@ Provide each payment method as a reusable gateway token in the `payment_gateway_
 
 For the gateways that issue these tokens, see <a href="https://docs.recurly.com/recurly-recover/docs/payment-gateways" target="_blank">Payment gateways</a>.
 
-# Payment method wallet
+# Recurly Wallet
 
 <div class="rp-callout rp-callout-note">
   <div><strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Note</strong> The Wallet feature is enabled by default on every Recover account. No setup is required to designate primary and backup methods.</div>
 </div>
 
 The Wallet feature lets you designate payment methods as primary or backup in the same request. Set `primary_payment_method` or `backup_payment_method` to `true` on each entry in `billing_infos`. You can submit multiple payment methods, but only one can be marked as primary.
+
+Review our integration guides for more details and specifics:&#x20;
+
+* [Single Payment Method, single or multiple gateways](https://docs.recurly.com/recurly-recover/docs/single-payment-method-single-multi-gateway)&#x20;
+* [Multipe Payment Methods, single gateway](https://docs.recurly.com/recurly-recover/docs/multi-payment-method-single-gateway)
+* [[Multipe Payment Methods, single gateway](https://docs.recurly.com/recurly-recover/docs/multi-payment-method-single-gateway)](https://docs.recurly.com/recurly-recover/docs/multi-payment-method-multi-gateway)
