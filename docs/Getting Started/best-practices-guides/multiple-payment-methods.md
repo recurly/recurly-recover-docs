@@ -54,6 +54,12 @@ Make sure you have a gateway token for each payment method, with the correct `ga
 
 If you don't have the metadata (first six, last four, and card brand) for your tokens, Recurly can query your gateway for up-to-date card brand, BIN, and expiration data when the gateway requires it for processing. In some cases you'll need to enable specific permissions at the gateway level for this to work.
 
+### PAN support
+
+Accepting full PAN in Recurly Recover means customers are no longer limited to gateway tokens.&#x20;
+
+The one requirement is PCI compliance. The customer has to be able to send PAN data in a compliant way.
+
 ### Follow the guide for your use case
 
 Your exact setup depends on whether your payment methods live on one gateway or several. Follow the guide that matches your use case:
