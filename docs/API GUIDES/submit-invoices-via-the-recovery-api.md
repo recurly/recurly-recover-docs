@@ -356,9 +356,15 @@ Recover currently supports the following gateways with reusable gateway tokens:
 
 <table class="rp-gw-table">
   <tr class="rp-thead-row"><td>Gateway</td><td>Token support</td></tr>
-  <tr><td>Stripe</td><td>Reusable gateway tokens</code>)</td></tr>
+  <tr><td>Stripe</td><td>Reusable gateway tokens</code></td></tr>
   <tr><td>Braintree</td><td>Reusable gateway tokens</td></tr>
 </table>
+
+# PAN support
+
+Accepting full PAN in Recurly Recover means customers are no longer limited to gateway tokens.&#x20;
+
+The one requirement is PCI compliance. The customer has to be able to send PAN data in a compliant way.
 
 # Error handling
 
