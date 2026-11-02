@@ -122,6 +122,23 @@ metadata:
 }
 ```
 
+## Adyen Formatting
+
+If you are using Adyen, the PGR array is formatted in the following manner as Adyen has two-part tokens. You must provide the Shopper Reference and the Stored Payment Method ID as below.&#x20;
+
+```json PGR Array (Recommended)
+"payment_gateway_references": [
+          {
+            "token": "string",
+            "reference_type": "adyen-shopper-reference-value"
+          },
+          {
+            "token": "adyen-stored-pm-id-value",
+            "reference_type": "adyen_payment_method"
+          }
+        ],
+```
+
 ## Stripe Formatting
 
 If you are using Stripe, the PGR array is formatted in the following manner as Stripe has two-part tokens. You must provide the Customer ID and the Payment Method ID as below.
