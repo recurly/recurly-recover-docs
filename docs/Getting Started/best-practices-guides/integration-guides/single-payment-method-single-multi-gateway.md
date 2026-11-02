@@ -129,7 +129,7 @@ If you are using Adyen, the PGR array is formatted in the following manner as Ad
 ```json PGR Array (Recommended)
 "payment_gateway_references": [
           {
-            "token": "string",
+            "token": "adyen-shopper-reference-value",
             "reference_type": "adyen-shopper-reference-value"
           },
           {
