@@ -48,6 +48,7 @@ The example below shows multiple concepts:&#x20;
 
 - 3 Separate gateways with 3 separate requirements for tokens:&#x20;
   - Stripe tokens that are a token pair (pm/cus IDs)
+  - Adyen tokens that are a token pair (shopper reference / payment method ids)
   - Gateways with single value and no NTID value specified (ex: Braintree)
   - Gateway with single value and an NTID specified (ex: Adyen or CommerceHub)
 - Payment methods that were not used to attempt transactions. We will use these methods as well even if they weren't used in your system to attempt collection. You can specify these methods without providing the `transactions` object.
@@ -126,12 +127,12 @@ The example below shows multiple concepts:&#x20;
         "backup_payment_method": false,
         "payment_gateway_references": [
           {
-            "token": "pm_XXXXXXXXXXX",
-            "reference_type": "stripe_payment_method"
+            "token": "adyen-stored-payment-method-id",
+            "reference_type": "adyen_payment_method"
           },
           {
-            "token": "cus_XXXXXXXXXXX",
-            "reference_type": "stripe_customer"
+            "token": "adyen-shopper-reference",
+            "reference_type": "adyen_shopper_reference"
           }
         ]
       },
