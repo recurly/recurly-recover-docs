@@ -83,12 +83,12 @@ When using a single gateway, your gateway_code strings will match. It is require
           "backup_payment_method": false,
           "payment_gateway_references": [
             {
-              "token": "pm_12345",
-              "reference_type": "stripe_payment_method"
+              "token": "adyen-stored-pm-id",
+              "reference_type": "adyen_payment_method"
             },
             {
-              "token": "cus_12345",
-              "reference_type": "stripe_customer"
+              "token": "adyen-shopper-reference",
+              "reference_type": "adyen_shopper_reference"
             }
           ]
         }
