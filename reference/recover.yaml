@@ -493,6 +493,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       x-code-samples: []
+  /invoices/recovery:
+    post:
+      tags:
+        - Revenue Recovery
+      operationId: create_invoice_retry
+      x-product:
+        - recover
+      summary: Create an invoice for revenue recovery
+      parameters:
+        - $ref: '#/components/parameters/accept_header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecoveryInvoiceCreate'
+        required: true
+      responses:
+        '201':
+          description: Returns the new invoices.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceCollection'
+        '400':
+          description: Bad request, perhaps invalid JSON?
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Incorrect site ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: >-
+            Invalid parameters, no pending line items, or error running the
+            transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMayHaveTransaction'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /transactions:
     get:
       tags:
