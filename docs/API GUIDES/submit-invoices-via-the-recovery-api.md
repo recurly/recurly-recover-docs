@@ -366,6 +366,125 @@ Accepting full PAN in Recurly Recover means customers are no longer limited to g
 
 The one requirement is PCI compliance. The customer has to be able to send PAN data in a compliant way.
 
+The full schema is documented in the API reference. These are the fields for full PAN on billing infos:
+
+<table class="rp-params">
+  <tr class="rp-thead-row"><td>Field</td><td>What it does</td></tr>
+  <tr><td><code>number</code></td><td>Number is the card number. Spaces and dashes are accepted.</td></tr>
+  <tr><td><code>month and year</code></td><td>Month and year are required when number is supplied.</td></tr>
+  <tr><td><code>network_transaction_id</code></td><td>Network_transaction_id is required when number is supplied</td></tr>
+  <tr><td><code>payment_gateway_references</code></td><td>payment_gateway_references cannot be combined with number.</td></tr>
+  <tr><td><code>gateway_code</code></td><td>gateway_code is optional with number, though dunning campaign configuration may still require it..</td></tr>
+</table>
+
+## Request body
+
+```json
+{
+  "currency": "USD",
+  "due_at": "2026-10-15T00:00:00Z",
+  "account": {
+    "code": "acct-10042",
+    "email": "jane.doe@example.com",
+    "dunning_campaign_id": "dunning-campaign-id-here",
+    "billing_infos": [
+      {
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "number": "4111 1111 1111 1111",
+        "month": "12",
+        "year": "2028",
+        "network_transaction_id": "MCCOLXJ2T0710",
+        "primary_payment_method": true,
+        "address": {
+          "street1": "123 Main St",
+          "city": "Denver",
+          "region": "CO",
+          "postal_code": "80202",
+          "country": "US"
+        },
+        "transactions": [
+          {
+            "gateway_error_code": "insufficient_funds",
+            "attempted_collection_date": "2026-10-10T00:00:00Z"
+          }
+        ]
+      }
+    ]
+  },
+  "line_items": [
+    {
+      "description": "Monthly subscription",
+      "unit_amount": "49.00",
+      "quantity": 1
+    }
+  ]
+}
+```
+
+# Handle the response
+
+A `201` response confirms that Recurly for the full PAN request.
+
+```json
+{
+  "object": "invoice_collection",
+  "charge_invoice": {
+    "id": "ghp3q4w5e6r7",
+    "uuid": "7c1e5d2a9b3f4e6c8d0a1b2c3d4e5f6a",
+    "object": "invoice",
+    "type": "charge",
+    "origin": "recovery",
+    "state": "past_due",
+    "account": {
+      "id": "e1f2a3b4c5d6",
+      "object": "account_mini",
+      "code": "acct-10042",
+      "email": "jane.doe@example.com",
+      "first_name": "Jane",
+      "last_name": "Doe"
+    },
+    "billing_info_id": "bi7x8y9z0a1b",
+    "number": "1042",
+    "collection_method": "automatic",
+    "currency": "USD",
+    "subtotal": 49.0,
+    "tax": 0.0,
+    "total": 49.0,
+    "paid": 0.0,
+    "balance": 49.0,
+    "due_at": "2026-10-15T00:00:00Z",
+    "created_at": "2026-11-04T15:22:10Z",
+    "updated_at": "2026-11-04T15:22:10Z",
+    "line_items": [
+      {
+        "object": "line_item",
+        "type": "charge",
+        "description": "Monthly subscription",
+        "unit_amount": 49.0,
+        "quantity": 1,
+        "amount": 49.0,
+        "currency": "USD"
+      }
+    ],
+    "transactions": [
+      {
+        "object": "transaction",
+        "type": "purchase",
+        "origin": "api",
+        "status": "declined",
+        "success": false,
+        "amount": 49.0,
+        "currency": "USD",
+        "gateway_error_code": "insufficient_funds",
+        "collected_at": "2026-10-10T00:00:00Z"
+      }
+    ]
+  },
+  "credit_invoices": []
+}
+```
+
 # Error handling
 
 Every call creates exactly one account with one invoice. Submitting a request with an `account.code` that already exists returns an error rather than creating a duplicate — generate a unique code per invoice, or mark the existing invoice as paid or failed before resubmitting.
