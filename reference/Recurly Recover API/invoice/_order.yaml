@@ -1,8 +1,3 @@
-- list_account_invoices
-- list_invoices
-- get_invoice
-- mark_invoice_failed
-- mark_invoice_successful
 - list_account_invoices-1
 - list_invoices-1
 - get_invoice-1
