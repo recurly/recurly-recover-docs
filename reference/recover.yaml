@@ -154,6 +154,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /accounts/{account_id}:
     parameters:
       - $ref: '#/components/parameters/account_id'
@@ -179,6 +180,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /accounts/{account_id}/redact:
     parameters:
       - $ref: '#/components/parameters/account_id'
@@ -225,6 +227,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /accounts/{account_id}/invoices:
     get:
       tags:
@@ -272,6 +275,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /accounts/{account_id}/transactions:
     get:
       tags:
@@ -319,6 +323,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /invoices:
     get:
       tags:
@@ -365,6 +370,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /invoices/{invoice_id}:
     get:
       tags:
@@ -395,6 +401,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /invoices/{invoice_id}/mark_failed:
     put:
       tags:
@@ -439,6 +446,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /invoices/{invoice_id}/mark_successful:
     put:
       tags:
@@ -484,6 +492,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /invoices/recovery:
     post:
       tags:
@@ -533,6 +542,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /transactions:
     get:
       tags:
@@ -579,6 +589,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /transactions/{transaction_id}:
     get:
       tags:
@@ -609,6 +620,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /dunning_campaigns:
     get:
       tags:
@@ -642,6 +654,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
   /dunning_campaigns/{dunning_campaign_id}:
     parameters:
       - $ref: '#/components/parameters/dunning_campaign_id'
@@ -679,6 +692,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      x-code-samples: []
 components:
   parameters:
     accept_header:
@@ -691,7 +705,10 @@ components:
       required: true
       schema:
         default: application/vnd.recurly.v2021-02-25
-        $ref: '#/components/schemas/AcceptHeaderEnum'
+        type: string
+        enum:
+          - application/vnd.recurly.v2021-02-25
+          - application/vnd.recurly.v2021-02-25+json
     account_id:
       name: account_id
       in: path
@@ -716,7 +733,17 @@ components:
       in: query
       description: Invoice state.
       schema:
-        $ref: '#/components/schemas/InvoiceStateQueryParamEnum'
+        type: string
+        default: all
+        enum:
+          - pending
+          - processing
+          - past_due
+          - paid
+          - failed
+          - open
+          - closed
+          - voided
     transaction_id:
       name: transaction_id
       in: path
@@ -773,7 +800,10 @@ components:
       description: Sort order.
       schema:
         default: desc
-        $ref: '#/components/schemas/AlphanumericSortEnum'
+        type: string
+        enum:
+          - asc
+          - desc
     sort_dates:
       name: sort
       in: query
@@ -786,7 +816,10 @@ components:
         prevent some records from being returned.
       schema:
         default: created_at
-        $ref: '#/components/schemas/TimestampSortEnum'
+        type: string
+        enum:
+          - created_at
+          - updated_at
     filter_begin_time:
       name: begin_time
       in: query
@@ -833,7 +866,9 @@ components:
       in: query
       description: Filter for accounts with an invoice in the `past_due` state.
       schema:
-        $ref: '#/components/schemas/TrueEnum'
+        type: string
+        enum:
+          - true
     filter_transaction_type:
       name: type
       in: query
@@ -841,13 +876,22 @@ components:
         Filter by type field. The value `payment` will return both `purchase`
         and `capture` transactions.
       schema:
-        $ref: '#/components/schemas/FilterTransactionTypeEnum'
+        type: string
+        enum:
+          - authorization
+          - capture
+          - payment
+          - purchase
+          - refund
+          - verify
     filter_transaction_success:
       name: success
       in: query
       description: Filter by success field.
       schema:
-        $ref: '#/components/schemas/TrueEnum'
+        type: string
+        enum:
+          - true
     filter_invoice_type:
       name: type
       in: query
@@ -858,7 +902,12 @@ components:
         - `type=non-legacy`, only charge and credit invoices will be returned.
         - `type=legacy`, only legacy invoices will be returned.
       schema:
-        $ref: '#/components/schemas/FilterInvoiceTypeEnum'
+        type: string
+        enum:
+          - charge
+          - credit
+          - legacy
+          - non-legacy
   securitySchemes:
     api_key:
       type: http
@@ -868,11 +917,6 @@ components:
         Credentials](https://app.recurly.com/go/developer/api_keys) page.
       scheme: basic
   schemas:
-    AcceptHeaderEnum:
-      type: string
-      enum:
-        - application/vnd.recurly.v2021-02-25
-        - application/vnd.recurly.v2021-02-25+json
     AccountList:
       type: object
       properties:
@@ -942,7 +986,10 @@ components:
         state:
           description: Accounts can be either active or inactive.
           readOnly: true
-          $ref: '#/components/schemas/ActiveStateEnum'
+          type: string
+          enum:
+            - active
+            - inactive
         hosted_login_token:
           type: string
           description: >-
@@ -1024,7 +1071,40 @@ components:
           description: >-
             Used to determine the language and locale of emails sent on behalf
             of the merchant to the customer.
-          $ref: '#/components/schemas/PreferredLocaleEnum'
+          type: string
+          enum:
+            - da-DK
+            - de-CH
+            - de-DE
+            - en-AU
+            - en-CA
+            - en-GB
+            - en-IE
+            - en-NZ
+            - en-US
+            - es-ES
+            - es-MX
+            - es-US
+            - fi-FI
+            - fr-BE
+            - fr-CA
+            - fr-CH
+            - fr-FR
+            - hi-IN
+            - it-IT
+            - ja-JP
+            - ko-KR
+            - nl-BE
+            - nl-NL
+            - pl-PL
+            - pt-BR
+            - pt-PT
+            - ro-RO
+            - ru-RU
+            - sk-SK
+            - sv-SE
+            - tr-TR
+            - zh-CN
         preferred_time_zone:
           type: string
           example: America/Los_Angeles
@@ -1083,7 +1163,10 @@ components:
             An enumerable describing the billing behavior of the account,
             specifically whether the account is self-paying or will rely on the
             parent account to pay.
-          $ref: '#/components/schemas/BillToEnum'
+          type: string
+          enum:
+            - parent
+            - self
         dunning_campaign_id:
           type: string
           title: Dunning Campaign ID
@@ -1440,15 +1523,38 @@ components:
         endpoints — Recover only.
       properties:
         object:
-          $ref: '#/components/schemas/RecoveryPaymentMethodEnum'
           description: The payment method type.
+          type: string
+          enum:
+            - credit_card
+            - apple_pay
+            - google_pay
+            - google_pay_device_pan
+            - paypal_billing_agreement
         card_type:
           description: >-
             The card brand (e.g. `Visa`, `MasterCard`). Present for
             `credit_card`, `apple_pay`, and
             `google_pay`/`google_pay_device_pan`; omitted for
             `paypal_billing_agreement`.
-          $ref: '#/components/schemas/CardTypeEnum'
+          type: string
+          enum:
+            - American Express
+            - Dankort
+            - Diners Club
+            - Discover
+            - ELO
+            - Forbrugsforeningen
+            - Hipercard
+            - JCB
+            - Laser
+            - Maestro
+            - MasterCard
+            - Test Card
+            - Union Pay
+            - Unknown
+            - Visa
+            - Tarjeta Naranja
         first_six:
           type: string
           description: >
@@ -1481,14 +1587,6 @@ components:
           type: integer
           description: Expiration year.
           maxLength: 4
-    RecoveryPaymentMethodEnum:
-      type: string
-      enum:
-        - credit_card
-        - apple_pay
-        - google_pay
-        - google_pay_device_pan
-        - paypal_billing_agreement
     RecoveryAccountCreate:
       type: object
       properties:
@@ -1668,7 +1766,12 @@ components:
             decision:
               title: Kount decision
               maxLength: 10
-              $ref: '#/components/schemas/KountDecisionEnum'
+              type: string
+              enum:
+                - approve
+                - decline
+                - escalate
+                - review
             risk_rules_triggered:
               type: object
               title: Kount rules
@@ -1764,7 +1867,11 @@ components:
         `trial`.
       properties:
         type:
-          $ref: '#/components/schemas/DiscountTypeEnum'
+          type: string
+          enum:
+            - fixed
+            - free_trial
+            - percent
         percent:
           description: This is only present when `type=percent`.
           type: integer
@@ -1783,7 +1890,12 @@ components:
               description: >-
                 Temporal unit of the free trial. When `billing_period`, `length`
                 represents the number of billing cycles.
-              $ref: '#/components/schemas/FreeTrialUnitEnum'
+              type: string
+              enum:
+                - day
+                - month
+                - week
+                - billing_period
             length:
               type: integer
               title: Trial length
@@ -1825,7 +1937,11 @@ components:
         state:
           title: State
           description: Indicates if the coupon is redeemable, and if it is not, why.
-          $ref: '#/components/schemas/CouponStateEnum'
+          type: string
+          enum:
+            - expired
+            - maxed_out
+            - redeemable
         discount:
           $ref: '#/components/schemas/CouponDiscount'
         coupon_type:
@@ -1834,7 +1950,10 @@ components:
             Whether the coupon is "single_code" or "bulk". Bulk coupons will
             require a `unique_code_template` and will generate unique codes
             through the `/generate` endpoint.
-          $ref: '#/components/schemas/CouponTypeEnum'
+          type: string
+          enum:
+            - bulk
+            - single_code
         expired_at:
           type: string
           title: Expired at
@@ -1853,8 +1972,12 @@ components:
             timestamp. `billing_periods` includes a `redemptions_remaining`
             count of billing cycles. `forever` and `single_use` have no
             additional fields.
-          $ref: '#/components/schemas/CouponDurationEnum'
           readOnly: true
+          enum:
+            - forever
+            - single_use
+            - temporal
+            - billing_periods
         expires_at:
           type: string
           title: Expires at
@@ -1886,7 +2009,10 @@ components:
           $ref: '#/components/schemas/CouponMini'
         state:
           title: Coupon Redemption state
-          $ref: '#/components/schemas/ActiveStateEnum'
+          type: string
+          enum:
+            - active
+            - inactive
         remaining_duration:
           readOnly: true
           $ref: '#/components/schemas/CouponRedemptionRemainingDuration'
@@ -1939,7 +2065,12 @@ components:
         action:
           title: Action
           description: The action for which the credit was created.
-          $ref: '#/components/schemas/CreditPaymentActionEnum'
+          type: string
+          enum:
+            - payment
+            - reduction
+            - refund
+            - write_off
         account:
           $ref: '#/components/schemas/AccountMini'
         applied_to_invoice:
@@ -2002,11 +2133,13 @@ components:
         source_record_type:
           type: string
           title: Source record type
-          description: >-
-            The type of record this custom field was automatically copied from.
-            Only present when the field was copied from another record.
+          description: The type of record a custom field was automatically copied from.
           readOnly: true
-          $ref: '#/components/schemas/SourceRecordTypeEnum'
+          enum:
+            - account
+            - plan
+            - product
+            - subscription
         source_record_id:
           type: string
           title: Source record ID
@@ -2054,14 +2187,45 @@ components:
         type:
           title: Invoice type
           description: Invoices are either charge, credit, or legacy invoices.
-          $ref: '#/components/schemas/InvoiceTypeEnum'
+          type: string
+          enum:
+            - charge
+            - credit
+            - legacy
         origin:
           title: Origin
           description: The event that created the invoice.
-          $ref: '#/components/schemas/OriginEnum'
+          type: string
+          enum:
+            - carryforward_credit
+            - carryforward_gift_credit
+            - credit
+            - external_refund
+            - gift_card
+            - immediate_change
+            - import
+            - line_item_refund
+            - open_amount_refund
+            - prepayment
+            - purchase
+            - refund
+            - renewal
+            - termination
+            - usage_correction
+            - write_off
         state:
           title: Invoice state
-          $ref: '#/components/schemas/InvoiceStateEnum'
+          type: string
+          default: all
+          enum:
+            - open
+            - pending
+            - processing
+            - past_due
+            - paid
+            - closed
+            - failed
+            - voided
         account:
           $ref: '#/components/schemas/AccountMini'
         billing_info_id:
@@ -2115,7 +2279,10 @@ components:
             have the customer pay the invoice with an automatic method, like
             credit card, PayPal, Amazon, or ACH bank payment.
           default: automatic
-          $ref: '#/components/schemas/CollectionMethodEnum'
+          type: string
+          enum:
+            - automatic
+            - manual
         po_number:
           type: string
           title: Purchase order number
@@ -2173,7 +2340,21 @@ components:
           minimum: 0
           default: 0
         net_terms_type:
-          $ref: '#/components/schemas/NetTermsTypeEnum'
+          type: string
+          title: Net Terms Type
+          description: >
+            Optionally supplied string that may be either `net` or `eom`
+            (end-of-month).
+
+            When `net`, an invoice becomes past due the specified number of `Net
+            Terms` days from the current date.
+
+            When `eom` an invoice becomes past due the specified number of `Net
+            Terms` days from the last day of the current month.
+          enum:
+            - net
+            - eom
+          default: net
         address:
           $ref: '#/components/schemas/InvoiceAddress'
         shipping_address:
@@ -2388,10 +2569,24 @@ components:
             Available when the `Multiple Business Entities` feature is enabled.
         type:
           title: Invoice type
-          $ref: '#/components/schemas/InvoiceTypeEnum'
+          type: string
+          enum:
+            - charge
+            - credit
+            - legacy
         state:
           title: Invoice state
-          $ref: '#/components/schemas/InvoiceStateEnum'
+          type: string
+          default: all
+          enum:
+            - open
+            - pending
+            - processing
+            - past_due
+            - paid
+            - closed
+            - failed
+            - voided
     LineItem:
       type: object
       title: Line item
@@ -2415,7 +2610,10 @@ components:
           description: >-
             Charges are positive line items that debit the account. Credits are
             negative line items that credit the account.
-          $ref: '#/components/schemas/LineItemTypeEnum'
+          type: string
+          enum:
+            - charge
+            - credit
         item_code:
           type: string
           title: Item Code
@@ -2440,14 +2638,23 @@ components:
           maxLength: 50
         revenue_schedule_type:
           title: Revenue schedule type
-          $ref: '#/components/schemas/LineItemRevenueScheduleTypeEnum'
+          type: string
+          enum:
+            - at_invoice
+            - at_range_end
+            - at_range_start
+            - evenly
+            - never
         state:
           title: Current state of the line item
           description: >-
             Pending line items are charges or credits on an account that have
             not been applied to an invoice yet. Invoiced line items will always
             have an `invoice_id` value.
-          $ref: '#/components/schemas/LineItemStateEnum'
+          type: string
+          enum:
+            - invoiced
+            - pending
         legacy_category:
           title: Legacy category
           description: >
@@ -2465,7 +2672,12 @@ components:
             - "carryforwards" can be ignored. They exist to consume any
             remaining credit balance. A new credit with the same amount will be
             created and placed back on the account.
-          $ref: '#/components/schemas/LegacyCategoryEnum'
+          type: string
+          enum:
+            - applied_credit
+            - carryforward
+            - charge
+            - credit
         account:
           $ref: '#/components/schemas/AccountMini'
         bill_for_account_id:
@@ -2540,7 +2752,19 @@ components:
           description: >-
             A credit created from an original charge will have the value of the
             charge's origin.
-          $ref: '#/components/schemas/LineItemOriginEnum'
+          type: string
+          enum:
+            - add_on
+            - add_on_trial
+            - carryforward
+            - coupon
+            - credit
+            - debit
+            - one_time
+            - plan
+            - plan_trial
+            - setup_fee
+            - prepayment
         accounting_code:
           type: string
           title: Accounting code
@@ -2563,7 +2787,14 @@ components:
           title: Credit reason code
           description: The reason the credit was given when line item is `type=credit`.
           default: general
-          $ref: '#/components/schemas/FullCreditReasonCodeEnum'
+          type: string
+          enum:
+            - general
+            - gift_card
+            - promotional
+            - refund
+            - service
+            - write_off
         currency:
           type: string
           title: Currency
@@ -2696,7 +2927,15 @@ components:
             for more available t/s types.
           minimum: 0
         vertex_transaction_type:
-          $ref: '#/components/schemas/VertexTransactionTypeEnum'
+          type: string
+          title: Vertex Transaction Type
+          description: >-
+            Used by Vertex for tax calculations. Possible values are sale,
+            rental, lease.
+          enum:
+            - sale
+            - rental
+            - lease
         tax_code:
           type: string
           maxLength: 50
@@ -2723,9 +2962,29 @@ components:
         tax_info:
           $ref: '#/components/schemas/TaxInfo'
         origin_tax_address_source:
-          $ref: '#/components/schemas/OriginTaxAddressSourceEnum'
+          type: string
+          title: Origin tax address source
+          description: >-
+            The source of the address that will be used as the origin in
+            determining taxes. Available only when the site is on an Elite plan.
+            A value of "origin" refers to the "Business entity tax address". A
+            value of "destination" refers to the "Customer tax address".
+          default: origin
+          enum:
+            - origin
+            - destination
         destination_tax_address_source:
-          $ref: '#/components/schemas/DestinationTaxAddressSourceEnum'
+          type: string
+          title: Destination tax address source
+          description: >-
+            The source of the address that will be used as the destinaion in
+            determining taxes. Available only when the site is on an Elite plan.
+            A value of "destination" refers to the "Customer tax address". A
+            value of "origin" refers to the "Business entity tax address".
+          default: destination
+          enum:
+            - destination
+            - origin
         proration_rate:
           type: number
           format: float
@@ -2807,7 +3066,12 @@ components:
         reference_type:
           type: string
           title: Reference Type
-          $ref: '#/components/schemas/PaymentGatewayReferencesEnum'
+          description: >-
+            The type of reference token. The value can be omitted for gateways
+            that only support one type of token.
+          enum:
+            - stripe_confirmation_token
+            - upi_vpa
     ShippingAddress:
       type: object
       properties:
@@ -3029,11 +3293,44 @@ components:
         account:
           $ref: '#/components/schemas/AccountMini'
         initiator:
-          $ref: '#/components/schemas/TransactionInitiatorEnum'
+          type: string
+          description: >-
+            Must be sent for one-time transactions in order to provide context
+            on which entity is submitting the transaction to ensure proper fraud
+            checks are observed, such as 3DS. If the customer is in session,
+            send `customer`. If this is a merchant initiated one-time
+            transaction, send `merchant`.
+          enum:
+            - customer
+            - merchant
         invoice:
           $ref: '#/components/schemas/InvoiceMini'
         merchant_reason_code:
-          $ref: '#/components/schemas/TransactionMerchantReasonCodeEnum'
+          type: string
+          default: none
+          description: >
+            This conditional parameter is useful for merchants in specific
+            industries who need to submit one-time Merchant Initiated
+            transactions in specific cases.
+
+            Not all gateways support these methods, but will support a generic
+            one-time Merchant Initiated transaction.
+
+            Only use this if the initiator value is "merchant". Otherwise, it
+            will be ignored.
+              - Incremental: Send `incremental` with an additional purchase if the original authorization amount is not sufficient to cover the costs of your service or product. For example, if the customer adds goods or services or there are additional expenses.
+              - No Show: Send `no_show` if you charge customers a fee due to an agreed-upon cancellation policy in your industry.
+              - Resubmission: Send `resubmission` if you need to attempt collection on a declined transaction. You may also use the force collection behavior which has the same effect.
+              - Service Extension: Send `service_extension` if you are in a service industry and the customer has increased/extended their service in some way. For example: adding a day onto a car rental agreement.
+              - Split Shipment: Send `split_shipment` if you sell physical product and need to split up a shipment into multiple transactions when the customer is no longer in session.
+              - Top Up: Send `top_up` if you process one-time transactions based on a pre-arranged agreement with your customer where there is a pre-arranged account balance that needs maintaining. For example, if the customer has agreed to maintain an account balance of 30.00 and their current balance is 20.00, the MIT amount would be at least 10.00 to meet that 30.00 threshold.
+          enum:
+            - incremental
+            - no_show
+            - resubmission
+            - service_extension
+            - split_shipment
+            - top_up
         voided_by_invoice:
           $ref: '#/components/schemas/InvoiceMini'
         subscription_ids:
@@ -3063,11 +3360,35 @@ components:
 
             - `verify` – a $0 or $1 transaction used to verify billing
             information which is immediately voided.
-          $ref: '#/components/schemas/TransactionTypeEnum'
+          type: string
+          enum:
+            - authorization
+            - capture
+            - purchase
+            - refund
+            - verify
         origin:
           title: Origin of transaction
           description: Describes how the transaction was triggered.
-          $ref: '#/components/schemas/TransactionOriginEnum'
+          type: string
+          enum:
+            - api
+            - chargeback
+            - external_recovery
+            - force_collect
+            - hpp
+            - merchant
+            - recurly_admin
+            - recurlyjs
+            - recurring
+            - refunded_externally
+            - transparent
+            - token_api
+            - api_force_collect
+            - api_sub_change
+            - api_verify_card
+            - refund_balance
+            - amazon_v2_ipn
         currency:
           type: string
           title: Currency
@@ -3088,7 +3409,16 @@ components:
             The current transaction status. Note that the status may change,
             e.g. a `pending` transaction may become `declined` or `success` may
             later become `void`.
-          $ref: '#/components/schemas/TransactionStatusEnum'
+          type: string
+          enum:
+            - chargeback
+            - declined
+            - error
+            - pending
+            - processing
+            - scheduled
+            - success
+            - void
         success:
           type: boolean
           title: Success?
@@ -3105,7 +3435,10 @@ components:
           $ref: '#/components/schemas/AddressWithName'
         collection_method:
           description: The method by which the payment was collected.
-          $ref: '#/components/schemas/CollectionMethodEnum'
+          type: string
+          enum:
+            - automatic
+            - manual
         payment_method:
           $ref: '#/components/schemas/PaymentMethod'
         payment_gateway_references:
@@ -3196,13 +3529,49 @@ components:
           description: >-
             When processed, result from checking the CVV/CVC value on the
             transaction.
-          $ref: '#/components/schemas/CvvCheckEnum'
+          type: string
+          enum:
+            - D
+            - I
+            - M
+            - 'N'
+            - P
+            - S
+            - U
+            - X
         avs_check:
           title: AVS check
           description: >-
             When processed, result from checking the overall AVS on the
             transaction.
-          $ref: '#/components/schemas/AvsCheckEnum'
+          type: string
+          enum:
+            - A
+            - B
+            - C
+            - D
+            - E
+            - F
+            - G
+            - H
+            - I
+            - J
+            - K
+            - L
+            - M
+            - 'N'
+            - O
+            - P
+            - Q
+            - R
+            - S
+            - T
+            - U
+            - V
+            - W
+            - X
+            - 'Y'
+            - Z
         created_at:
           type: string
           format: date-time
@@ -3249,8 +3618,9 @@ components:
             type:
               type: string
               title: Next action type
-              description: The type of next action required.
-              $ref: '#/components/schemas/NextActionTypeEnum'
+              description: The type of next action required for the transaction.
+              enum:
+                - qr_code
             value:
               type: string
               title: Next action value
@@ -3273,7 +3643,12 @@ components:
         decision:
           title: Kount decision
           maxLength: 10
-          $ref: '#/components/schemas/KountDecisionEnum'
+          type: string
+          enum:
+            - approve
+            - decline
+            - escalate
+            - review
         reference:
           type: string
           title: Kount transaction reference ID
@@ -3353,7 +3728,12 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/DunningCycleTypeEnum'
+          type: string
+          description: The type of invoice this cycle applies to.
+          enum:
+            - automatic
+            - manual
+            - trial
         applies_to_manual_trial:
           type: boolean
           description: >-
@@ -3455,10 +3835,59 @@ components:
       type: object
       properties:
         object:
-          $ref: '#/components/schemas/PaymentMethodEnum'
+          type: string
+          enum:
+            - bacs
+            - amazon
+            - amazon_billing_agreement
+            - apple_pay
+            - apple_pay_merchant_token
+            - bank_account_info
+            - braintree_apple_pay
+            - check
+            - credit_card
+            - eft
+            - gateway_token
+            - google_pay
+            - google_pay_device_pan
+            - iban_bank_account
+            - money_order
+            - other
+            - paypal
+            - paypal_billing_agreement
+            - roku
+            - sepadirectdebit
+            - venmo
+            - wire_transfer
+            - braintree_v_zero
+            - boleto
+            - cash_app
+            - upi_autopay
+            - pix_automatico
+            - mercadopago
+            - klarna
+            - braintree_google_pay
+            - stripe_link
         card_type:
           description: Visa, MasterCard, American Express, Discover, JCB, etc.
-          $ref: '#/components/schemas/CardTypeEnum'
+          type: string
+          enum:
+            - American Express
+            - Dankort
+            - Diners Club
+            - Discover
+            - ELO
+            - Forbrugsforeningen
+            - Hipercard
+            - JCB
+            - Laser
+            - Maestro
+            - MasterCard
+            - Test Card
+            - Union Pay
+            - Unknown
+            - Visa
+            - Tarjeta Naranja
         first_six:
           type: string
           description: >
@@ -3512,8 +3941,14 @@ components:
             The 2-letter ISO 3166-1 alpha-2 country code associated with the
             card's issuer, if known.
         funding_source:
-          $ref: '#/components/schemas/CardFundingSourceEnum'
           description: The funding source of the card, if known.
+          type: string
+          enum:
+            - credit
+            - debit
+            - charge
+            - prepaid
+            - deferred_debit
         gateway_code:
           type: string
           description: An identifier for a specific payment gateway.
@@ -3534,7 +3969,13 @@ components:
           description: >-
             Represents the card network preference associated with the billing
             info for dual badged cards. Must be a supported card network.
-          $ref: '#/components/schemas/CardNetworkEnum'
+          type: string
+          enum:
+            - Bancontact
+            - CartesBancaires
+            - Dankort
+            - MasterCard
+            - Visa
         billing_agreement_id:
           type: string
           description: >-
@@ -3545,7 +3986,10 @@ components:
           description: The name associated with the bank account.
         account_type:
           description: The bank account type. Only present for ACH payment methods.
-          $ref: '#/components/schemas/AccountTypeEnum'
+          type: string
+          enum:
+            - checking
+            - savings
         routing_number:
           type: string
           description: >-
@@ -3564,7 +4008,27 @@ components:
       properties:
         type:
           title: Type
-          $ref: '#/components/schemas/ErrorTypeEnum'
+          type: string
+          enum:
+            - bad_request
+            - immutable_subscription
+            - internal_server_error
+            - invalid_api_key
+            - invalid_api_version
+            - invalid_content_type
+            - invalid_permissions
+            - invalid_token
+            - missing_feature
+            - not_found
+            - rate_limited
+            - service_not_available
+            - simultaneous_request
+            - tax_service_error
+            - transaction
+            - unauthorized
+            - unavailable_in_api_version
+            - unknown_api_version
+            - validation
         message:
           type: string
           title: Message
@@ -3596,13 +4060,216 @@ components:
                   maxLength: 13
                 category:
                   title: Category
-                  $ref: '#/components/schemas/ErrorCategoryEnum'
+                  type: string
+                  enum:
+                    - three_d_secure_required
+                    - three_d_secure_action_required
+                    - amazon
+                    - api_error
+                    - approved
+                    - communication
+                    - configuration
+                    - duplicate
+                    - fraud
+                    - hard
+                    - invalid
+                    - not_enabled
+                    - not_supported
+                    - recurly
+                    - referral
+                    - skles
+                    - soft
+                    - unknown
                 code:
                   title: Code
-                  $ref: '#/components/schemas/ErrorCodeEnum'
+                  type: string
+                  enum:
+                    - ach_cancel
+                    - ach_chargeback
+                    - ach_credit_return
+                    - ach_exception
+                    - ach_return
+                    - ach_transactions_not_supported
+                    - ach_validation_exception
+                    - amazon_amount_exceeded
+                    - amazon_declined_review
+                    - amazon_invalid_authorization_status
+                    - amazon_invalid_close_attempt
+                    - amazon_invalid_create_order_reference
+                    - amazon_invalid_order_status
+                    - amazon_not_authorized
+                    - amazon_order_not_modifiable
+                    - amazon_transaction_count_exceeded
+                    - api_error
+                    - approved
+                    - approved_fraud_review
+                    - authorization_already_captured
+                    - authorization_amount_depleted
+                    - authorization_expired
+                    - batch_processing_error
+                    - billing_agreement_already_accepted
+                    - billing_agreement_not_accepted
+                    - billing_agreement_not_found
+                    - billing_agreement_replaced
+                    - call_issuer
+                    - call_issuer_update_cardholder_data
+                    - cancelled
+                    - cannot_refund_unsettled_transactions
+                    - card_not_activated
+                    - card_type_not_accepted
+                    - cardholder_requested_stop
+                    - contact_gateway
+                    - contract_not_found
+                    - currency_not_supported
+                    - customer_canceled_transaction
+                    - cvv_required
+                    - declined
+                    - declined_card_number
+                    - declined_exception
+                    - declined_expiration_date
+                    - declined_missing_data
+                    - declined_saveable
+                    - declined_security_code
+                    - deposit_referenced_chargeback
+                    - direct_debit_type_not_accepted
+                    - duplicate_transaction
+                    - exceeds_daily_limit
+                    - exceeds_max_amount
+                    - expired_card
+                    - finbot_disconnect
+                    - finbot_unavailable
+                    - fraud_address
+                    - fraud_address_recurly
+                    - fraud_advanced_verification
+                    - fraud_gateway
+                    - fraud_generic
+                    - fraud_ip_address
+                    - fraud_manual_decision
+                    - fraud_risk_check
+                    - fraud_security_code
+                    - fraud_stolen_card
+                    - fraud_too_many_attempts
+                    - fraud_velocity
+                    - gateway_account_setup_incomplete
+                    - gateway_error
+                    - gateway_rate_limited
+                    - gateway_timeout
+                    - gateway_token_not_found
+                    - gateway_unavailable
+                    - gateway_validation_exception
+                    - insufficient_funds
+                    - invalid_account_number
+                    - invalid_amount
+                    - invalid_billing_agreement_status
+                    - invalid_card_number
+                    - invalid_data
+                    - invalid_email
+                    - invalid_gateway_access_token
+                    - invalid_gateway_configuration
+                    - invalid_issuer
+                    - invalid_login
+                    - invalid_merchant_type
+                    - invalid_name
+                    - invalid_payment_method
+                    - invalid_payment_method_hard
+                    - invalid_transaction
+                    - issuer_unavailable
+                    - lifecycle_decline
+                    - merch_max_transaction_limit_exceeded
+                    - moneybot_disconnect
+                    - moneybot_unavailable
+                    - no_billing_information
+                    - no_gateway
+                    - no_gateway_found_for_transaction_amount
+                    - partial_approval
+                    - partial_credits_not_supported
+                    - payer_authentication_rejected
+                    - payment_cannot_void_authorization
+                    - payment_not_accepted
+                    - paypal_account_issue
+                    - paypal_cannot_pay_self
+                    - paypal_declined_use_alternate
+                    - paypal_expired_reference_id
+                    - paypal_hard_decline
+                    - paypal_invalid_billing_agreement
+                    - paypal_primary_declined
+                    - processor_not_available
+                    - processor_unavailable
+                    - recurly_credentials_not_found
+                    - recurly_error
+                    - recurly_failed_to_get_token
+                    - recurly_token_mismatch
+                    - recurly_token_not_found
+                    - reference_transactions_not_enabled
+                    - restricted_card
+                    - restricted_card_chargeback
+                    - rjs_token_expired
+                    - roku_invalid_card_number
+                    - roku_invalid_cib
+                    - roku_invalid_payment_method
+                    - roku_zip_code_mismatch
+                    - simultaneous
+                    - ssl_error
+                    - temporary_hold
+                    - three_d_secure_action_required
+                    - three_d_secure_action_result_token_mismatch
+                    - three_d_secure_authentication
+                    - three_d_secure_connection_error
+                    - three_d_secure_credential_error
+                    - three_d_secure_not_supported
+                    - too_busy
+                    - too_many_attempts
+                    - total_credit_exceeds_capture
+                    - transaction_already_refunded
+                    - transaction_already_voided
+                    - transaction_cannot_be_authorized
+                    - transaction_cannot_be_refunded
+                    - transaction_cannot_be_refunded_currently
+                    - transaction_cannot_be_voided
+                    - transaction_failed_to_settle
+                    - transaction_not_found
+                    - transaction_service_v2_disconnect
+                    - transaction_service_v2_unavailable
+                    - transaction_settled
+                    - transaction_stale_at_gateway
+                    - try_again
+                    - unknown
+                    - unmapped_partner_error
+                    - vaultly_service_unavailable
+                    - zero_dollar_auth_not_supported
                 decline_code:
                   title: Decline code
-                  $ref: '#/components/schemas/DeclineCodeEnum'
+                  type: string
+                  enum:
+                    - account_closed
+                    - call_issuer
+                    - card_not_activated
+                    - card_not_supported
+                    - cardholder_requested_stop
+                    - do_not_honor
+                    - do_not_try_again
+                    - exceeds_daily_limit
+                    - generic_decline
+                    - expired_card
+                    - fraudulent
+                    - insufficient_funds
+                    - incorrect_address
+                    - incorrect_security_code
+                    - invalid_amount
+                    - invalid_number
+                    - invalid_transaction
+                    - issuer_unavailable
+                    - lifecycle_decline
+                    - lost_card
+                    - pickup_card
+                    - policy_decline
+                    - restricted_card
+                    - restricted_card_chargeback
+                    - security_decline
+                    - stolen_card
+                    - try_again
+                    - update_cardholder_data
+                    - requires_3d_secure
                 message:
                   type: string
                   title: Customer message
@@ -3619,727 +4286,6 @@ components:
                   maxLength: 22
                 fraud_info:
                   $ref: '#/components/schemas/TransactionFraudInfo'
-    AlphanumericSortEnum:
-      type: string
-      enum:
-        - asc
-        - desc
-    TimestampSortEnum:
-      type: string
-      enum:
-        - created_at
-        - updated_at
-    ActiveStateEnum:
-      type: string
-      enum:
-        - active
-        - inactive
-    TrueEnum:
-      type: string
-      enum:
-        - true
-    LineItemStateEnum:
-      type: string
-      enum:
-        - invoiced
-        - pending
-    LineItemTypeEnum:
-      type: string
-      enum:
-        - charge
-        - credit
-    VertexTransactionTypeEnum:
-      type: string
-      title: Vertex Transaction Type
-      description: >-
-        Used by Vertex for tax calculations. Possible values are sale, rental,
-        lease.
-      enum:
-        - sale
-        - rental
-        - lease
-    FilterTransactionTypeEnum:
-      type: string
-      enum:
-        - authorization
-        - capture
-        - payment
-        - purchase
-        - refund
-        - verify
-    FilterInvoiceTypeEnum:
-      type: string
-      enum:
-        - charge
-        - credit
-        - legacy
-        - non-legacy
-    PreferredLocaleEnum:
-      type: string
-      enum:
-        - da-DK
-        - de-CH
-        - de-DE
-        - en-AU
-        - en-CA
-        - en-GB
-        - en-IE
-        - en-NZ
-        - en-US
-        - es-ES
-        - es-MX
-        - es-US
-        - fi-FI
-        - fr-BE
-        - fr-CA
-        - fr-CH
-        - fr-FR
-        - hi-IN
-        - it-IT
-        - ja-JP
-        - ko-KR
-        - nl-BE
-        - nl-NL
-        - pl-PL
-        - pt-BR
-        - pt-PT
-        - ro-RO
-        - ru-RU
-        - sk-SK
-        - sv-SE
-        - tr-TR
-        - zh-CN
-    BillToEnum:
-      type: string
-      enum:
-        - parent
-        - self
-    PaymentGatewayReferencesEnum:
-      type: string
-      description: >-
-        The type of reference token. The value can be omitted for gateways that
-        only support one type of token.
-      enum:
-        - stripe_confirmation_token
-        - upi_vpa
-    KountDecisionEnum:
-      type: string
-      enum:
-        - approve
-        - decline
-        - escalate
-        - review
-    CouponStateEnum:
-      type: string
-      enum:
-        - expired
-        - maxed_out
-        - redeemable
-    CouponDurationEnum:
-      type: string
-      enum:
-        - forever
-        - single_use
-        - temporal
-        - billing_periods
-    FreeTrialUnitEnum:
-      type: string
-      enum:
-        - day
-        - month
-        - week
-        - billing_period
-    CouponTypeEnum:
-      type: string
-      enum:
-        - bulk
-        - single_code
-    DiscountTypeEnum:
-      type: string
-      enum:
-        - fixed
-        - free_trial
-        - percent
-    CreditPaymentActionEnum:
-      type: string
-      enum:
-        - payment
-        - reduction
-        - refund
-        - write_off
-    NetTermsTypeEnum:
-      type: string
-      title: Net Terms Type
-      description: >
-        Optionally supplied string that may be either `net` or `eom`
-        (end-of-month).
-
-        When `net`, an invoice becomes past due the specified number of `Net
-        Terms` days from the current date.
-
-        When `eom` an invoice becomes past due the specified number of `Net
-        Terms` days from the last day of the current month.
-      enum:
-        - net
-        - eom
-      default: net
-    InvoiceTypeEnum:
-      type: string
-      enum:
-        - charge
-        - credit
-        - legacy
-    OriginEnum:
-      type: string
-      enum:
-        - carryforward_credit
-        - carryforward_gift_credit
-        - credit
-        - external_refund
-        - gift_card
-        - immediate_change
-        - import
-        - line_item_refund
-        - open_amount_refund
-        - prepayment
-        - purchase
-        - refund
-        - renewal
-        - termination
-        - usage_correction
-        - write_off
-    InvoiceStateEnum:
-      type: string
-      default: all
-      enum:
-        - open
-        - pending
-        - processing
-        - past_due
-        - paid
-        - closed
-        - failed
-        - voided
-    InvoiceStateQueryParamEnum:
-      type: string
-      default: all
-      enum:
-        - pending
-        - processing
-        - past_due
-        - paid
-        - failed
-        - open
-        - closed
-        - voided
-    CollectionMethodEnum:
-      type: string
-      enum:
-        - automatic
-        - manual
-    LineItemRevenueScheduleTypeEnum:
-      type: string
-      enum:
-        - at_invoice
-        - at_range_end
-        - at_range_start
-        - evenly
-        - never
-    LegacyCategoryEnum:
-      type: string
-      enum:
-        - applied_credit
-        - carryforward
-        - charge
-        - credit
-    LineItemOriginEnum:
-      type: string
-      enum:
-        - add_on
-        - add_on_trial
-        - carryforward
-        - coupon
-        - credit
-        - debit
-        - one_time
-        - plan
-        - plan_trial
-        - setup_fee
-        - prepayment
-    FullCreditReasonCodeEnum:
-      type: string
-      enum:
-        - general
-        - gift_card
-        - promotional
-        - refund
-        - service
-        - write_off
-    TransactionTypeEnum:
-      type: string
-      enum:
-        - authorization
-        - capture
-        - purchase
-        - refund
-        - verify
-    TransactionOriginEnum:
-      type: string
-      enum:
-        - api
-        - chargeback
-        - external_recovery
-        - force_collect
-        - hpp
-        - merchant
-        - recurly_admin
-        - recurlyjs
-        - recurring
-        - refunded_externally
-        - transparent
-        - token_api
-        - api_force_collect
-        - api_sub_change
-        - api_verify_card
-        - refund_balance
-        - amazon_v2_ipn
-    TransactionStatusEnum:
-      type: string
-      enum:
-        - chargeback
-        - declined
-        - error
-        - pending
-        - processing
-        - scheduled
-        - success
-        - void
-    NextActionTypeEnum:
-      type: string
-      description: The type of next action required for the transaction.
-      enum:
-        - qr_code
-    CvvCheckEnum:
-      type: string
-      enum:
-        - D
-        - I
-        - M
-        - 'N'
-        - P
-        - S
-        - U
-        - X
-    AvsCheckEnum:
-      type: string
-      enum:
-        - A
-        - B
-        - C
-        - D
-        - E
-        - F
-        - G
-        - H
-        - I
-        - J
-        - K
-        - L
-        - M
-        - 'N'
-        - O
-        - P
-        - Q
-        - R
-        - S
-        - T
-        - U
-        - V
-        - W
-        - X
-        - 'Y'
-        - Z
-    PaymentMethodEnum:
-      type: string
-      enum:
-        - bacs
-        - amazon
-        - amazon_billing_agreement
-        - apple_pay
-        - apple_pay_merchant_token
-        - bank_account_info
-        - braintree_apple_pay
-        - check
-        - credit_card
-        - eft
-        - gateway_token
-        - google_pay
-        - google_pay_device_pan
-        - iban_bank_account
-        - money_order
-        - other
-        - paypal
-        - paypal_billing_agreement
-        - roku
-        - sepadirectdebit
-        - venmo
-        - wire_transfer
-        - braintree_v_zero
-        - boleto
-        - cash_app
-        - upi_autopay
-        - pix_automatico
-        - mercadopago
-        - klarna
-        - braintree_google_pay
-        - stripe_link
-    CardTypeEnum:
-      type: string
-      enum:
-        - American Express
-        - Dankort
-        - Diners Club
-        - Discover
-        - ELO
-        - Forbrugsforeningen
-        - Hipercard
-        - JCB
-        - Laser
-        - Maestro
-        - MasterCard
-        - Test Card
-        - Union Pay
-        - Unknown
-        - Visa
-        - Tarjeta Naranja
-    CardNetworkEnum:
-      type: string
-      enum:
-        - Bancontact
-        - CartesBancaires
-        - Dankort
-        - MasterCard
-        - Visa
-    CardFundingSourceEnum:
-      type: string
-      enum:
-        - credit
-        - debit
-        - charge
-        - prepaid
-        - deferred_debit
-    AccountTypeEnum:
-      type: string
-      enum:
-        - checking
-        - savings
-    ErrorTypeEnum:
-      type: string
-      enum:
-        - bad_request
-        - immutable_subscription
-        - internal_server_error
-        - invalid_api_key
-        - invalid_api_version
-        - invalid_content_type
-        - invalid_permissions
-        - invalid_token
-        - missing_feature
-        - not_found
-        - rate_limited
-        - service_not_available
-        - simultaneous_request
-        - tax_service_error
-        - transaction
-        - unauthorized
-        - unavailable_in_api_version
-        - unknown_api_version
-        - validation
-    ErrorCategoryEnum:
-      type: string
-      enum:
-        - three_d_secure_required
-        - three_d_secure_action_required
-        - amazon
-        - api_error
-        - approved
-        - communication
-        - configuration
-        - duplicate
-        - fraud
-        - hard
-        - invalid
-        - not_enabled
-        - not_supported
-        - recurly
-        - referral
-        - skles
-        - soft
-        - unknown
-    ErrorCodeEnum:
-      type: string
-      enum:
-        - ach_cancel
-        - ach_chargeback
-        - ach_credit_return
-        - ach_exception
-        - ach_return
-        - ach_transactions_not_supported
-        - ach_validation_exception
-        - amazon_amount_exceeded
-        - amazon_declined_review
-        - amazon_invalid_authorization_status
-        - amazon_invalid_close_attempt
-        - amazon_invalid_create_order_reference
-        - amazon_invalid_order_status
-        - amazon_not_authorized
-        - amazon_order_not_modifiable
-        - amazon_transaction_count_exceeded
-        - api_error
-        - approved
-        - approved_fraud_review
-        - authorization_already_captured
-        - authorization_amount_depleted
-        - authorization_expired
-        - batch_processing_error
-        - billing_agreement_already_accepted
-        - billing_agreement_not_accepted
-        - billing_agreement_not_found
-        - billing_agreement_replaced
-        - call_issuer
-        - call_issuer_update_cardholder_data
-        - cancelled
-        - cannot_refund_unsettled_transactions
-        - card_not_activated
-        - card_type_not_accepted
-        - cardholder_requested_stop
-        - contact_gateway
-        - contract_not_found
-        - currency_not_supported
-        - customer_canceled_transaction
-        - cvv_required
-        - declined
-        - declined_card_number
-        - declined_exception
-        - declined_expiration_date
-        - declined_missing_data
-        - declined_saveable
-        - declined_security_code
-        - deposit_referenced_chargeback
-        - direct_debit_type_not_accepted
-        - duplicate_transaction
-        - exceeds_daily_limit
-        - exceeds_max_amount
-        - expired_card
-        - finbot_disconnect
-        - finbot_unavailable
-        - fraud_address
-        - fraud_address_recurly
-        - fraud_advanced_verification
-        - fraud_gateway
-        - fraud_generic
-        - fraud_ip_address
-        - fraud_manual_decision
-        - fraud_risk_check
-        - fraud_security_code
-        - fraud_stolen_card
-        - fraud_too_many_attempts
-        - fraud_velocity
-        - gateway_account_setup_incomplete
-        - gateway_error
-        - gateway_rate_limited
-        - gateway_timeout
-        - gateway_token_not_found
-        - gateway_unavailable
-        - gateway_validation_exception
-        - insufficient_funds
-        - invalid_account_number
-        - invalid_amount
-        - invalid_billing_agreement_status
-        - invalid_card_number
-        - invalid_data
-        - invalid_email
-        - invalid_gateway_access_token
-        - invalid_gateway_configuration
-        - invalid_issuer
-        - invalid_login
-        - invalid_merchant_type
-        - invalid_name
-        - invalid_payment_method
-        - invalid_payment_method_hard
-        - invalid_transaction
-        - issuer_unavailable
-        - lifecycle_decline
-        - merch_max_transaction_limit_exceeded
-        - moneybot_disconnect
-        - moneybot_unavailable
-        - no_billing_information
-        - no_gateway
-        - no_gateway_found_for_transaction_amount
-        - partial_approval
-        - partial_credits_not_supported
-        - payer_authentication_rejected
-        - payment_cannot_void_authorization
-        - payment_not_accepted
-        - paypal_account_issue
-        - paypal_cannot_pay_self
-        - paypal_declined_use_alternate
-        - paypal_expired_reference_id
-        - paypal_hard_decline
-        - paypal_invalid_billing_agreement
-        - paypal_primary_declined
-        - processor_not_available
-        - processor_unavailable
-        - recurly_credentials_not_found
-        - recurly_error
-        - recurly_failed_to_get_token
-        - recurly_token_mismatch
-        - recurly_token_not_found
-        - reference_transactions_not_enabled
-        - restricted_card
-        - restricted_card_chargeback
-        - rjs_token_expired
-        - roku_invalid_card_number
-        - roku_invalid_cib
-        - roku_invalid_payment_method
-        - roku_zip_code_mismatch
-        - simultaneous
-        - ssl_error
-        - temporary_hold
-        - three_d_secure_action_required
-        - three_d_secure_action_result_token_mismatch
-        - three_d_secure_authentication
-        - three_d_secure_connection_error
-        - three_d_secure_credential_error
-        - three_d_secure_not_supported
-        - too_busy
-        - too_many_attempts
-        - total_credit_exceeds_capture
-        - transaction_already_refunded
-        - transaction_already_voided
-        - transaction_cannot_be_authorized
-        - transaction_cannot_be_refunded
-        - transaction_cannot_be_refunded_currently
-        - transaction_cannot_be_voided
-        - transaction_failed_to_settle
-        - transaction_not_found
-        - transaction_service_v2_disconnect
-        - transaction_service_v2_unavailable
-        - transaction_settled
-        - transaction_stale_at_gateway
-        - try_again
-        - unknown
-        - unmapped_partner_error
-        - vaultly_service_unavailable
-        - zero_dollar_auth_not_supported
-    DeclineCodeEnum:
-      type: string
-      enum:
-        - account_closed
-        - call_issuer
-        - card_not_activated
-        - card_not_supported
-        - cardholder_requested_stop
-        - do_not_honor
-        - do_not_try_again
-        - exceeds_daily_limit
-        - generic_decline
-        - expired_card
-        - fraudulent
-        - insufficient_funds
-        - incorrect_address
-        - incorrect_security_code
-        - invalid_amount
-        - invalid_number
-        - invalid_transaction
-        - issuer_unavailable
-        - lifecycle_decline
-        - lost_card
-        - pickup_card
-        - policy_decline
-        - restricted_card
-        - restricted_card_chargeback
-        - security_decline
-        - stolen_card
-        - try_again
-        - update_cardholder_data
-        - requires_3d_secure
-    DunningCycleTypeEnum:
-      type: string
-      description: The type of invoice this cycle applies to.
-      enum:
-        - automatic
-        - manual
-        - trial
-    OriginTaxAddressSourceEnum:
-      type: string
-      title: Origin tax address source
-      description: >-
-        The source of the address that will be used as the origin in determining
-        taxes. Available only when the site is on an Elite plan. A value of
-        "origin" refers to the "Business entity tax address". A value of
-        "destination" refers to the "Customer tax address".
-      default: origin
-      enum:
-        - origin
-        - destination
-    DestinationTaxAddressSourceEnum:
-      type: string
-      title: Destination tax address source
-      description: >-
-        The source of the address that will be used as the destinaion in
-        determining taxes. Available only when the site is on an Elite plan. A
-        value of "destination" refers to the "Customer tax address". A value of
-        "origin" refers to the "Business entity tax address".
-      default: destination
-      enum:
-        - destination
-        - origin
-    TransactionMerchantReasonCodeEnum:
-      type: string
-      default: none
-      description: >
-        This conditional parameter is useful for merchants in specific
-        industries who need to submit one-time Merchant Initiated transactions
-        in specific cases.
-
-        Not all gateways support these methods, but will support a generic
-        one-time Merchant Initiated transaction.
-
-        Only use this if the initiator value is "merchant". Otherwise, it will
-        be ignored.
-          - Incremental: Send `incremental` with an additional purchase if the original authorization amount is not sufficient to cover the costs of your service or product. For example, if the customer adds goods or services or there are additional expenses.
-          - No Show: Send `no_show` if you charge customers a fee due to an agreed-upon cancellation policy in your industry.
-          - Resubmission: Send `resubmission` if you need to attempt collection on a declined transaction. You may also use the force collection behavior which has the same effect.
-          - Service Extension: Send `service_extension` if you are in a service industry and the customer has increased/extended their service in some way. For example: adding a day onto a car rental agreement.
-          - Split Shipment: Send `split_shipment` if you sell physical product and need to split up a shipment into multiple transactions when the customer is no longer in session.
-          - Top Up: Send `top_up` if you process one-time transactions based on a pre-arranged agreement with your customer where there is a pre-arranged account balance that needs maintaining. For example, if the customer has agreed to maintain an account balance of 30.00 and their current balance is 20.00, the MIT amount would be at least 10.00 to meet that 30.00 threshold.
-      enum:
-        - incremental
-        - no_show
-        - resubmission
-        - service_extension
-        - split_shipment
-        - top_up
-    TransactionInitiatorEnum:
-      type: string
-      description: >-
-        Must be sent for one-time transactions in order to provide context on
-        which entity is submitting the transaction to ensure proper fraud checks
-        are observed, such as 3DS. If the customer is in session, send
-        `customer`. If this is a merchant initiated one-time transaction, send
-        `merchant`.
-      enum:
-        - customer
-        - merchant
-    SourceRecordTypeEnum:
-      type: string
-      description: The type of record a custom field was automatically copied from.
-      enum:
-        - account
-        - plan
-        - product
-        - subscription
 x-tagGroups:
   - name: Customers
     tags:
